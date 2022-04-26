@@ -29,6 +29,7 @@ class App extends StatelessWidget {
             onGenerateTitle: (context) => context.loc.localeName,
             onGenerateRoute: onGenerateRoute,
             locale: value.locale,
+            initialRoute: '/home',
           ),
         ),
       ),
