@@ -34,62 +34,58 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: darkBlue,
-    backgroundColor: darkBlue,
-    scaffoldBackgroundColor: darkBlue,
-    inputDecorationTheme: InputDecorationTheme(
-      enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: beg, width: 1.0),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: karmedi, width: 1.0),
-      ),
+  brightness: Brightness.dark,
+  primaryColor: darkBlue,
+  backgroundColor: darkBlue,
+  scaffoldBackgroundColor: darkBlue,
+  inputDecorationTheme: InputDecorationTheme(
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: beg, width: 1.0),
+      borderRadius: BorderRadius.circular(5),
     ),
-    appBarTheme: const AppBarTheme(
-      color: darkBlue,
-      titleTextStyle: TextStyle(
+    focusedBorder: const OutlineInputBorder(
+      borderSide: BorderSide(color: karmedi, width: 1.0),
+    ),
+  ),
+  appBarTheme: const AppBarTheme(
+    color: darkBlue,
+    titleTextStyle: TextStyle(
+        color: beg,
+        fontFamily: font,
+        fontSize: 26,
+        fontWeight: FontWeight.bold),
+  ),
+  textTheme: const TextTheme(
+      headlineMedium: TextStyle(
           color: beg,
           fontFamily: font,
-          fontSize: 26,
+          fontSize: 24,
           fontWeight: FontWeight.bold),
-    ),
-    textTheme: const TextTheme(
-        headlineMedium: TextStyle(
-            color: beg,
+      headlineSmall: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 18,
+          fontWeight: FontWeight.normal),
+      headlineLarge: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 28,
+          fontWeight: FontWeight.normal)),
+  switchTheme: SwitchThemeData(
+    thumbColor: MaterialStateProperty.all(beg),
+    trackColor: MaterialStateProperty.all(darkBlue),
+  ),
+  iconTheme: const IconThemeData(color: orange),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+          primary: karmedi,
+          textStyle: const TextStyle(
             fontFamily: font,
-            fontSize: 24,
-            fontWeight: FontWeight.bold),
-        headlineSmall: TextStyle(
-            color: beg,
-            fontFamily: font,
+            fontWeight: FontWeight.w900,
             fontSize: 18,
-            fontWeight: FontWeight.normal),
-        headlineLarge: TextStyle(
             color: beg,
-            fontFamily: font,
-            fontSize: 28,
-            fontWeight: FontWeight.normal)),
-    switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.all(beg),
-      trackColor: MaterialStateProperty.all(darkBlue),
-    ),
-    iconTheme: const IconThemeData(color: orange),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            primary: karmedi,
-            textStyle: const TextStyle(
-              fontFamily: font,
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-              color: beg,
-            ))),
-    radioTheme: RadioThemeData(
-        fillColor: MaterialStateProperty.all(beg),
-        splashRadius: 12.4,
-        materialTapTargetSize: MaterialTapTargetSize.padded,
-        visualDensity: VisualDensity.standard));
+          ))),
+);
 
   // )
 
