@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
@@ -28,6 +28,32 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     }
+  }
+
+  List<Project> projects = [];
+  bool loading = true;
+
+  getProject() async {
+    projects = await ProjectDbService().getProjects();
+    print('project lenght ${projects.length}');
+    return projects;
+  }
+
+  @override
+  void didChangeDependencies() {
+    //  getProject();
+
+    print('project lenght ${projects.length}');
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    getProject();
+    setState(() {
+      loading = false;
+    });
+    super.initState();
   }
 
   @override
@@ -152,41 +178,66 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         SliverFillRemaining(
-            child: FutureBuilder<List<Project>>(
-                future: ProjectDbService().getProjects(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final List<Project> projects = snapshot.data!;
+            child: (loading)
+                ? const Center(child: CircularProgressIndicator())
+                : MasonryGridView.builder(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 10),
 
-                    return MasonryGridView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 10),
-
-                        // vertical gap between two items
-                        mainAxisSpacing: 40,
-                        // horizontal gap between two items
-                        crossAxisSpacing: 10,
-                        itemCount: projects.length,
-                        gridDelegate:
-                            const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2),
-                        itemBuilder: (context, index) {
-                          return ProjectWidget(
-                            name: projects[index].name,
-                            projectId: projects[index].projectId.toString(),
-                            imageUrl: projects[index].imageUrl,
-                            index: index,
-                          );
-                        });
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return const Text('error');
-                }))
+                    // vertical gap between two items
+                    mainAxisSpacing: 40,
+                    // horizontal gap between two items
+                    crossAxisSpacing: 10,
+                    itemCount: projects.length,
+                    gridDelegate:
+                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemBuilder: (context, index) {
+                      print(projects.length);
+                      return ProjectWidget(
+                        name: projects[index].name,
+                        projectId: projects[index].projectId.toString(),
+                        imageUrl: projects[index].imageUrl,
+                        index: index,
+                      );
+                    }))
       ],
     ));
   }
 }
+
+
+// FutureBuilder<List<Project>>(
+//                 future: ProjectDbService().getProjects(),
+//                 builder: (context, snapshot) {
+//                   if (snapshot.hasData) {
+//                     final List<Project> projects = snapshot.data!;
+
+//                     return MasonryGridView.builder(
+//                         padding: const EdgeInsets.symmetric(
+//                             vertical: 20, horizontal: 10),
+
+//                         // vertical gap between two items
+//                         mainAxisSpacing: 40,
+//                         // horizontal gap between two items
+//                         crossAxisSpacing: 10,
+//                         itemCount: projects.length,
+//                         gridDelegate:
+//                             const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+//                                 crossAxisCount: 2),
+//                         itemBuilder: (context, index) {
+//                           return ProjectWidget(
+//                             name: projects[index].name,
+//                             projectId: projects[index].projectId.toString(),
+//                             imageUrl: projects[index].imageUrl,
+//                             index: index,
+//                           );
+//                         });
+//                   }
+//                   if (snapshot.connectionState == ConnectionState.waiting) {
+//                     return const Center(
+//                       child: CircularProgressIndicator(),
+//                     );
+//                   }
+//                   return const Text('error');
+//                 })
