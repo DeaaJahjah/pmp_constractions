@@ -20,7 +20,7 @@ class ProjectWidget extends StatelessWidget {
         onTap: () {
           print('Project id $projectId');
           Navigator.of(context).pushNamed(
-            '/details',
+            '/home/project_details',
             arguments: RouteSettings(name: '/details', arguments: projectId),
           );
         },
@@ -50,16 +50,22 @@ class ProjectWidget extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: Container(
-                          padding: const EdgeInsets.all(5),
-                          height: 30,
+                          padding: const EdgeInsets.all(3),
+                          height: 35,
                           width: 192,
                           decoration: const BoxDecoration(
-                            color: Colors.blue,
+                            color: orange,
                             //     borderRadius: BorderRadius.circular(5)
                           ),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [Text(name)]),
+                              children: [
+                                Text(
+                                  name,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                )
+                              ]),
                         ),
                       ))
                 ]),

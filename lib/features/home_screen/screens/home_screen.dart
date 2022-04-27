@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/custom_item.dart';
@@ -30,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var ref = FirebaseFirestore.instance.collection('projects');
     return Scaffold(
         body: CustomScrollView(
       slivers: [
@@ -46,21 +49,24 @@ class _HomeScreenState extends State<HomeScreen> {
           // centerTitle: true,
           title: SizedBox(
             height: 30,
-            child: TextFormField(
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(
                     Icons.search,
-                    color: orange,
+                    color: Colors.white,
                   ),
-                  fillColor: const Color.fromARGB(47, 11, 29, 55),
+                  fillColor: Color.fromARGB(15, 11, 29, 55),
                   filled: true,
-                  contentPadding: const EdgeInsets.all(2),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10),
                   hintText: 'Search',
-                  hintStyle: Theme.of(context).textTheme.headlineSmall,
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                  )),
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                ),
+              ),
             ),
           ),
           floating: true,
@@ -83,10 +89,33 @@ class _HomeScreenState extends State<HomeScreen> {
                       CustomItem(
                           text: 'ALL',
                           selected: itemsState[0],
-                          onTap: () {
+                          onTap: () async {
                             setState(() {
                               changeItemState(0);
                             });
+
+                            Project project = Project(
+                                name: 'Jahjah',
+                                description: 'description',
+                                imageUrl:
+                                    'https://firebasestorage.googleapis.com/v0/b/justatest-63adb.appspot.com/o/bulding1.png?alt=media&token=e832f13a-61b2-4fd0-bee5-082ff0acb388',
+                                location: const GeoPoint(30.22, 3),
+                                isOpen: true,
+                                modelUrl: 'https://dadva',
+                                privacy: true,
+                                members: const [
+                                  MemberRole(
+                                      memberId: 'dadad_id',
+                                      memberName: 'memberName',
+                                      profilePicUrl: 'profilePicUrl',
+                                      role: Role.projectEngineer),
+                                  MemberRole(
+                                      memberId: 'dadad_id',
+                                      memberName: 'memberName',
+                                      profilePicUrl: 'profilePicUrl',
+                                      role: Role.projectEngineer)
+                                ]);
+                            ref.add(project.toJson());
                           }),
                       CustomItem(
                           text: 'project',

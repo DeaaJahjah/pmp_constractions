@@ -17,7 +17,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     print(id);
     return Scaffold(
       body: FutureBuilder<Project>(
-        future: ProjectDbService().getProjectById('r1Uz0WRIcdFto3iaWlPV'),
+        future: ProjectDbService().getProjectById(''),
         builder: (context, snapshot) {
           var project = snapshot.data;
 
