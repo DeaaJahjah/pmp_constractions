@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/routes/router.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
+import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
 import 'package:pmpconstractions/language_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -19,6 +20,8 @@ class App extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<LanguageProvider>(
               create: (context) => LanguageProvider()),
+          ChangeNotifierProvider<SearchProvider>(
+              create: (context) => SearchProvider()),
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(

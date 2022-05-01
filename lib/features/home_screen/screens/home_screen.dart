@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/custom_item.dart';
-import 'package:pmpconstractions/features/home_screen/screens/widgets/project_widget.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/search_text_field.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getProject() async {
     projects = await ProjectDbService().getProjects();
-    print('project lenght ${projects.length}');
     return projects;
   }
 
@@ -65,29 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: orange,
         elevation: 0.0,
         title: SizedBox(
-          height: 30,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-                fillColor: Color.fromARGB(15, 11, 29, 55),
-                filled: true,
-                contentPadding: EdgeInsets.symmetric(vertical: 10),
-                hintText: 'Search',
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-              ),
-              controller: textController,
-              onChanged: searchProjects,
-            ),
-          ),
-        ),
+            height: 30,
+            child: SearchTextField(
+                onChanged: onSearchProjects, controller: textController)),
       ),
       body: Column(
         children: [
@@ -164,37 +143,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ]),
           Expanded(
-            child: (loading)
-                ? const Center(child: CircularProgressIndicator())
-                : MasonryGridView.builder(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-
-                    // vertical gap between two items
-                    mainAxisSpacing: 40,
-                    // horizontal gap between two items
-                    crossAxisSpacing: 10,
-                    itemCount: searchedProjects.length,
-                    gridDelegate:
-                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
-                    itemBuilder: (context, i) {
-                      Project project = searchedProjects[i];
-                      print(project.projectId);
-                      return ProjectWidget(
-                        name: project.name,
-                        projectId: project.projectId.toString(),
-                        imageUrl: project.imageUrl,
-                        index: i,
-                      );
-                    }),
-          )
+              child: (loading)
+                  ? const Center(child: CircularProgressIndicator())
+                  : BuildProjects(
+                      projects: searchedProjects,
+                    ))
         ],
       ),
     );
   }
 
-  void searchProjects(String value) {
+  void onSearchProjects(String value) {
     if (textController.text.isEmpty) {
       setState(() {
         searchedProjects = projects;

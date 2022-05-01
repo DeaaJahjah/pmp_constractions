@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
-import 'package:pmpconstractions/features/home_screen/models/company.dart';
-import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 
 class SearchProvider extends ChangeNotifier {
   List<Project> projects = [];
-  List<Company> companies = [];
-  List<Engineer> engineers = [];
+  List<Project> searched = [];
+  //List<Company> companies = [];
+  // List<Engineer> engineers = [];
 
   dynamic searchState(SearchType searchType) async {
     switch (searchType) {
@@ -33,16 +32,17 @@ class SearchProvider extends ChangeNotifier {
     return projects.firstWhere((project) => project.projectId == id);
   }
 
-  List<Project> getProjects(String value) {
+  getProjects(String value) {
     if (value.isEmpty) {
-      return projects;
+      searched = projects;
     }
 
     final searchResult = projects.where((project) {
       return project.name.toLowerCase().contains(value.toLowerCase());
     }).toList();
 
+    searched = searchResult;
+    print('this is searched resualt ${searched.length}');
     ChangeNotifier;
-    return searchResult;
   }
 }
