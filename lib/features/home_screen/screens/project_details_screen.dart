@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
-import 'package:pmpconstractions/features/home_screen/services/db.dart';
+import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
   static const routeName = '/home/project_details';

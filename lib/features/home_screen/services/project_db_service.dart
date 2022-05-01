@@ -23,11 +23,3 @@ class ProjectDbService {
     return Project.fromJson(cc);
   }
 }
-
-//  querySnapshot.docs.map((doc) {
-//         Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
-
-//         Project.fromJson(docData);
-//       });
-
-//       querySnapshot.docs.map((e) => )
