@@ -7,7 +7,6 @@ part of 'engineer.dart';
 // **************************************************************************
 
 Engineer _$EngineerFromJson(Map<String, dynamic> json) => Engineer(
-      userId: json['user_id'] as String,
       name: json['name'] as String,
       phoneNumbers: (json['phone_numbers'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -21,7 +20,6 @@ Engineer _$EngineerFromJson(Map<String, dynamic> json) => Engineer(
     );
 
 Map<String, dynamic> _$EngineerToJson(Engineer instance) => <String, dynamic>{
-      'user_id': instance.userId,
       'name': instance.name,
       'phone_numbers': instance.phoneNumbers,
       'profile_pic_url': instance.profilePicUrl,

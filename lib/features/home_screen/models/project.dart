@@ -39,6 +39,13 @@ class Project extends Equatable {
 
   Map<String, dynamic> toJson() => _$ProjectToJson(this);
 
+  factory Project.fromFirestore(DocumentSnapshot documentSnapshot) {
+    Project project =
+        Project.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+    project.projectId = documentSnapshot.id;
+    return project;
+  }
+
   static GeoPoint _fromJsonGeoPoint(GeoPoint geoPoint) {
     return geoPoint;
   }

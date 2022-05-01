@@ -7,10 +7,9 @@ class ProjectDbService {
   Future<List<Project>> getProjects() async {
     var queryData = await _db.collection('projects').get();
     List<Project> projects = [];
+
     for (var doc in queryData.docs) {
-      var project = Project.fromJson(doc.data());
-      project.projectId = doc.id;
-      projects.add(project);
+      projects.add(Project.fromFirestore(doc));
     }
 
     return projects;

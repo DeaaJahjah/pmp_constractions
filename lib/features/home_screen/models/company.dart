@@ -8,7 +8,7 @@ part 'company.g.dart';
 class Company extends Equatable {
   //get it from document id
   @JsonKey(name: 'user_id')
-  final String userId;
+  String? userId;
   final String name;
   final String description;
   @JsonKey(name: 'phone_numbers')
@@ -19,8 +19,8 @@ class Company extends Equatable {
   @JsonKey(fromJson: _fromJsonGeoPoint, toJson: _toJsonGeoPoint)
   final GeoPoint location;
 
-  const Company(
-      {required this.userId,
+  Company(
+      {this.userId,
       required this.name,
       required this.description,
       this.phoneNumbers,
@@ -29,6 +29,13 @@ class Company extends Equatable {
 
   factory Company.fromJson(Map<String, dynamic> json) =>
       _$CompanyFromJson(json);
+
+  factory Company.fromFirestore(DocumentSnapshot documentSnapshot) {
+    Company company =
+        Company.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+    company.userId = documentSnapshot.id;
+    return company;
+  }
 
   Map<String, dynamic> toJson() => _$CompanyToJson(this);
 

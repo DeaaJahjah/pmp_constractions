@@ -178,12 +178,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     gridDelegate:
                         const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2),
-                    itemBuilder: (context, index) {
+                    itemBuilder: (context, i) {
+                      Project project = searchedProjects[i];
+                      print(project.projectId);
                       return ProjectWidget(
-                        name: searchedProjects[index].name,
-                        projectId: searchedProjects[index].projectId.toString(),
-                        imageUrl: searchedProjects[index].imageUrl,
-                        index: index,
+                        name: project.name,
+                        projectId: project.projectId.toString(),
+                        imageUrl: project.imageUrl,
+                        index: i,
                       );
                     }),
           )
