@@ -75,10 +75,9 @@ ThemeData darkTheme = ThemeData(
     thumbColor: MaterialStateProperty.all(beg),
     trackColor: MaterialStateProperty.all(darkBlue),
   ),
-  iconTheme: const IconThemeData(color: orange),
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-          primary: karmedi,
+          primary: orange,
           textStyle: const TextStyle(
             fontFamily: font,
             fontWeight: FontWeight.w900,

@@ -44,7 +44,8 @@ dependencies:
   flutter_zoom_drawer: ^2.3.1+1
   model_viewer_plus: ^1.1.5
   flutter_layout_grid: ^1.0.6
-  flutter_switch: ^0.3.2 
+  flutter_switch: ^0.3.2
+  smooth_page_indicator: ^1.0.0+2 
   #theme
   animated_theme_switcher: ^2.0.6
   #charts
