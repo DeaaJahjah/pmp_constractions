@@ -1,13 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/build_all.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/bulid_companies_card.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/bulid_engineers_card.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/custom_item.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/search_text_field.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -18,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<bool> itemsState = [false, true, false, false];
+  List<bool> itemsState = [true, false, false, false];
   changeItemState(int index) {
     if (itemsState[index] == false) {
       itemsState[index] = true;
@@ -51,7 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var ref = FirebaseFirestore.instance.collection('projects');
+    var searchProvider = Provider.of<SearchProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         actions: const [
@@ -83,71 +88,70 @@ class _HomeScreenState extends State<HomeScreen> {
                   CustomItem(
                       text: 'ALL',
                       selected: itemsState[0],
-                      onTap: () async {
+                      onTap: () {
                         setState(() {
                           changeItemState(0);
                         });
-
-                        Project project = Project(
-                            name: 'm',
-                            description: 'description',
-                            imageUrl:
-                                'https://firebasestorage.googleapis.com/v0/b/justatest-63adb.appspot.com/o/bulding1.png?alt=media&token=e832f13a-61b2-4fd0-bee5-082ff0acb388',
-                            location: const GeoPoint(30.22, 3),
-                            isOpen: true,
-                            modelUrl: 'https://dadva',
-                            privacy: true,
-                            members: const [
-                              MemberRole(
-                                  memberId: 'dadad_id',
-                                  memberName: 'memberName',
-                                  profilePicUrl: 'profilePicUrl',
-                                  role: Role.projectEngineer),
-                              MemberRole(
-                                  memberId: 'dadad_id',
-                                  memberName: 'memberName',
-                                  profilePicUrl: 'profilePicUrl',
-                                  role: Role.projectEngineer)
-                            ]);
-                        ref.add(project.toJson());
+                        searchProvider.searchState(SearchType.all);
                       }),
                   CustomItem(
-                      text: 'project',
+                      text: 'Bulding',
                       icon: Icons.business,
                       selected: itemsState[1],
                       onTap: () {
                         setState(() {
                           changeItemState(1);
                         });
+                        searchProvider.searchState(SearchType.project);
                       }),
                   CustomItem(
-                      text: 'Companies',
+                      text: 'Company',
                       icon: Icons.business,
                       selected: itemsState[2],
                       onTap: () {
                         setState(() {
                           changeItemState(2);
                         });
+                        searchProvider.searchState(SearchType.company);
                       }),
                   CustomItem(
-                      text: 'Enginerrs',
+                      text: 'Engineer',
                       icon: Icons.business,
                       selected: itemsState[3],
                       onTap: () {
                         setState(() {
                           changeItemState(3);
                         });
+                        searchProvider.searchState(SearchType.engineer);
                       })
                 ],
               ),
             ),
           ]),
-          Expanded(
+          if (searchProvider.searchType == SearchType.all)
+            Expanded(
+              child: (loading)
+                  ? const Center(child: CircularProgressIndicator())
+                  : BuildAll(projects: searchedProjects),
+            )
+          else if (searchProvider.searchType == SearchType.project)
+            Expanded(
               child: (loading)
                   ? const Center(child: CircularProgressIndicator())
                   : BuildProjects(
                       projects: searchedProjects,
-                    ))
+                    ),
+            )
+          else if (searchProvider.searchType == SearchType.company)
+            Expanded(
+                child: (loading)
+                    ? const Center(child: CircularProgressIndicator())
+                    : const Center(child: BuildCompaniesCard()))
+          else if (searchProvider.searchType == SearchType.engineer)
+            Expanded(
+                child: (loading)
+                    ? const Center(child: CircularProgressIndicator())
+                    : const BuildEngineersCard()),
         ],
       ),
     );

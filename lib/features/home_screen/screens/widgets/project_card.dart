@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 
-class ProjectWidget extends StatelessWidget {
+class ProjectCard extends StatelessWidget {
   final String projectId;
   final String name;
   final String imageUrl;
   final int index;
-  const ProjectWidget(
+  const ProjectCard(
       {Key? key,
       required this.projectId,
       required this.name,
@@ -16,9 +16,9 @@ class ProjectWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //?TODO add random marging
     return InkWell(
         onTap: () {
-          print('Project id $projectId');
           Navigator.of(context).pushNamed(
             '/home/project_details',
             arguments: RouteSettings(name: '/details', arguments: projectId),

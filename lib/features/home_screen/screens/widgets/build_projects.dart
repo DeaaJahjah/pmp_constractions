@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
-import 'package:pmpconstractions/features/home_screen/screens/widgets/project_widget.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/project_card.dart';
 
 class BuildProjects extends StatelessWidget {
   final List<Project> projects;
@@ -20,12 +21,19 @@ class BuildProjects extends StatelessWidget {
             crossAxisCount: 2),
         itemBuilder: (context, i) {
           Project project = projects[i];
-          return ProjectWidget(
-            name: project.name,
-            projectId: project.projectId.toString(),
-            imageUrl: project.imageUrl,
-            index: i,
-          );
+          return AnimationConfiguration.staggeredList(
+              position: i,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                  horizontalOffset: 50.0,
+                  child: FadeInAnimation(
+                    child: ProjectCard(
+                      name: project.name,
+                      projectId: project.projectId.toString(),
+                      imageUrl: project.imageUrl,
+                      index: i,
+                    ),
+                  )));
         });
   }
 }
