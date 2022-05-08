@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 
-class ProjectDbService {
+class EngineerDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<List<Engineer>> getEngineers() async {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pmpconstractions/features/home_screen/models/company.dart';
 
-class ProjectDbService {
+class CompanyDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<List<Company>> getCompanies() async {
