@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/company_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/login_screen.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/set_up_company_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/set_up_engineer_profile.dart';
@@ -27,6 +28,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const SetUpClientProfile());
     case SetUpEngineerProfile.routeName:
       return MaterialPageRoute(builder: (_) => const SetUpEngineerProfile());
+    case CompanyProfile.routeName:
+      return MaterialPageRoute(builder: (_) => CompanyProfile());
   }
 
   // assert(false, 'Need to implement ${settings.name}');

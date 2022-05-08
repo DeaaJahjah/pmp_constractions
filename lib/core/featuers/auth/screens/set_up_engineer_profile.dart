@@ -5,7 +5,7 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SetUpEngineerProfile extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/c';
   const SetUpEngineerProfile({Key? key}) : super(key: key);
 
   @override
@@ -73,7 +73,8 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                       decoration: const InputDecoration(
                         prefixText: '+963 ',
                         prefixStyle: TextStyle(
-                            color: beg,
+                            backgroundColor: Color.fromRGBO(246, 217, 146, 20),
+                            color: orange,
                             fontFamily: font,
                             fontSize: 18,
                             fontWeight: FontWeight.normal),
@@ -82,7 +83,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                         label: Text(
                           'Number',
                           style: TextStyle(
-                              color: beg,
+                              color: orange,
                               fontFamily: font,
                               fontSize: 18,
                               fontWeight: FontWeight.normal),
@@ -130,31 +131,44 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
               fit: BoxFit.fill,
             ),
             sizedBoxXLarge,
-            FormField<String>(
-              builder: (FormFieldState<String> state) {
-                return InputDecorator(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0))),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: dropdownvalue,
-                      isDense: true,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownvalue = newValue!;
-                        });
-                      },
-                      items: items.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
+            SizedBox(
+              width: 250,
+              child: FormField<String>(
+                builder: (FormFieldState<String> state) {
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            gapPadding: 4,
+                            borderRadius: BorderRadius.circular(5.0))),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        dropdownColor: beg,
+                        elevation: 10,
+                        iconEnabledColor: orange,
+                        style: const TextStyle(
+                            color: orange,
+                            fontFamily: font,
+                            fontWeight: FontWeight.bold),
+                        alignment: AlignmentDirectional.center,
+                        focusColor: orange,
+                        value: dropdownvalue,
+                        isDense: true,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvalue = newValue!;
+                          });
+                        },
+                        items: items.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             )
           ]),
         ),
@@ -171,7 +185,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             ),
             sizedBoxXLarge,
             SizedBox(
-              width: 230,
+              width: 260,
               height: 40,
               child: TextFormField(
                 decoration: const InputDecoration(
@@ -185,7 +199,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                   label: Text(
                     'Languages',
                     style: TextStyle(
-                        color: beg,
+                        color: orange,
                         fontFamily: font,
                         fontSize: 18,
                         fontWeight: FontWeight.normal),
@@ -203,7 +217,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             ),
             sizedBoxLarge,
             SizedBox(
-              width: 230,
+              width: 260,
               child: TextFormField(
                 decoration: const InputDecoration(
                   hintMaxLines: 3,
@@ -217,7 +231,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                   label: Text(
                     'Certificates',
                     style: TextStyle(
-                        color: beg,
+                        color: orange,
                         fontFamily: font,
                         fontSize: 18,
                         fontWeight: FontWeight.normal),
@@ -235,7 +249,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             ),
             sizedBoxLarge,
             SizedBox(
-              width: 230,
+              width: 260,
               height: 40,
               child: TextFormField(
                 decoration: const InputDecoration(
@@ -249,7 +263,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                   label: Text(
                     'Programs',
                     style: TextStyle(
-                        color: beg,
+                        color: orange,
                         fontFamily: font,
                         fontSize: 18,
                         fontWeight: FontWeight.normal),
