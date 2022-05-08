@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:pmpconstractions/features/settings/settings_screen.dart';
-
+import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
+import 'package:pmpconstractions/features/home_screen/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const routeName = '/t';
+  static const routeName = '/';
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +16,6 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
-
 
   @override
   void initState() {
@@ -41,12 +41,14 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    //fetch Data form database
+    Provider.of<DataProvider>(context).fetchData();
     Timer(
         const Duration(
           milliseconds: 3000,
         ), () {
       _animationController.stop();
-      Navigator.of(context).pushReplacementNamed(SettingsScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     });
     return Scaffold(
       body: Center(

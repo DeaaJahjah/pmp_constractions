@@ -3,7 +3,15 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 
 class CompanyCard extends StatelessWidget {
-  const CompanyCard({Key? key}) : super(key: key);
+  final String imageUrl;
+  final String name;
+  final String userId;
+  const CompanyCard(
+      {Key? key,
+      required this.imageUrl,
+      required this.name,
+      required this.userId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +33,7 @@ class CompanyCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     sizedBoxMedium,
-                    const CircleAvatar(
+                    CircleAvatar(
                       backgroundColor: beg,
                       radius: 45,
                       child: CircleAvatar(
@@ -34,14 +42,13 @@ class CompanyCard extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 41,
                           backgroundColor: darkBlue,
-                          backgroundImage:
-                              AssetImage('assets/images/smlogo.png'),
+                          backgroundImage: NetworkImage(imageUrl),
                         ),
                       ),
                     ),
                     sizedBoxSmall,
                     Text(
-                      'Simecolon',
+                      name,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     sizedBoxSmall,

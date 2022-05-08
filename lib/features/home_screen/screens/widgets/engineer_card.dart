@@ -3,8 +3,17 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 
 class EngineerCard extends StatelessWidget {
-  const EngineerCard({Key? key}) : super(key: key);
-
+  const EngineerCard(
+      {Key? key,
+      required this.imageUrl,
+      required this.name,
+      required this.speclizition,
+      required this.userId})
+      : super(key: key);
+  final String imageUrl;
+  final String name;
+  final String speclizition;
+  final String userId;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -25,8 +34,8 @@ class EngineerCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     sizedBoxMedium,
-                    const CircleAvatar(
-                      backgroundColor: beg,
+                    CircleAvatar(
+                      backgroundColor: orange,
                       radius: 45,
                       child: CircleAvatar(
                         radius: 44,
@@ -34,19 +43,18 @@ class EngineerCard extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 41,
                           backgroundColor: darkBlue,
-                          backgroundImage:
-                              AssetImage('assets/images/sawsan.png'),
+                          backgroundImage: NetworkImage(imageUrl),
                         ),
                       ),
                     ),
                     sizedBoxSmall,
                     Text(
-                      'Sawsan Ahmad',
+                      name,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     sizedBoxSmall,
                     Text(
-                      'Architectural engineer',
+                      speclizition,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],

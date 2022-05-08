@@ -21,4 +21,8 @@ class CompanyDbService {
 
     return Company.fromJson(cc);
   }
+
+  addCompany(Company company) {
+    _db.collection('companies').add(company.toJson());
+  }
 }

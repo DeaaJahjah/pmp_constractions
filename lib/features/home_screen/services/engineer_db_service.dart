@@ -21,4 +21,8 @@ class EngineerDbService {
 
     return Engineer.fromJson(cc);
   }
+
+  addEngineer(Engineer engineer) {
+    _db.collection('engineers').add(engineer.toJson());
+  }
 }

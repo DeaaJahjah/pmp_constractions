@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/features/home_screen/models/company.dart';
+import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_all.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
@@ -10,7 +13,6 @@ import 'package:pmpconstractions/features/home_screen/screens/widgets/bulid_comp
 import 'package:pmpconstractions/features/home_screen/screens/widgets/bulid_engineers_card.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/custom_item.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/search_text_field.dart';
-import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,35 +36,32 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  List<Project> projects = [];
   List<Project> searchedProjects = [];
-  bool loading = true;
+  List<Company> searchedCompanies = [];
+  List<Engineer> searchedEngineers = [];
+  bool loading = false;
   TextEditingController textController = TextEditingController();
-
-  Future getProject() async {
-    projects = await ProjectDbService().getProjects();
-    return projects;
-  }
 
   @override
   void initState() {
-    getProject().then((value) => setState(() {
-          loading = false;
-          searchedProjects = projects;
-        }));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var searchProvider = Provider.of<SearchProvider>(context);
+    searchedProjects = Provider.of<DataProvider>(context).projects;
+    searchedCompanies = Provider.of<DataProvider>(context).companies;
+    searchedEngineers = Provider.of<DataProvider>(context).engineers;
 
     return Scaffold(
       appBar: AppBar(
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.notifications, color: darkBlue),
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+                onTap: () {},
+                child: const Icon(Icons.notifications, color: darkBlue)),
           )
         ],
         leading: const Icon(Icons.menu, color: darkBlue),
@@ -132,7 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: (loading)
                   ? const Center(child: CircularProgressIndicator())
-                  : BuildAll(projects: searchedProjects),
+                  : BuildAll(
+                      projects: searchedProjects,
+                      companies: searchedCompanies,
+                      engineers: searchedEngineers),
             )
           else if (searchProvider.searchType == SearchType.project)
             Expanded(
@@ -146,18 +148,22 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
                 child: (loading)
                     ? const Center(child: CircularProgressIndicator())
-                    : const Center(child: BuildCompaniesCard()))
+                    : Center(
+                        child: BuildCompaniesCard(
+                        companies: searchedCompanies,
+                      )))
           else if (searchProvider.searchType == SearchType.engineer)
             Expanded(
                 child: (loading)
                     ? const Center(child: CircularProgressIndicator())
-                    : const BuildEngineersCard()),
+                    : BuildEngineersCard(engineers: searchedEngineers)),
         ],
       ),
     );
   }
 
   void onSearchProjects(String value) {
+    var projects = Provider.of<DataProvider>(context).projects;
     if (textController.text.isEmpty) {
       setState(() {
         searchedProjects = projects;

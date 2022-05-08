@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/features/home_screen/models/company.dart';
+import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/project_card.dart';
 
 class BuildAll extends StatelessWidget {
-  const BuildAll({Key? key, required this.projects}) : super(key: key);
+  const BuildAll(
+      {Key? key,
+      required this.projects,
+      required this.companies,
+      required this.engineers})
+      : super(key: key);
   final List<Project> projects;
+  final List<Company> companies;
+  final List<Engineer> engineers;
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +28,23 @@ class BuildAll extends StatelessWidget {
           child: SizedBox(
         height: 150,
         child: ListView.builder(
-          itemCount: 5,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
-              position: index,
-              duration: const Duration(milliseconds: 375),
-              child: const SlideAnimation(
-                  horizontalOffset: 50.0,
-                  child: FadeInAnimation(child: EngCard()))),
-        ),
+            itemCount: engineers.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              var engineer = engineers[index];
+              return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                      horizontalOffset: 50.0,
+                      child: FadeInAnimation(
+                          child: EngCard(
+                        name: engineer.name,
+                        speclizition: engineer.specialization,
+                        imageUrl: engineer.profilePicUrl ?? '',
+                        userId: engineer.userId ?? '',
+                      ))));
+            }),
       )),
       const SliverToBoxAdapter(
         child: Title(title: 'Companies'),
@@ -36,15 +53,22 @@ class BuildAll extends StatelessWidget {
           child: SizedBox(
         height: 150,
         child: ListView.builder(
-          itemCount: 5,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
-              position: index,
-              duration: const Duration(milliseconds: 375),
-              child: const SlideAnimation(
-                  horizontalOffset: 50.0,
-                  child: FadeInAnimation(child: CompCard()))),
-        ),
+            itemCount: companies.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              var company = companies[index];
+              return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                      horizontalOffset: 50.0,
+                      child: FadeInAnimation(
+                          child: CompCard(
+                        name: company.name,
+                        imageUrl: company.profilePicUrl!,
+                        userId: company.userId!,
+                      ))));
+            }),
       )),
       const SliverToBoxAdapter(
         child: Title(title: 'Buldings'),
@@ -110,7 +134,17 @@ class Title extends StatelessWidget {
 }
 
 class EngCard extends StatelessWidget {
-  const EngCard({Key? key}) : super(key: key);
+  final String imageUrl;
+  final String name;
+  final String speclizition;
+  final String userId;
+  const EngCard(
+      {Key? key,
+      required this.imageUrl,
+      required this.name,
+      required this.speclizition,
+      required this.userId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +165,7 @@ class EngCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children: [
                     sizedBoxMedium,
                     CircleAvatar(
                       backgroundColor: beg,
@@ -142,22 +176,21 @@ class EngCard extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 28,
                           backgroundColor: darkBlue,
-                          backgroundImage:
-                              AssetImage('assets/images/sawsan.png'),
+                          backgroundImage: NetworkImage(imageUrl),
                         ),
                       ),
                     ),
                     sizedBoxSmall,
-                    Text('Sawsan Ahmad',
-                        style: TextStyle(
+                    Text(name,
+                        style: const TextStyle(
                             color: orange,
                             fontFamily: font,
                             fontSize: 14,
                             fontWeight: FontWeight.bold)),
                     sizedBoxXSmall,
                     Text(
-                      'Architectural engineer',
-                      style: TextStyle(
+                      speclizition,
+                      style: const TextStyle(
                           color: beg,
                           fontFamily: font,
                           fontSize: 8,
@@ -173,7 +206,15 @@ class EngCard extends StatelessWidget {
 }
 
 class CompCard extends StatelessWidget {
-  const CompCard({Key? key}) : super(key: key);
+  final String imageUrl;
+  final String name;
+  final String userId;
+  const CompCard(
+      {Key? key,
+      required this.imageUrl,
+      required this.name,
+      required this.userId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +235,7 @@ class CompCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children: [
                     sizedBoxMedium,
                     CircleAvatar(
                       backgroundColor: beg,
@@ -205,20 +246,19 @@ class CompCard extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 28,
                           backgroundColor: darkBlue,
-                          backgroundImage:
-                              AssetImage('assets/images/smlogo.png'),
+                          backgroundImage: NetworkImage(imageUrl),
                         ),
                       ),
                     ),
                     sizedBoxSmall,
-                    Text('Simecolon',
-                        style: TextStyle(
+                    Text(name,
+                        style: const TextStyle(
                             color: orange,
                             fontFamily: font,
                             fontSize: 14,
                             fontWeight: FontWeight.bold)),
                     sizedBoxXSmall,
-                    Text(
+                    const Text(
                       'Homs-Syria',
                       style: TextStyle(
                           color: beg,
