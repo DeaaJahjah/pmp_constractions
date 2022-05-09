@@ -2,21 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/features/home_screen/models/company.dart';
-import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
+import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
+import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/project_card.dart';
+import 'package:provider/provider.dart';
 
 class BuildAll extends StatelessWidget {
-  const BuildAll(
-      {Key? key,
-      required this.projects,
-      required this.companies,
-      required this.engineers})
-      : super(key: key);
-  final List<Project> projects;
-  final List<Company> companies;
-  final List<Engineer> engineers;
+  const BuildAll({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,24 +22,31 @@ class BuildAll extends StatelessWidget {
       SliverToBoxAdapter(
           child: SizedBox(
         height: 150,
-        child: ListView.builder(
-            itemCount: engineers.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              var engineer = engineers[index];
-              return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 375),
-                  child: SlideAnimation(
-                      horizontalOffset: 50.0,
-                      child: FadeInAnimation(
-                          child: EngCard(
-                        name: engineer.name,
-                        speclizition: engineer.specialization,
-                        imageUrl: engineer.profilePicUrl ?? '',
-                        userId: engineer.userId ?? '',
-                      ))));
-            }),
+        child: Consumer<EnginnerProvider>(builder: (context, value, child) {
+          var engineers = value.engineers;
+          return (engineers.isEmpty)
+              ? const Center(
+                  child: Text('No Engineers Found'),
+                )
+              : ListView.builder(
+                  itemCount: engineers.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    var engineer = engineers[index];
+                    return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                            horizontalOffset: 50.0,
+                            child: FadeInAnimation(
+                                child: EngCard(
+                              name: engineer.name,
+                              speclizition: engineer.specialization,
+                              imageUrl: engineer.profilePicUrl ?? '',
+                              userId: engineer.userId ?? '',
+                            ))));
+                  });
+        }),
       )),
       const SliverToBoxAdapter(
         child: Title(title: 'Companies'),
@@ -52,56 +54,69 @@ class BuildAll extends StatelessWidget {
       SliverToBoxAdapter(
           child: SizedBox(
         height: 150,
-        child: ListView.builder(
-            itemCount: companies.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              var company = companies[index];
-              return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 375),
-                  child: SlideAnimation(
-                      horizontalOffset: 50.0,
-                      child: FadeInAnimation(
-                          child: CompCard(
-                        name: company.name,
-                        imageUrl: company.profilePicUrl!,
-                        userId: company.userId!,
-                      ))));
-            }),
+        child: Consumer<CompanyProvider>(builder: (context, value, child) {
+          var companies = value.companies;
+          return (companies.isEmpty)
+              ? const Center(
+                  child: Text('No Companies found'),
+                )
+              : ListView.builder(
+                  itemCount: companies.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    var company = companies[index];
+                    return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                            horizontalOffset: 50.0,
+                            child: FadeInAnimation(
+                                child: CompCard(
+                              name: company.name,
+                              imageUrl: company.profilePicUrl!,
+                              userId: company.userId!,
+                            ))));
+                  });
+        }),
       )),
       const SliverToBoxAdapter(
         child: Title(title: 'Buldings'),
       ),
-      SliverGrid(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 40,
-            crossAxisSpacing: 10,
-          ),
-          delegate: SliverChildBuilderDelegate((context, index) {
-            var project = projects[index];
+      Consumer<ProjectProvider>(
+        builder: (context, value, child) => SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 40,
+              crossAxisSpacing: 10,
+            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              var project = value.projects[index];
 
-            return AnimationConfiguration.staggeredList(
-              position: index,
-              duration: const Duration(milliseconds: 375),
-              child: SlideAnimation(
-                horizontalOffset: 50.0,
-                child: FadeInAnimation(
-                  child: Container(
-                    height: (index % 2 == 0) ? 300 : 200,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-                    child: ProjectCard(
-                        projectId: project.projectId.toString(),
-                        name: project.name,
-                        imageUrl: project.imageUrl,
-                        index: index),
-                  ),
-                ),
-              ),
-            );
-          }, childCount: projects.length))
+              return (value.projects.isEmpty)
+                  ? const Center(
+                      child: Text('No Projects Found'),
+                    )
+                  : AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 375),
+                      child: SlideAnimation(
+                        horizontalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: Container(
+                            height: (index % 2 == 0) ? 300 : 200,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 10),
+                            child: ProjectCard(
+                                projectId: project.projectId.toString(),
+                                name: project.name,
+                                imageUrl: project.imageUrl,
+                                index: index),
+                          ),
+                        ),
+                      ),
+                    );
+            }, childCount: value.projects.length)),
+      )
     ]);
   }
 }

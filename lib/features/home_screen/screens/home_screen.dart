@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/features/home_screen/models/company.dart';
-import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
-import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
+import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
+import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
+import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_all.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
@@ -36,10 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  List<Project> searchedProjects = [];
-  List<Company> searchedCompanies = [];
-  List<Engineer> searchedEngineers = [];
-  bool loading = false;
   TextEditingController textController = TextEditingController();
 
   @override
@@ -50,9 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var searchProvider = Provider.of<SearchProvider>(context);
-    searchedProjects = Provider.of<DataProvider>(context).projects;
-    searchedCompanies = Provider.of<DataProvider>(context).companies;
-    searchedEngineers = Provider.of<DataProvider>(context).engineers;
 
     return Scaffold(
       appBar: AppBar(
@@ -69,8 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
         title: SizedBox(
             height: 30,
-            child: SearchTextField(
-                onChanged: onSearchProjects, controller: textController)),
+            child:
+                SearchTextField(onChanged: search, controller: textController)),
       ),
       body: Column(
         children: [
@@ -92,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           changeItemState(0);
                         });
                         searchProvider.searchState(SearchType.all);
+                        search(textController.text);
                       }),
                   CustomItem(
                       text: 'Bulding',
@@ -102,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           changeItemState(1);
                         });
                         searchProvider.searchState(SearchType.project);
+                        search(textController.text);
                       }),
                   CustomItem(
                       text: 'Company',
@@ -112,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           changeItemState(2);
                         });
                         searchProvider.searchState(SearchType.company);
+                        search(textController.text);
                       }),
                   CustomItem(
                       text: 'Engineer',
@@ -122,62 +117,71 @@ class _HomeScreenState extends State<HomeScreen> {
                           changeItemState(3);
                         });
                         searchProvider.searchState(SearchType.engineer);
+                        search(textController.text);
                       })
                 ],
               ),
             ),
           ]),
           if (searchProvider.searchType == SearchType.all)
-            Expanded(
-              child: (loading)
-                  ? const Center(child: CircularProgressIndicator())
-                  : BuildAll(
-                      projects: searchedProjects,
-                      companies: searchedCompanies,
-                      engineers: searchedEngineers),
+            const Expanded(
+              child: BuildAll(),
             )
           else if (searchProvider.searchType == SearchType.project)
-            Expanded(
-              child: (loading)
-                  ? const Center(child: CircularProgressIndicator())
-                  : BuildProjects(
-                      projects: searchedProjects,
-                    ),
+            Consumer<ProjectProvider>(
+              builder: (context, value, child) => Expanded(
+                child: (value.projects.isEmpty)
+                    ? const Center(
+                        child: Text('No Projects'),
+                      )
+                    : BuildProjects(
+                        projects: value.projects,
+                      ),
+              ),
             )
           else if (searchProvider.searchType == SearchType.company)
-            Expanded(
-                child: (loading)
-                    ? const Center(child: CircularProgressIndicator())
-                    : Center(
-                        child: BuildCompaniesCard(
-                        companies: searchedCompanies,
-                      )))
+            Consumer<CompanyProvider>(
+                builder: (context, value, child) => Expanded(
+                    child: (value.companies.isEmpty)
+                        ? const Center(child: Text('No Companies'))
+                        : Center(
+                            child: Consumer<CompanyProvider>(
+                            builder: (context, value, child) =>
+                                BuildCompaniesCard(
+                              companies: value.companies,
+                            ),
+                          ))))
           else if (searchProvider.searchType == SearchType.engineer)
-            Expanded(
-                child: (loading)
-                    ? const Center(child: CircularProgressIndicator())
-                    : BuildEngineersCard(engineers: searchedEngineers)),
+            Consumer<EnginnerProvider>(
+              builder: (context, value, child) => Expanded(
+                  child: (value.engineers.isEmpty)
+                      ? const Center(child: Text('No Engineers'))
+                      : BuildEngineersCard(engineers: value.engineers)),
+            )
         ],
       ),
     );
   }
 
-  void onSearchProjects(String value) {
-    var projects = Provider.of<DataProvider>(context).projects;
-    if (textController.text.isEmpty) {
-      setState(() {
-        searchedProjects = projects;
-      });
+  void search(String value) {
+    print(value);
+    switch (context.read<SearchProvider>().searchType) {
 
-      return;
+      //check search Type
+      case SearchType.all:
+        Provider.of<ProjectProvider>(context, listen: false).search(value);
+        Provider.of<CompanyProvider>(context, listen: false).search(value);
+        Provider.of<EnginnerProvider>(context, listen: false).search(value);
+        break;
+      case SearchType.project:
+        Provider.of<ProjectProvider>(context, listen: false).search(value);
+        break;
+      case SearchType.company:
+        Provider.of<CompanyProvider>(context, listen: false).search(value);
+        break;
+      case SearchType.engineer:
+        Provider.of<EnginnerProvider>(context, listen: false).search(value);
+        break;
     }
-    final suggestion = projects.where((project) {
-      final projectName = project.name.toLowerCase();
-      final searchTitle = value.toLowerCase();
-      return projectName.contains(searchTitle);
-    }).toList();
-    setState(() {
-      searchedProjects = suggestion;
-    });
   }
 }
