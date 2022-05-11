@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "499383163688",
+    "project_id": "pmp-constructions",
+    "storage_bucket": "pmp-constructions.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499383163688:android:072cdd1029d85a1cfe0e1d",
+        "android_client_info": {
+          "package_name": "soco.light.pmpconstractions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499383163688-lnq9inq9h8gvg7c9911fgo1oqfpvbvf0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "soco.light.pmpconstractions",
+            "certificate_hash": "cfeeaef1cd75b5b64fad58ac9e3a219dbef44e50"
+          }
+        },
+        {
+          "client_id": "499383163688-lmov72cet7mk5l663ipqai7768qfr39i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm4QjjN6R3Ld7vhZaH8LssdPC2ps2EkxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499383163688-lmov72cet7mk5l663ipqai7768qfr39i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
