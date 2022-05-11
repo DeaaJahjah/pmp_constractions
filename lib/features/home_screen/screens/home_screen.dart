@@ -1,10 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
+import 'package:pmpconstractions/features/home_screen/providers/search_category_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_all.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
@@ -23,18 +26,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<bool> itemsState = [true, false, false, false];
-  changeItemState(int index) {
-    if (itemsState[index] == false) {
-      itemsState[index] = true;
-      for (int i = 0; i < itemsState.length; i++) {
-        if (index != i) {
-          itemsState[i] = false;
-        }
-      }
-    }
-  }
-
   TextEditingController textController = TextEditingController();
 
   @override
@@ -45,6 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var searchProvider = Provider.of<SearchProvider>(context);
+    var searchCatProvider =
+        Provider.of<SearchCategoryProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -72,55 +65,29 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 30,
               color: orange,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  CustomItem(
-                      text: 'ALL',
-                      selected: itemsState[0],
-                      onTap: () {
-                        setState(() {
-                          changeItemState(0);
-                        });
-                        searchProvider.searchState(SearchType.all);
-                        search(textController.text);
-                      }),
-                  CustomItem(
-                      text: 'Bulding',
-                      icon: Icons.business,
-                      selected: itemsState[1],
-                      onTap: () {
-                        setState(() {
-                          changeItemState(1);
-                        });
-                        searchProvider.searchState(SearchType.project);
-                        search(textController.text);
-                      }),
-                  CustomItem(
-                      text: 'Company',
-                      icon: Icons.business,
-                      selected: itemsState[2],
-                      onTap: () {
-                        setState(() {
-                          changeItemState(2);
-                        });
-                        searchProvider.searchState(SearchType.company);
-                        search(textController.text);
-                      }),
-                  CustomItem(
-                      text: 'Engineer',
-                      icon: Icons.business,
-                      selected: itemsState[3],
-                      onTap: () {
-                        setState(() {
-                          changeItemState(3);
-                        });
-                        searchProvider.searchState(SearchType.engineer);
-                        search(textController.text);
-                      })
-                ],
-              ),
+            SizedBox(
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              child: Consumer<SearchCategoryProvider>(
+                  builder: (context, value, child) =>
+                      AnimationConfiguration.staggeredList(
+                          position: 1,
+                          duration: const Duration(milliseconds: 375),
+                          child: SlideAnimation(
+                              horizontalOffset: 50.0,
+                              child: FadeInAnimation(
+                                  child: ListView.builder(
+                                itemCount: 4,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, i) => CustomItem(
+                                    searchCategory: value.searchCategories[i],
+                                    onTap: () {
+                                      searchCatProvider.chnageCategory(i);
+                                      searchProvider.searchState(value
+                                          .searchCategories[i].searchCategory);
+                                      search(textController.text);
+                                    }),
+                              ))))),
             ),
           ]),
           if (searchProvider.searchType == SearchType.all)
@@ -164,7 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void search(String value) {
-    print(value);
     switch (context.read<SearchProvider>().searchType) {
 
       //check search Type

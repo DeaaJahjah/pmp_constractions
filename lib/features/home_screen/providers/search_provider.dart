@@ -9,6 +9,6 @@ class SearchProvider extends ChangeNotifier {
 
   void searchState(SearchType newSearchType) async {
     searchType = newSearchType;
-    NotificationListener;
+    notifyListeners();
   }
 }

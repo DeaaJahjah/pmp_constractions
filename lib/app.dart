@@ -7,6 +7,7 @@ import 'package:pmpconstractions/features/home_screen/providers/comoany_provider
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
+import 'package:pmpconstractions/features/home_screen/providers/search_category_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
 import 'package:pmpconstractions/language_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,6 +29,8 @@ class App extends StatelessWidget {
               create: (context) => SearchProvider()),
           ChangeNotifierProvider<DataProvider>(
               create: (context) => DataProvider()),
+          ChangeNotifierProvider<SearchCategoryProvider>(
+              create: (context) => SearchCategoryProvider()),
           ChangeNotifierProxyProvider<DataProvider, ProjectProvider>(
             create: (context) => ProjectProvider(null),
             update: (context, dataProvider, projectProvider) =>
