@@ -3,7 +3,9 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/widgets/radio_button_custom.dart';
 
 class ChoosingScreen extends StatelessWidget {
-  static const routeName = '/t';
+
+  static const routeName = '/choose_one';
+
 
   const ChoosingScreen({
     Key? key,
@@ -17,24 +19,22 @@ class ChoosingScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          Image.asset(
-            'assets/images/chose_one.png',
-            fit: BoxFit.fill,
+      body: Column(children: [
+        Image.asset(
+          'assets/images/chose_one.png',
+          fit: BoxFit.fill,
+        ),
+        sizedBoxXLarge,
+        const CustomRadioButton(),
+        sizedBoxLarge,
+        ElevatedButton(
+          onPressed: () {},
+          child: Text(
+            'NEXT',
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
-          sizedBoxLarge,
-          const CustomRadioButton(),
-          sizedBoxMedium,
-          ElevatedButton(
-            onPressed: () {},
-            child: Text(
-              'NEXT',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          )
-        ]),
-      ),
+        )
+      ]),
     );
   }
 }
