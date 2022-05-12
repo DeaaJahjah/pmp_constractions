@@ -7,6 +7,8 @@ import 'package:pmpconstractions/core/featuers/auth/screens/set_up_company_profi
 import 'package:pmpconstractions/core/featuers/auth/screens/set_up_engineer_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/setup_client_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/signup_screen.dart';
+import 'package:pmpconstractions/features/home_screen/screens/home_screen.dart';
+import 'package:pmpconstractions/features/home_screen/screens/project_details_screen.dart';
 import 'package:pmpconstractions/features/settings/settings_screen.dart';
 import 'package:pmpconstractions/features/splash_screen/splash_screen.dart';
 
@@ -38,6 +40,15 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => ClientProfile());
   }
 
-  // assert(false, 'Need to implement ${settings.name}');
+    case HomeScreen.routeName:
+      return MaterialPageRoute(builder: (_) => const HomeScreen());
+    case ProjectDetailsScreen.routeName:
+      return MaterialPageRoute(builder: (_) => const ProjectDetailsScreen());
+  }
+
   return null;
 }
+  // assert(false, 'Need to implement ${settings.name}');
+
+
+
