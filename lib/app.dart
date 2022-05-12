@@ -22,6 +22,7 @@ class App extends StatelessWidget {
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(
+            initialRoute: '/engineer_profile',
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
             supportedLocales: AppLocalizations.supportedLocales,

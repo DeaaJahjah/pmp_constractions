@@ -3,7 +3,7 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/widgets/radio_button_custom.dart';
 
 class ChoosingScreen extends StatelessWidget {
-  static const routeName = '/h';
+  static const routeName = '/choose_one';
 
   const ChoosingScreen({
     Key? key,

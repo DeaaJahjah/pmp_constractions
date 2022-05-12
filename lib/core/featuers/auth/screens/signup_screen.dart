@@ -3,7 +3,7 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
-  static const routeName = '/l';
+  static const routeName = '/sign_up';
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override

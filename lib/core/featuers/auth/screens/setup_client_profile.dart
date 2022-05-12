@@ -5,16 +5,16 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SetUpClientProfile extends StatefulWidget {
-  static const routeName = '/x';
+  static const routeName = '/client_set_up';
   const SetUpClientProfile({Key? key}) : super(key: key);
-
   @override
   State<SetUpClientProfile> createState() => _SetUpClientProfileState();
 }
 
+int activePage = 0;
+
 class _SetUpClientProfileState extends State<SetUpClientProfile> {
   final liquidController = LiquidController();
-  final controller = PageController(viewportFraction: 0.8, keepPage: true);
 
   @override
   Widget build(BuildContext context) {
@@ -134,13 +134,18 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                     pages: pages,
                     liquidController: liquidController,
                     onPageChangeCallback: (index) {
-                      //  setState(() {});
+                      activePage = index;
+                      setState(() {});
                     },
                   ),
                   Positioned(
                     child: TextButton(
                       onPressed: () {
-                        //  liquidController.jumpToPage(page: 3);
+                        if (activePage + 1 < pages.length) {
+                          liquidController.jumpToPage(
+                              page: liquidController.currentPage + 1);
+                        }
+                        setState(() {});
                       },
                       child: const Text('Skip',
                           style: TextStyle(
@@ -153,22 +158,18 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                     left: 300,
                   ),
                   Positioned(
-                    bottom: 12,
-                    left: 150,
-                    child: SmoothPageIndicator(
-                        axisDirection: Axis.horizontal,
-                        controller: controller,
+                      bottom: 12,
+                      left: 150,
+                      child: AnimatedSmoothIndicator(
+                        activeIndex: activePage,
                         count: pages.length,
+                        duration: const Duration(milliseconds: 300),
                         effect: const WormEffect(
+                          activeDotColor: orange,
                           dotHeight: 10,
                           dotWidth: 10,
-                          dotColor: orange,
-                          activeDotColor: orange,
-                          paintStyle: PaintingStyle.stroke,
-                          type: WormType.thin,
                         ),
-                        onDotClicked: (index) {}),
-                  ),
+                      )),
                 ],
               ))),
     );

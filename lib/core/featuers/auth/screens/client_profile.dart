@@ -4,27 +4,18 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/widgets/custome_row.dart';
 import 'package:pmpconstractions/core/widgets/elevated_button.dart';
 
-class CompanyProfile extends StatefulWidget {
-  static const routeName = '/company_profile';
-  const CompanyProfile({Key? key}) : super(key: key);
+class ClientProfile extends StatefulWidget {
+  static const routeName = '/client_profile';
+  const ClientProfile({Key? key}) : super(key: key);
 
   @override
-  State<CompanyProfile> createState() => _CompanyProfileState();
+  State<ClientProfile> createState() => _ClientProfileState();
 }
 
-class _CompanyProfileState extends State<CompanyProfile> {
+class _ClientProfileState extends State<ClientProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: orange,
-        onPressed: () {},
-        child: const Icon(
-          Icons.add,
-          size: 30,
-          color: beg,
-        ),
-      ),
       body: ListView(children: [
         SizedBox(
           height: 225,
@@ -77,60 +68,35 @@ class _CompanyProfileState extends State<CompanyProfile> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Semi Colon',
+              'Deaa Jahjah',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            Text(
-              '''we care about all mobile application project
-          programming and design''',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            sizedBoxMedium,
+            sizedBoxLarge,
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ElevatedButtonCustom(
-                  text: 'About',
-                  onPressed: () {},
-                  color: beg,
-                  bgColor: beg,
-                ),
                 ElevatedButtonCustom(
                   text: 'Contact info',
                   onPressed: () {},
                   color: beg,
-                  bgColor: darkBlue,
-                )
+                  bgColor: beg,
+                ),
               ],
             ),
             const Divider(
               thickness: 0.5,
               color: beg,
             ),
-            sizedBoxSmall,
-            CustomeRow(icon: Icons.location_on_outlined, text: 'Location'),
-            const Divider(
-              thickness: 0.5,
-              color: beg,
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 140,
             ),
-            Container(
-              width: 320,
-              height: 145,
-              child: Image.asset(
-                'assets/images/map.png',
-                fit: BoxFit.fill,
-              ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: beg)),
-            ),
-            sizedBoxSmall,
             CustomeRow(icon: Icons.portrait, text: 'My project'),
             const Divider(
               thickness: 0.5,
               color: beg,
             ),
-            sizedBoxMedium,
+            sizedBoxLarge,
             Text(
               'No projects Yet',
               style: Theme.of(context).textTheme.headlineSmall,

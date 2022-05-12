@@ -5,7 +5,7 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 
 class LogInScreen extends StatelessWidget {
-  static const routeName = '/g';
+  static const routeName = '/log_in';
   const LogInScreen({Key? key}) : super(key: key);
 
   @override
