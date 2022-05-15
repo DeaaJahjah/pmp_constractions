@@ -56,50 +56,39 @@ ThemeData darkTheme = ThemeData(
           fontWeight: FontWeight.bold),
     ),
     textTheme: const TextTheme(
-        headlineMedium: TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 24,
-            fontWeight: FontWeight.bold),
-        bodyMedium: TextStyle(
-            color: orange,
-            fontFamily: font,
-            fontSize: 16,
-            fontWeight: FontWeight.bold),
-        bodySmall: TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 12,
-            fontWeight: FontWeight.normal),
-        headlineSmall: TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 18,
-            fontWeight: FontWeight.normal),
-        headlineLarge: TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 28,
-            fontWeight: FontWeight.normal)),
+      headlineSmall: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 18,
+          fontWeight: FontWeight.normal),
+      headlineMedium: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 24,
+          fontWeight: FontWeight.bold),
+      headlineLarge: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 28,
+          fontWeight: FontWeight.normal),
+    ),
     switchTheme: SwitchThemeData(
       thumbColor: MaterialStateProperty.all(beg),
       trackColor: MaterialStateProperty.all(darkBlue),
     ),
-    iconTheme: const IconThemeData(color: orange),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-            primary: karmedi,
+            primary: orange,
             textStyle: const TextStyle(
-              fontFamily: font,
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-              color: beg,
-            ))),
-    radioTheme: RadioThemeData(
-        fillColor: MaterialStateProperty.all(beg),
-        splashRadius: 12.4,
-        materialTapTargetSize: MaterialTapTargetSize.padded,
-        visualDensity: VisualDensity.standard));
-
+                fontFamily: font,
+                fontWeight: FontWeight.w900,
+                fontSize: 18,
+                color: beg))),
+    snackBarTheme: const SnackBarThemeData(
+        backgroundColor: orange,
+        contentTextStyle: TextStyle(
+          fontFamily: font,
+          fontSize: 14,
+        )));
   // )
 

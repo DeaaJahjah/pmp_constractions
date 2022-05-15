@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/signup_screen.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
-class LogInScreen extends StatelessWidget {
-  static const routeName = '/g';
+class LogInScreen extends StatefulWidget {
+  static const routeName = '/log_in';
   const LogInScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,17 +42,23 @@ class LogInScreen extends StatelessWidget {
           ),
           sizedBoxMedium,
           TextFieldCustome(
+            controller: emailController,
             text: 'Enter email',
-            onSaved: (email) {},
           ),
           sizedBoxMedium,
           TextFieldCustome(
+            controller: passwordController,
             text: 'Enter password',
-            onSaved: (password) {},
           ),
           sizedBoxMedium,
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Provider.of<FlutterFireAuthService>(context, listen: false)
+                    .signIn(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        context: context);
+              },
               child: Text(
                 'LOGIN',
                 style: Theme.of(context).textTheme.headlineSmall,
@@ -64,7 +80,9 @@ class LogInScreen extends StatelessWidget {
                         fontFamily: font,
                         fontSize: 18,
                         fontWeight: FontWeight.normal)),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(SignUpScreen.routeName);
+                },
               ),
             ],
           )

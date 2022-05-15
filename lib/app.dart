@@ -1,8 +1,10 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/routes/router.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
@@ -47,9 +49,17 @@ class App extends StatelessWidget {
             update: (context, dataProvider, companyProvider) =>
                 EnginnerProvider(dataProvider),
           ),
+          Provider<FlutterFireAuthService>(
+              create: (_) => FlutterFireAuthService(FirebaseAuth.instance)),
+          StreamProvider(
+            initialData: null,
+            create: (context) =>
+                context.read<FlutterFireAuthService>().authStateChanges,
+          ),
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(
+            // initialRoute: '/',
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
             supportedLocales: AppLocalizations.supportedLocales,
