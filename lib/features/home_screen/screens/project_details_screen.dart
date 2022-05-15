@@ -7,8 +7,8 @@ import 'package:pmpconstractions/features/home_screen/services/project_db_servic
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
-  //static const routeName = '/home/project_details';
-  static const routeName = '/';
+  static const routeName = '/home/project_details';
+  //static const routeName = '/';
   String? projectId;
   ProjectDetailsScreen({Key? key, this.projectId}) : super(key: key);
 
@@ -33,8 +33,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       child: Scaffold(
         backgroundColor: orange,
         body: FutureBuilder<Project>(
-            future: ProjectDbService().getProjectById(
-                '21sFqVCd5qwcwtYWTO02'), //"widget.projectId.toString()"
+            future:
+                ProjectDbService().getProjectById(widget.projectId.toString()),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Project project = snapshot.data!;

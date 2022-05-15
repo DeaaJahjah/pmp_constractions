@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pmpconstractions/core/config/enums/enums.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/choosing_screen.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/login_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FlutterFireAuthService {
@@ -28,12 +31,20 @@ class FlutterFireAuthService {
       required String password,
       required BuildContext context}) async {
     UserCredential crid;
+    context
+        .read<AuthSataProvider>()
+        .changeAuthState(newState: AuthState.waiting);
+
     try {
       crid = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      print("Signed In");
+
+      context
+          .read<AuthSataProvider>()
+          .changeAuthState(newState: AuthState.notSet);
 
       pref.then((value) => value.setString('uid', crid.user!.uid));
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -42,7 +53,9 @@ class FlutterFireAuthService {
       );
       return "Success";
     } on FirebaseAuthException catch (e) {
-      print(e.toString());
+      context
+          .read<AuthSataProvider>()
+          .changeAuthState(newState: AuthState.notSet);
       final snakBar = SnackBar(content: Text(e.message.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snakBar);
     }
@@ -53,9 +66,15 @@ class FlutterFireAuthService {
       {required String email,
       required String password,
       required BuildContext context}) async {
+    context
+        .read<AuthSataProvider>()
+        .changeAuthState(newState: AuthState.waiting);
     try {
       var crid = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      context
+          .read<AuthSataProvider>()
+          .changeAuthState(newState: AuthState.notSet);
       pref.then((value) => value.setString('uid', crid.user!.uid));
       Navigator.push(
         context,
@@ -65,7 +84,9 @@ class FlutterFireAuthService {
       );
       return "Success";
     } on FirebaseAuthException catch (e) {
-      print(e.toString());
+      context
+          .read<AuthSataProvider>()
+          .changeAuthState(newState: AuthState.notSet);
       final snakBar = SnackBar(content: Text(e.message.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snakBar);
     }

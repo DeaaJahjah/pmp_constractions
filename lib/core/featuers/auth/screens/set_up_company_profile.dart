@@ -50,12 +50,11 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
               )),
         ]),
       ),
-      SingleChildScrollView(
-          child: Container(
+      Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         color: darkBlue,
-        child: Column(children: [
+        child: ListView(children: [
           sizedBoxXLarge,
           Image.asset(
             'assets/images/setup_profile2.png',
@@ -69,161 +68,149 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
           ),
           sizedBoxMedium,
         ]),
-      )),
-      SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          color: darkBlue,
-          child: Column(
-            children: [
-              sizedBoxXLarge,
-              Image.asset(
-                'assets/images/setup_profile2.png',
-                fit: BoxFit.fill,
-              ),
-              sizedBoxXLarge,
-              sizedBoxMedium,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 230,
-                    height: 40,
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        prefixText: '+963 ',
-                        prefixStyle: TextStyle(
-                            color: beg,
-                            fontFamily: font,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal),
-                        isDense: true,
-                        contentPadding: EdgeInsets.all(14),
-                        label: Text(
-                          'Number',
-                          style: TextStyle(
-                              color: beg,
-                              fontFamily: font,
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal),
-                        ),
-                        alignLabelWithHint: true,
-                      ),
-                      textAlign: TextAlign.start,
-                      autofocus: false,
-                      style: const TextStyle(
-                          color: beg,
-                          fontFamily: font,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                  Container(
-                    width: 30,
-                    height: 30,
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.add,
-                          size: 15,
-                          color: beg,
-                        )),
-                    decoration: BoxDecoration(
-                      color: orange,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
       ),
-      SingleChildScrollView(
-        child: Container(
-          color: darkBlue,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/images/setub_profile3.png',
-                fit: BoxFit.fill,
-              ),
-              sizedBoxXLarge,
-              SizedBox(
-                width: 300,
-                child: TextFormField(
-                  maxLines: 4,
-                  decoration: const InputDecoration(
-                    prefixStyle: TextStyle(
-                        color: beg,
-                        fontFamily: font,
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal),
-                    isDense: true,
-                    contentPadding: EdgeInsets.all(14),
-                    labelStyle: TextStyle(
-                      color: beg,
-                      fontFamily: font,
-                      fontSize: 24,
-                    ),
-                    label: Text(
-                      'Describtion',
-                      style: TextStyle(
-                          color: orange,
-                          fontFamily: font,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    alignLabelWithHint: true,
-                  ),
-                  textAlign: TextAlign.start,
-                  autofocus: false,
-                  style: const TextStyle(
-                      color: beg,
-                      fontFamily: font,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      SingleChildScrollView(
-        child: Container(
-          color: darkBlue,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(children: [
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: darkBlue,
+        child: ListView(
+          children: [
+            sizedBoxXLarge,
             Image.asset(
-              'assets/images/setup_profile4.png',
+              'assets/images/setup_profile2.png',
               fit: BoxFit.fill,
             ),
             sizedBoxXLarge,
             sizedBoxMedium,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 230,
+                  height: 40,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.all(14),
+                      label: Text(
+                        'Number',
+                        style: TextStyle(
+                            color: beg,
+                            fontFamily: font,
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      alignLabelWithHint: true,
+                    ),
+                    textAlign: TextAlign.start,
+                    autofocus: false,
+                    style: const TextStyle(
+                        color: beg,
+                        fontFamily: font,
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+                Container(
+                  width: 30,
+                  height: 30,
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add,
+                        size: 15,
+                        color: beg,
+                      )),
+                  decoration: BoxDecoration(
+                    color: orange,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+      Container(
+        color: darkBlue,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: ListView(
+          children: [
+            Image.asset(
+              'assets/images/setub_profile3.png',
+              fit: BoxFit.fill,
+            ),
+            sizedBoxXLarge,
             SizedBox(
               width: 300,
-              height: 200,
               child: TextFormField(
-                onTap: () {},
+                maxLines: 4,
                 decoration: const InputDecoration(
+                  prefixStyle: TextStyle(
+                      color: beg,
+                      fontFamily: font,
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal),
                   isDense: true,
+                  contentPadding: EdgeInsets.all(14),
+                  labelStyle: TextStyle(
+                    color: beg,
+                    fontFamily: font,
+                    fontSize: 24,
+                  ),
                   label: Text(
-                    'Location',
+                    'Describtion',
                     style: TextStyle(
                         color: orange,
                         fontFamily: font,
                         fontSize: 18,
                         fontWeight: FontWeight.normal),
                   ),
+                  alignLabelWithHint: true,
+                ),
+                textAlign: TextAlign.start,
+                autofocus: false,
+                style: const TextStyle(
+                    color: beg,
+                    fontFamily: font,
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Container(
+        color: darkBlue,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: ListView(children: [
+          Image.asset(
+            'assets/images/setup_profile4.png',
+            fit: BoxFit.fill,
+          ),
+          sizedBoxXLarge,
+          sizedBoxMedium,
+          SizedBox(
+            width: 300,
+            height: 200,
+            child: TextFormField(
+              onTap: () {},
+              decoration: const InputDecoration(
+                isDense: true,
+                label: Text(
+                  'Location',
+                  style: TextStyle(
+                      color: orange,
+                      fontFamily: font,
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal),
                 ),
               ),
             ),
-          ]),
-        ),
+          ),
+        ]),
       )
     ];
 

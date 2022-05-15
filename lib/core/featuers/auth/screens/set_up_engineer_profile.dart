@@ -6,6 +6,7 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/services/engineer_db_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -78,7 +79,8 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                 backgroundColor: karmedi,
                 child: (pickedimage == null)
                     ? const Icon(Icons.person, size: 60, color: beg)
-                    : Image.file(imageFile),
+                    : CircleAvatar(
+                        radius: 60, backgroundImage: FileImage(imageFile)),
                 maxRadius: 60),
           ),
           sizedBoxMedium,
@@ -90,12 +92,11 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
               )),
         ]),
       ),
-      SingleChildScrollView(
-          child: Container(
+      Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         color: darkBlue,
-        child: Column(children: [
+        child: ListView(children: [
           sizedBoxXLarge,
           Image.asset(
             'assets/images/setup_profile2.png',
@@ -109,266 +110,278 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
           ),
           sizedBoxMedium,
         ]),
-      )),
-      SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          color: darkBlue,
-          child: Column(
-            children: [
-              sizedBoxXLarge,
-              Image.asset(
-                'assets/images/setup_profile2.png',
-                fit: BoxFit.fill,
-              ),
-              sizedBoxXLarge,
-              sizedBoxMedium,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 230,
-                    height: 40,
-                    child: TextFormField(
-                      controller: phoneController,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.all(14),
-                        label: Text(
-                          'Number',
-                          style: TextStyle(
-                              color: orange,
-                              fontFamily: font,
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal),
-                        ),
-                        alignLabelWithHint: true,
-                      ),
-                      textAlign: TextAlign.start,
-                      autofocus: false,
-                      style: const TextStyle(
-                          color: beg,
-                          fontFamily: font,
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                  Container(
-                    width: 30,
-                    height: 30,
-                    child: IconButton(
-                        onPressed: () {
-                          if (phoneController.text != '') {
-                            phoneNum.add(phoneController.text);
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.add,
-                          size: 15,
-                          color: beg,
-                        )),
-                    decoration: BoxDecoration(
-                      color: orange,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
       ),
-      SingleChildScrollView(
-        child: Container(
-          color: darkBlue,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(children: [
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: darkBlue,
+        child: ListView(
+          children: [
+            sizedBoxXLarge,
             Image.asset(
-              'assets/images/setub_profile3.png',
+              'assets/images/setup_profile2.png',
               fit: BoxFit.fill,
             ),
             sizedBoxXLarge,
-            SizedBox(
-              width: 250,
-              child: FormField<String>(
-                builder: (FormFieldState<String> state) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            gapPadding: 4,
-                            borderRadius: BorderRadius.circular(5.0))),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        dropdownColor: beg,
-                        elevation: 10,
-                        iconEnabledColor: orange,
-                        style: const TextStyle(
+            sizedBoxMedium,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 230,
+                  height: 40,
+                  child: TextFormField(
+                    controller: phoneController,
+                    decoration: const InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.all(14),
+                      label: Text(
+                        'Number',
+                        style: TextStyle(
                             color: orange,
                             fontFamily: font,
-                            fontWeight: FontWeight.bold),
-                        alignment: AlignmentDirectional.center,
-                        focusColor: orange,
-                        value: dropdownvalue,
-                        isDense: true,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownvalue = newValue!;
-                            specialization = newValue;
-                          });
-                        },
-                        items: items.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal),
                       ),
+                      alignLabelWithHint: true,
                     ),
-                  );
-                },
-              ),
-            )
-          ]),
+                    textAlign: TextAlign.start,
+                    autofocus: false,
+                    style: const TextStyle(
+                        color: beg,
+                        fontFamily: font,
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+                Container(
+                  width: 30,
+                  height: 30,
+                  child: IconButton(
+                      onPressed: () {
+                        if (phoneController.text != '' && phoneNum.length < 2) {
+                          phoneNum.add(phoneController.text);
+                          setState(() {
+                            phoneController.text = '';
+                          });
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.add,
+                        size: 15,
+                        color: beg,
+                      )),
+                  decoration: BoxDecoration(
+                    color: orange,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              ],
+            ),
+            sizedBoxMedium,
+            SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => PhoneCard(
+                    text: phoneNum[index],
+                    onTap: () {
+                      phoneNum.removeAt(index);
+                      setState(() {});
+                    },
+                  ),
+                  itemCount: phoneNum.length,
+                )),
+          ],
         ),
       ),
-      SingleChildScrollView(
-        child: Container(
-          color: darkBlue,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(children: [
-            Image.asset(
-              'assets/images/setup_profile4.png',
-              fit: BoxFit.fill,
-            ),
-            sizedBoxXLarge,
-            SizedBox(
-              width: 260,
-              height: 40,
-              child: TextFormField(
-                controller: languageController,
-                decoration: const InputDecoration(
-                  prefixStyle: TextStyle(
-                      color: beg,
-                      fontFamily: font,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(14),
-                  label: Text(
-                    'Languages',
-                    style: TextStyle(
-                        color: orange,
-                        fontFamily: font,
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal),
+      Container(
+        color: darkBlue,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: ListView(children: [
+          Image.asset(
+            'assets/images/setub_profile3.png',
+            fit: BoxFit.fill,
+          ),
+          sizedBoxXLarge,
+          SizedBox(
+            width: 250,
+            child: FormField<String>(
+              builder: (FormFieldState<String> state) {
+                return InputDecorator(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          gapPadding: 4,
+                          borderRadius: BorderRadius.circular(5.0))),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      dropdownColor: beg,
+                      elevation: 10,
+                      iconEnabledColor: orange,
+                      style: const TextStyle(
+                          color: orange,
+                          fontFamily: font,
+                          fontWeight: FontWeight.bold),
+                      alignment: AlignmentDirectional.center,
+                      focusColor: orange,
+                      value: dropdownvalue,
+                      isDense: true,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownvalue = newValue!;
+                          specialization = newValue;
+                        });
+                      },
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                  alignLabelWithHint: true,
-                ),
-                textAlign: TextAlign.start,
-                autofocus: false,
-                style: const TextStyle(
+                );
+              },
+            ),
+          )
+        ]),
+      ),
+      Container(
+        color: darkBlue,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: ListView(children: [
+          Image.asset(
+            'assets/images/setup_profile4.png',
+            fit: BoxFit.fill,
+          ),
+          sizedBoxXLarge,
+          SizedBox(
+            width: 260,
+            height: 40,
+            child: TextFormField(
+              controller: languageController,
+              decoration: const InputDecoration(
+                prefixStyle: TextStyle(
                     color: beg,
                     fontFamily: font,
                     fontSize: 18,
                     fontWeight: FontWeight.normal),
-              ),
-            ),
-            sizedBoxLarge,
-            SizedBox(
-              width: 260,
-              child: TextFormField(
-                controller: certificateController,
-                decoration: const InputDecoration(
-                  hintMaxLines: 3,
-                  prefixStyle: TextStyle(
-                      color: beg,
+                isDense: true,
+                contentPadding: EdgeInsets.all(14),
+                label: Text(
+                  'Languages',
+                  style: TextStyle(
+                      color: orange,
                       fontFamily: font,
                       fontSize: 18,
                       fontWeight: FontWeight.normal),
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(14),
-                  label: Text(
-                    'Certificates',
-                    style: TextStyle(
-                        color: orange,
-                        fontFamily: font,
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal),
-                  ),
-                  alignLabelWithHint: true,
                 ),
-                textAlign: TextAlign.start,
-                autofocus: false,
-                style: const TextStyle(
+                alignLabelWithHint: true,
+              ),
+              textAlign: TextAlign.start,
+              autofocus: false,
+              style: const TextStyle(
+                  color: beg,
+                  fontFamily: font,
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal),
+            ),
+          ),
+          sizedBoxLarge,
+          SizedBox(
+            width: 260,
+            child: TextFormField(
+              controller: certificateController,
+              decoration: const InputDecoration(
+                hintMaxLines: 3,
+                prefixStyle: TextStyle(
                     color: beg,
                     fontFamily: font,
                     fontSize: 18,
                     fontWeight: FontWeight.normal),
-              ),
-            ),
-            sizedBoxLarge,
-            SizedBox(
-              width: 260,
-              height: 40,
-              child: TextFormField(
-                controller: programController,
-                decoration: const InputDecoration(
-                  prefixStyle: TextStyle(
-                      color: beg,
+                isDense: true,
+                contentPadding: EdgeInsets.all(14),
+                label: Text(
+                  'Certificates',
+                  style: TextStyle(
+                      color: orange,
                       fontFamily: font,
                       fontSize: 18,
                       fontWeight: FontWeight.normal),
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(14),
-                  label: Text(
-                    'Programs',
-                    style: TextStyle(
-                        color: orange,
-                        fontFamily: font,
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal),
-                  ),
-                  alignLabelWithHint: true,
                 ),
-                textAlign: TextAlign.start,
-                autofocus: false,
-                style: const TextStyle(
+                alignLabelWithHint: true,
+              ),
+              textAlign: TextAlign.start,
+              autofocus: false,
+              style: const TextStyle(
+                  color: beg,
+                  fontFamily: font,
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal),
+            ),
+          ),
+          sizedBoxLarge,
+          SizedBox(
+            width: 260,
+            height: 40,
+            child: TextFormField(
+              controller: programController,
+              decoration: const InputDecoration(
+                prefixStyle: TextStyle(
                     color: beg,
                     fontFamily: font,
                     fontSize: 18,
                     fontWeight: FontWeight.normal),
+                isDense: true,
+                contentPadding: EdgeInsets.all(14),
+                label: Text(
+                  'Programs',
+                  style: TextStyle(
+                      color: orange,
+                      fontFamily: font,
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal),
+                ),
+                alignLabelWithHint: true,
               ),
+              textAlign: TextAlign.start,
+              autofocus: false,
+              style: const TextStyle(
+                  color: beg,
+                  fontFamily: font,
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal),
             ),
-            ElevatedButton(
-                onPressed: () async {
-                  var languages = languageController.text.split(',');
-                  var certificates = certificateController.text.split(',');
-                  var programs = programController.text.split(',');
-                  experiens = {
-                    'languages': languages,
-                    'certificates': certificates,
-                    'programs': programs
-                  };
-                  print(languages.length);
-                  print(fileName);
-                  print(phoneNum.length);
-                  String url =
-                      await FileService().uploadeimage(fileName, imageFile);
-                  EngineerDbService().addEngineer(
-                      Engineer(
-                          name: nameController.text,
-                          specialization: specialization,
-                          experience: experiens,
-                          phoneNumbers: phoneNum,
-                          profilePicUrl: url),
-                      context);
-                },
-                child: const Text('DONE'))
-          ]),
-        ),
+          ),
+          ElevatedButton(
+              onPressed: () async {
+                var languages = languageController.text.split(',');
+                var certificates = certificateController.text.split(',');
+                var programs = programController.text.split(',');
+                experiens = {
+                  'languages': languages,
+                  'certificates': certificates,
+                  'programs': programs
+                };
+                print(languages.length);
+                print(fileName);
+                print(phoneNum.length);
+                String url =
+                    await FileService().uploadeimage(fileName, imageFile);
+                EngineerDbService().addEngineer(
+                    Engineer(
+                        name: nameController.text,
+                        specialization: specialization,
+                        experience: experiens,
+                        phoneNumbers: phoneNum,
+                        profilePicUrl: url),
+                    context);
+              },
+              child: const Text('DONE'))
+        ]),
       )
     ];
 
