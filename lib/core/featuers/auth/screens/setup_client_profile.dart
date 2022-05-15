@@ -14,7 +14,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:path/path.dart' as path;
 
 class SetUpClientProfile extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/client_setup';
   const SetUpClientProfile({Key? key}) : super(key: key);
   @override
   State<SetUpClientProfile> createState() => _SetUpClientProfileState();

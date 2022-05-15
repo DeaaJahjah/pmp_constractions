@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/company_profile.dart';
 
 class CompanyCard extends StatelessWidget {
   final String imageUrl;
@@ -16,7 +17,12 @@ class CompanyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => CompanyProfile(
+                  companyId: userId,
+                )));
+      },
       child: SizedBox(
           width: 150,
           height: 200,

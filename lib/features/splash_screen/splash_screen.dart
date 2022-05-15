@@ -7,7 +7,7 @@ import 'package:pmpconstractions/features/home_screen/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const routeName = '/k';
+  static const routeName = '/';
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
