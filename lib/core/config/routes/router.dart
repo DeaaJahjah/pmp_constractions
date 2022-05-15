@@ -23,7 +23,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case HomeScreen.routeName:
       return MaterialPageRoute(builder: (_) => const HomeScreen());
     case ProjectDetailsScreen.routeName:
-      return MaterialPageRoute(builder: (_) => const ProjectDetailsScreen());
+      return MaterialPageRoute(builder: (_) => ProjectDetailsScreen());
   }
   return null;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/features/home_screen/screens/project_details_screen.dart';
 
 class ProjectCard extends StatelessWidget {
   final String projectId;
@@ -19,10 +20,11 @@ class ProjectCard extends StatelessWidget {
     //?TODO add random marging
     return InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(
-            '/home/project_details',
-            arguments: RouteSettings(name: '/details', arguments: projectId),
-          );
+          // Navigator.pushNamed(context, '/home/project_details',
+          //     arguments: projectId);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  ProjectDetailsScreen(projectId: projectId)));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
