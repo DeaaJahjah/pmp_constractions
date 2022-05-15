@@ -37,8 +37,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case EngineerProfile.routeName:
       return MaterialPageRoute(builder: (_) => const EngineerProfile());
     case ClientProfile.routeName:
-      return MaterialPageRoute(builder: (_) => ClientProfile());
-  }
+      return MaterialPageRoute(builder: (_) => const ClientProfile());
 
     case HomeScreen.routeName:
       return MaterialPageRoute(builder: (_) => const HomeScreen());

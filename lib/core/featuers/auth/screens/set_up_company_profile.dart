@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SetUpCompanyProfile extends StatefulWidget {
@@ -16,6 +17,7 @@ int activePage = 0;
 
 class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
   final liquidController = LiquidController();
+  final nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,26 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
               )),
         ]),
       ),
+      SingleChildScrollView(
+          child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: darkBlue,
+        child: Column(children: [
+          sizedBoxXLarge,
+          Image.asset(
+            'assets/images/setup_profile2.png',
+            fit: BoxFit.fill,
+          ),
+          sizedBoxXLarge,
+          sizedBoxMedium,
+          TextFieldCustome(
+            controller: nameController,
+            text: 'Name',
+          ),
+          sizedBoxMedium,
+        ]),
+      )),
       SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,

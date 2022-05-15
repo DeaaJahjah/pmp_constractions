@@ -1,8 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
+import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:pmpconstractions/features/home_screen/models/client.dart';
+import 'package:pmpconstractions/features/home_screen/services/client_db_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:path/path.dart' as path;
 
 class SetUpClientProfile extends StatefulWidget {
   static const routeName = '/client_set_up';
@@ -15,6 +23,24 @@ int activePage = 0;
 
 class _SetUpClientProfileState extends State<SetUpClientProfile> {
   final liquidController = LiquidController();
+  final phoneController = TextEditingController();
+  final nameController = TextEditingController();
+  XFile? pickedimage;
+  String name = '';
+  List<String> phoneNum = [];
+  String fileName = '';
+  File imageFile = File('');
+  _pickImage() async {
+    final picker = ImagePicker();
+    try {
+      pickedimage = await picker.pickImage(source: ImageSource.gallery);
+      fileName = path.basename(pickedimage!.path);
+      imageFile = File(pickedimage!.path);
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +56,19 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
             fit: BoxFit.fill,
           ),
           sizedBoxXLarge,
-          const CircleAvatar(
-              backgroundColor: karmedi,
-              child: Icon(
-                Icons.person,
-                size: 60,
-                color: beg,
-              ),
-              maxRadius: 60),
+          InkWell(
+            onTap: () {
+              _pickImage();
+              setState(() {});
+              print(imageFile);
+            },
+            child: CircleAvatar(
+                backgroundColor: karmedi,
+                child: (pickedimage == null)
+                    ? const Icon(Icons.person, size: 60, color: beg)
+                    : Image.file(imageFile),
+                maxRadius: 60),
+          ),
           sizedBoxMedium,
           const Text('Add a picture',
               style: TextStyle(
@@ -47,6 +78,26 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
               )),
         ]),
       ),
+      SingleChildScrollView(
+          child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: darkBlue,
+        child: Column(children: [
+          sizedBoxXLarge,
+          Image.asset(
+            'assets/images/setup_profile2.png',
+            fit: BoxFit.fill,
+          ),
+          sizedBoxXLarge,
+          sizedBoxMedium,
+          TextFieldCustome(
+            controller: nameController,
+            text: 'Name',
+          ),
+          sizedBoxMedium,
+        ]),
+      )),
       SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -68,13 +119,8 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                     width: 230,
                     height: 40,
                     child: TextFormField(
+                      controller: phoneController,
                       decoration: const InputDecoration(
-                        prefixText: '+963 ',
-                        prefixStyle: TextStyle(
-                            color: beg,
-                            fontFamily: font,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal),
                         isDense: true,
                         contentPadding: EdgeInsets.all(14),
                         label: Text(
@@ -100,7 +146,11 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                     width: 30,
                     height: 30,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (phoneController.text != '') {
+                            phoneNum.add(phoneController.text);
+                          }
+                        },
                         icon: const Icon(
                           Icons.add,
                           size: 15,
@@ -112,7 +162,22 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                     ),
                   )
                 ],
-              )
+              ),
+              sizedBoxMedium,
+              ElevatedButton(
+                  onPressed: () async {
+                    print(fileName);
+                    print(phoneNum.length);
+                    String url =
+                        await FileService().uploadeimage(fileName, imageFile);
+                    ClientDbService().addClient(
+                        Client(
+                            name: nameController.text,
+                            phoneNumbers: phoneNum,
+                            profilePicUrl: url),
+                        context);
+                  },
+                  child: const Text('DONE'))
             ],
           ),
         ),

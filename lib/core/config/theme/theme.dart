@@ -34,76 +34,61 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  primaryColor: darkBlue,
-  backgroundColor: darkBlue,
-  scaffoldBackgroundColor: darkBlue,
-  inputDecorationTheme: InputDecorationTheme(
-    enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: beg, width: 1.0),
-      borderRadius: BorderRadius.circular(5),
+    brightness: Brightness.dark,
+    primaryColor: darkBlue,
+    backgroundColor: darkBlue,
+    scaffoldBackgroundColor: darkBlue,
+    inputDecorationTheme: InputDecorationTheme(
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: beg, width: 1.0),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: karmedi, width: 1.0),
+      ),
     ),
-    focusedBorder: const OutlineInputBorder(
-      borderSide: BorderSide(color: karmedi, width: 1.0),
+    appBarTheme: const AppBarTheme(
+      color: darkBlue,
+      titleTextStyle: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 26,
+          fontWeight: FontWeight.bold),
     ),
-  ),
-  appBarTheme: const AppBarTheme(
-    color: darkBlue,
-    titleTextStyle: TextStyle(
-        color: beg,
-        fontFamily: font,
-        fontSize: 26,
-        fontWeight: FontWeight.bold),
-  ),
-  textTheme: const TextTheme(
-    headlineSmall: TextStyle(
-        color: beg,
-        fontFamily: font,
-        fontSize: 18,
-        fontWeight: FontWeight.normal),
-    headlineMedium: TextStyle(
-        color: beg,
-        fontFamily: font,
-        fontSize: 24,
-        fontWeight: FontWeight.bold),
-    headlineLarge: TextStyle(
-        color: beg,
-        fontFamily: font,
-        fontSize: 28,
-        fontWeight: FontWeight.normal),
-  ),
-  switchTheme: SwitchThemeData(
-    thumbColor: MaterialStateProperty.all(beg),
-    trackColor: MaterialStateProperty.all(darkBlue),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-          primary: orange,
-          textStyle: const TextStyle(
     textTheme: const TextTheme(
-        headlineMedium: TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 24,
-            fontWeight: FontWeight.bold),
-        bodyMedium: TextStyle(
-            color: orange,
-            fontFamily: font,
-            fontSize: 16,
-            fontWeight: FontWeight.bold),
-        bodySmall: TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 12,
-            fontWeight: FontWeight.normal),
-        headlineSmall: TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-            color: beg,
-          ))),
-);
-
+      headlineSmall: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 18,
+          fontWeight: FontWeight.normal),
+      headlineMedium: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 24,
+          fontWeight: FontWeight.bold),
+      headlineLarge: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 28,
+          fontWeight: FontWeight.normal),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: MaterialStateProperty.all(beg),
+      trackColor: MaterialStateProperty.all(darkBlue),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            primary: orange,
+            textStyle: const TextStyle(
+                fontFamily: font,
+                fontWeight: FontWeight.w900,
+                fontSize: 18,
+                color: beg))),
+    snackBarTheme: const SnackBarThemeData(
+        backgroundColor: orange,
+        contentTextStyle: TextStyle(
+          fontFamily: font,
+          fontSize: 14,
+        )));
   // )
 

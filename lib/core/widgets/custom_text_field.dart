@@ -3,13 +3,10 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 
 class TextFieldCustome extends StatelessWidget {
   String text;
-  Function(String? value) onSaved;
+  TextEditingController controller;
 
-  TextFieldCustome({
-    Key? key,
-    required this.text,
-    required this.onSaved,
-  }) : super(key: key);
+  TextFieldCustome({Key? key, required this.text, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +15,7 @@ class TextFieldCustome extends StatelessWidget {
         horizontal: 30,
       ),
       child: TextFormField(
-        onSaved: onSaved,
+        controller: controller,
         cursorHeight: 22,
         cursorColor: karmedi,
         decoration: InputDecoration(

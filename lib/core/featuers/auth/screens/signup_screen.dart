@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   static const routeName = '/sign_up';
   const SignUpScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +31,24 @@ class SignUpScreen extends StatelessWidget {
               fit: BoxFit.fill,
             ),
             sizedBoxXLarge,
-            TextFieldCustome(text: 'Name', onSaved: (name) {}),
+            TextFieldCustome(
+              controller: emailController,
+              text: 'Email',
+            ),
             sizedBoxMedium,
-            TextFieldCustome(text: 'Email', onSaved: (email) {}),
-            sizedBoxMedium,
-            TextFieldCustome(text: 'Password', onSaved: (password) {}),
+            TextFieldCustome(
+              controller: passwordController,
+              text: 'Password',
+            ),
             sizedBoxLarge,
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Provider.of<FlutterFireAuthService>(context, listen: false)
+                      .signUp(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          context: context);
+                },
                 child: Text(
                   'SIGNUP',
                   style: Theme.of(context).textTheme.headlineSmall,

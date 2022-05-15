@@ -1,8 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
+import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
+import 'package:pmpconstractions/features/home_screen/services/engineer_db_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:path/path.dart' as path;
 
 class SetUpEngineerProfile extends StatefulWidget {
   static const routeName = '/engineer_set_up';
@@ -16,6 +23,30 @@ int activePage = 0;
 
 class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
   final liquidController = LiquidController();
+  var phoneController = TextEditingController();
+  var languageController = TextEditingController();
+  var certificateController = TextEditingController();
+  var programController = TextEditingController();
+  final nameController = TextEditingController();
+  XFile? pickedimage;
+  String name = '';
+  List<String> phoneNum = [];
+  Map<String, List<String>>? experiens;
+  String specialization = '';
+  String fileName = '';
+  File imageFile = File('');
+  _pickImage() async {
+    final picker = ImagePicker();
+    try {
+      pickedimage = await picker.pickImage(source: ImageSource.gallery);
+      fileName = path.basename(pickedimage!.path);
+      imageFile = File(pickedimage!.path);
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
+
   String dropdownvalue = 'Architectural engineer';
   var items = [
     'Architectural engineer',
@@ -37,10 +68,19 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             fit: BoxFit.fill,
           ),
           sizedBoxXLarge,
-          const CircleAvatar(
-              backgroundColor: karmedi,
-              child: Icon(Icons.person, size: 60, color: beg),
-              maxRadius: 60),
+          InkWell(
+            onTap: () {
+              _pickImage();
+              setState(() {});
+              print(imageFile);
+            },
+            child: CircleAvatar(
+                backgroundColor: karmedi,
+                child: (pickedimage == null)
+                    ? const Icon(Icons.person, size: 60, color: beg)
+                    : Image.file(imageFile),
+                maxRadius: 60),
+          ),
           sizedBoxMedium,
           const Text('Add a picture',
               style: TextStyle(
@@ -50,6 +90,26 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
               )),
         ]),
       ),
+      SingleChildScrollView(
+          child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: darkBlue,
+        child: Column(children: [
+          sizedBoxXLarge,
+          Image.asset(
+            'assets/images/setup_profile2.png',
+            fit: BoxFit.fill,
+          ),
+          sizedBoxXLarge,
+          sizedBoxMedium,
+          TextFieldCustome(
+            controller: nameController,
+            text: 'Name',
+          ),
+          sizedBoxMedium,
+        ]),
+      )),
       SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -71,14 +131,8 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                     width: 230,
                     height: 40,
                     child: TextFormField(
+                      controller: phoneController,
                       decoration: const InputDecoration(
-                        prefixText: '+963 ',
-                        prefixStyle: TextStyle(
-                            backgroundColor: Color.fromRGBO(246, 217, 146, 20),
-                            color: orange,
-                            fontFamily: font,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal),
                         isDense: true,
                         contentPadding: EdgeInsets.all(14),
                         label: Text(
@@ -104,7 +158,11 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                     width: 30,
                     height: 30,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (phoneController.text != '') {
+                            phoneNum.add(phoneController.text);
+                          }
+                        },
                         icon: const Icon(
                           Icons.add,
                           size: 15,
@@ -157,6 +215,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownvalue = newValue!;
+                            specialization = newValue;
                           });
                         },
                         items: items.map((String items) {
@@ -189,6 +248,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
               width: 260,
               height: 40,
               child: TextFormField(
+                controller: languageController,
                 decoration: const InputDecoration(
                   prefixStyle: TextStyle(
                       color: beg,
@@ -220,6 +280,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             SizedBox(
               width: 260,
               child: TextFormField(
+                controller: certificateController,
                 decoration: const InputDecoration(
                   hintMaxLines: 3,
                   prefixStyle: TextStyle(
@@ -253,6 +314,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
               width: 260,
               height: 40,
               child: TextFormField(
+                controller: programController,
                 decoration: const InputDecoration(
                   prefixStyle: TextStyle(
                       color: beg,
@@ -280,6 +342,31 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                     fontWeight: FontWeight.normal),
               ),
             ),
+            ElevatedButton(
+                onPressed: () async {
+                  var languages = languageController.text.split(',');
+                  var certificates = certificateController.text.split(',');
+                  var programs = programController.text.split(',');
+                  experiens = {
+                    'languages': languages,
+                    'certificates': certificates,
+                    'programs': programs
+                  };
+                  print(languages.length);
+                  print(fileName);
+                  print(phoneNum.length);
+                  String url =
+                      await FileService().uploadeimage(fileName, imageFile);
+                  EngineerDbService().addEngineer(
+                      Engineer(
+                          name: nameController.text,
+                          specialization: specialization,
+                          experience: experiens,
+                          phoneNumbers: phoneNum,
+                          profilePicUrl: url),
+                      context);
+                },
+                child: const Text('DONE'))
           ]),
         ),
       )
