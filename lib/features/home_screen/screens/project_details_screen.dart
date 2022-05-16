@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/company_profile.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/engineer_profile.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -38,7 +40,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Project project = snapshot.data!;
-
+                print('project id ${project.companyId}');
                 return SlidingUpPanel(
                     controller: panelController,
                     minHeight: 350,
@@ -101,9 +103,18 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
-                                        TextIcon(
-                                            iconData: Icons.house,
-                                            title: project.companyName),
+                                        InkWell(
+                                          onTap: () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CompanyProfile(
+                                                        companyId:
+                                                            project.companyId,
+                                                      ))),
+                                          child: TextIcon(
+                                              iconData: Icons.house,
+                                              title: project.companyName),
+                                        ),
                                         const TextIcon(
                                             iconData: Icons.location_on,
                                             title: 'Location city')
@@ -138,32 +149,41 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                         itemCount: project.members!.length,
                                         itemBuilder: (ctx, i) {
                                           var member = project.members![i];
-                                          return Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 20),
-                                            child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  CircleAvatar(
-                                                    radius: 40,
-                                                    backgroundColor: orange,
-                                                    child: CircleAvatar(
-                                                        radius: 39,
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                                member
-                                                                    .profilePicUrl,
-                                                                scale: 1)),
-                                                  ),
-                                                  Text(
-                                                    member.memberName,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineSmall,
-                                                  ),
-                                                  Text(member.role.name)
-                                                ]),
+                                          return InkWell(
+                                            onTap: () => Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EngineerProfile(
+                                                          engineerId:
+                                                              member.memberId,
+                                                        ))),
+                                            child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  right: 20),
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 40,
+                                                      backgroundColor: orange,
+                                                      child: CircleAvatar(
+                                                          radius: 39,
+                                                          backgroundImage:
+                                                              NetworkImage(
+                                                                  member
+                                                                      .profilePicUrl,
+                                                                  scale: 1)),
+                                                    ),
+                                                    Text(
+                                                      member.memberName,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headlineSmall,
+                                                    ),
+                                                    Text(member.role.name)
+                                                  ]),
+                                            ),
                                           );
                                         }),
                                   )

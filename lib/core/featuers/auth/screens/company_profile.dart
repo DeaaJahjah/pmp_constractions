@@ -27,6 +27,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
         id = value.getString('uid');
       });
     });
+    print(widget.companyId);
     super.initState();
   }
 

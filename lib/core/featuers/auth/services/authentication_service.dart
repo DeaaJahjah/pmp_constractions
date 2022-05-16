@@ -18,12 +18,7 @@ class FlutterFireAuthService {
   Future<void> signOut(context) async {
     await _firebaseAuth.signOut();
     pref.then((value) => value.remove('uid'));
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LogInScreen(),
-      ),
-    );
+    Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);
   }
 
   Future<String?> signIn(
@@ -45,12 +40,8 @@ class FlutterFireAuthService {
 
       pref.then((value) => value.setString('uid', crid.user!.uid));
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
       return "Success";
     } on FirebaseAuthException catch (e) {
       context
@@ -76,12 +67,8 @@ class FlutterFireAuthService {
           .read<AuthSataProvider>()
           .changeAuthState(newState: AuthState.notSet);
       pref.then((value) => value.setString('uid', crid.user!.uid));
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ChoosingScreen(),
-        ),
-      );
+      Navigator.of(context).pushReplacementNamed(ChoosingScreen.routeName);
+
       return "Success";
     } on FirebaseAuthException catch (e) {
       context

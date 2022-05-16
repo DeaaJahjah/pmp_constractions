@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
@@ -18,8 +19,9 @@ import 'package:pmpconstractions/features/home_screen/screens/widgets/search_tex
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/home';
-  const HomeScreen({Key? key}) : super(key: key);
+  static const routeName = '/sa';
+  ZoomDrawerController? zoomController;
+  HomeScreen({Key? key, this.zoomController}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -35,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('homeeeee');
     var searchProvider = Provider.of<SearchProvider>(context);
     var searchCatProvider =
         Provider.of<SearchCategoryProvider>(context, listen: false);
@@ -52,7 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Icon(Icons.notifications, color: darkBlue)),
           )
         ],
-        leading: const Icon(Icons.menu, color: darkBlue),
+        leading: InkWell(
+            onTap: () {
+              if (widget.zoomController != null) {
+                widget.zoomController!.toggle!();
+              }
+            },
+            child: const Icon(Icons.menu, color: darkBlue)),
         backgroundColor: orange,
         elevation: 0.0,
         title: SizedBox(

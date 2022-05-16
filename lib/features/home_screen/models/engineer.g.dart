@@ -21,6 +21,7 @@ Engineer _$EngineerFromJson(Map<String, dynamic> json) => Engineer(
     );
 
 Map<String, dynamic> _$EngineerToJson(Engineer instance) => <String, dynamic>{
+      'user_id': instance.userId,
       'name': instance.name,
       'phone_numbers': instance.phoneNumbers,
       'profile_pic_url': instance.profilePicUrl,

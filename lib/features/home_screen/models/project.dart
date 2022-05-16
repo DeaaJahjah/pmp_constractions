@@ -13,6 +13,8 @@ class Project extends Equatable {
   final String name;
   @JsonKey(name: 'company_name')
   final String companyName;
+  @JsonKey(name: 'company_id')
+  final String companyId;
   final String description;
   @JsonKey(name: 'image_url')
   final String imageUrl;
@@ -29,6 +31,7 @@ class Project extends Equatable {
       {this.projectId,
       required this.name,
       required this.companyName,
+      required this.companyId,
       required this.description,
       required this.imageUrl,
       required this.modelUrl,

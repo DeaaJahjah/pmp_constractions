@@ -386,6 +386,89 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
     ];
 
     return Scaffold(
+      bottomNavigationBar: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: TextButton(
+                onPressed: () {
+                  if (liquidController.currentPage > 0) {
+                    liquidController.animateToPage(
+                        page: liquidController.currentPage - 1);
+                  }
+                  setState(() {});
+                },
+                child: (activePage != 0)
+                    ? const Text('back',
+                        style: TextStyle(
+                          color: beg,
+                          fontFamily: font,
+                          fontWeight: FontWeight.bold,
+                        ))
+                    : const SizedBox()),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.30,
+          ),
+          Expanded(
+            flex: 3,
+            child: AnimatedSmoothIndicator(
+              activeIndex: activePage,
+              count: pages.length,
+              duration: const Duration(milliseconds: 300),
+              effect: const WormEffect(
+                activeDotColor: orange,
+                dotHeight: 10,
+                dotWidth: 10,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: TextButton(
+                onPressed: () {
+                  if (activePage == 1 && nameController.text.isNotEmpty) {
+                    liquidController.animateToPage(
+                        page: liquidController.currentPage + 1);
+                    setState(() {});
+                    return;
+                  }
+                  if (activePage == 1 && nameController.text.isEmpty) {
+                    const snackBar =
+                        SnackBar(content: Text('The name is required'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    return;
+                  }
+                  if (activePage == 3 && specialization.isNotEmpty) {
+                    liquidController.animateToPage(
+                        page: liquidController.currentPage + 1);
+                    setState(() {});
+                    return;
+                  }
+                  if (activePage == 3 && specialization.isEmpty) {
+                    const snackBar = SnackBar(
+                        content: Text('The specialization is required'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    return;
+                  }
+
+                  if (activePage + 1 < pages.length) {
+                    liquidController.animateToPage(
+                        page: liquidController.currentPage + 1);
+                  }
+                  setState(() {});
+                },
+                child: (activePage != 4)
+                    ? const Text('Next',
+                        style: TextStyle(
+                          color: beg,
+                          fontFamily: font,
+                          fontWeight: FontWeight.bold,
+                        ))
+                    : const SizedBox()),
+          ),
+        ],
+      ),
       appBar: AppBar(
         elevation: 0.0,
         title: const Text(
@@ -397,6 +480,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
           builder: ((context) => Stack(
                 children: [
                   LiquidSwipe(
+                    disableUserGesture: true,
                     pages: pages,
                     liquidController: liquidController,
                     onPageChangeCallback: (index) {
@@ -404,36 +488,6 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                       setState(() {});
                     },
                   ),
-                  Positioned(
-                    child: TextButton(
-                      onPressed: () {
-                        if (activePage + 1 < pages.length) {
-                          liquidController.jumpToPage(
-                              page: liquidController.currentPage + 1);
-                        }
-                      },
-                      child: const Text('Skip',
-                          style: TextStyle(
-                            color: beg,
-                            fontFamily: font,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                    bottom: -7,
-                    left: 300,
-                  ),
-                  Positioned(
-                      bottom: 12,
-                      left: 150,
-                      child: AnimatedSmoothIndicator(
-                        count: pages.length,
-                        activeIndex: activePage,
-                        duration: const Duration(milliseconds: 300),
-                        effect: const WormEffect(
-                            activeDotColor: orange,
-                            dotHeight: 10,
-                            dotWidth: 10),
-                      ))
                 ],
               ))),
     );

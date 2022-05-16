@@ -14,7 +14,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:path/path.dart' as path;
 
 class SetUpClientProfile extends StatefulWidget {
-  static const routeName = '/client_setup';
+  static const routeName = '/client_set_up';
   const SetUpClientProfile({Key? key}) : super(key: key);
   @override
   State<SetUpClientProfile> createState() => _SetUpClientProfileState();
@@ -202,10 +202,28 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
 
     return Scaffold(
       bottomNavigationBar: Row(
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Expanded(
+            flex: 1,
+            child: TextButton(
+                onPressed: () {
+                  if (liquidController.currentPage > 0) {
+                    liquidController.animateToPage(
+                        page: liquidController.currentPage - 1);
+                  }
+                  setState(() {});
+                },
+                child: (activePage != 0)
+                    ? const Text('back',
+                        style: TextStyle(
+                          color: beg,
+                          fontFamily: font,
+                          fontWeight: FontWeight.bold,
+                        ))
+                    : const SizedBox()),
+          ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.45,
+            width: MediaQuery.of(context).size.width * 0.30,
           ),
           Expanded(
             flex: 3,
@@ -223,20 +241,34 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
           Expanded(
             flex: 1,
             child: TextButton(
-              onPressed: () {
-                if (activePage + 1 < pages.length) {
-                  liquidController.jumpToPage(
-                      page: liquidController.currentPage + 1);
-                }
-                setState(() {});
-              },
-              child: const Text('Skip',
-                  style: TextStyle(
-                    color: beg,
-                    fontFamily: font,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ),
+                onPressed: () {
+                  if (activePage == 1 && nameController.text.isNotEmpty) {
+                    liquidController.animateToPage(
+                        page: liquidController.currentPage + 1);
+                    setState(() {});
+                    return;
+                  }
+                  if (activePage == 1 && nameController.text.isEmpty) {
+                    const snackBar =
+                        const SnackBar(content: Text('The name is required'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    return;
+                  }
+
+                  if (activePage + 1 < pages.length) {
+                    liquidController.animateToPage(
+                        page: liquidController.currentPage + 1);
+                  }
+                  setState(() {});
+                },
+                child: (activePage != 2)
+                    ? const Text('Next',
+                        style: TextStyle(
+                          color: beg,
+                          fontFamily: font,
+                          fontWeight: FontWeight.bold,
+                        ))
+                    : const SizedBox()),
           ),
         ],
       ),
@@ -251,6 +283,7 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
           builder: ((context) => Stack(
                 children: [
                   LiquidSwipe(
+                    disableUserGesture: true,
                     pages: pages,
                     liquidController: liquidController,
                     onPageChangeCallback: (index) {

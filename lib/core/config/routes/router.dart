@@ -9,6 +9,7 @@ import 'package:pmpconstractions/core/featuers/auth/screens/setup_client_profile
 import 'package:pmpconstractions/core/featuers/auth/screens/signup_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/project_details_screen.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/drawer.dart';
 import 'package:pmpconstractions/features/settings/settings_screen.dart';
 import 'package:pmpconstractions/features/splash_screen/splash_screen.dart';
 
@@ -40,9 +41,11 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const ClientProfile());
 
     case HomeScreen.routeName:
-      return MaterialPageRoute(builder: (_) => const HomeScreen());
+      return MaterialPageRoute(builder: (_) => HomeScreen());
     case ProjectDetailsScreen.routeName:
       return MaterialPageRoute(builder: (_) => ProjectDetailsScreen());
+    case CustomDrawer.routeName:
+      return MaterialPageRoute(builder: (_) => CustomDrawer());
   }
 
   return null;

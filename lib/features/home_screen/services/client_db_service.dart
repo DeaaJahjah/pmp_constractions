@@ -30,7 +30,7 @@ class ClientDbService {
       final pref = await SharedPreferences.getInstance();
       _db.collection('client').doc(pref.getString('uid')).set(client.toJson());
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseException catch (e) {
       print(e.toString());
       final snackBar = SnackBar(content: Text(e.toString()));
