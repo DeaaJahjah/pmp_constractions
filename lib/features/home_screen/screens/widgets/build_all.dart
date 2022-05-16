@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/company_profile.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/engineer_profile.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
@@ -164,7 +166,12 @@ class EngCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => EngineerProfile(
+                  engineerId: userId,
+                )));
+      },
       child: Container(
           width: 120,
           height: 150,
@@ -234,7 +241,12 @@ class CompCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => CompanyProfile(
+                  companyId: userId,
+                )));
+      },
       child: Container(
           width: 120,
           height: 150,
