@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/features/home_screen/models/client.dart';
-import 'package:pmpconstractions/features/home_screen/screens/home_screen.dart';
+import 'package:pmpconstractions/features/home_screen/screens/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ClientDbService {
@@ -30,7 +30,7 @@ class ClientDbService {
       final pref = await SharedPreferences.getInstance();
       _db.collection('client').doc(pref.getString('uid')).set(client.toJson());
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => MainScreen()));
     } on FirebaseException catch (e) {
       print(e.toString());
       final snackBar = SnackBar(content: Text(e.toString()));

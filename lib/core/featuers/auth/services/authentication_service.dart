@@ -4,7 +4,7 @@ import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/choosing_screen.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/login_screen.dart';
-import 'package:pmpconstractions/features/home_screen/screens/home_screen.dart';
+import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

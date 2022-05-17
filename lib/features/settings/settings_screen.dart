@@ -10,7 +10,7 @@ import '../../core/config/theme/theme.dart';
 import 'custome_row.dart';
 
 class SettingsScreen extends StatefulWidget {
-  static const routeName = '/settingss';
+  static const routeName = '/settings';
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override

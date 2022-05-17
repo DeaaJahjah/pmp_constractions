@@ -18,16 +18,15 @@ import 'package:pmpconstractions/features/home_screen/screens/widgets/custom_ite
 import 'package:pmpconstractions/features/home_screen/screens/widgets/search_text_field.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const routeName = '/sa';
+class MainScreen extends StatefulWidget {
   ZoomDrawerController? zoomController;
-  HomeScreen({Key? key, this.zoomController}) : super(key: key);
+  MainScreen({Key? key, this.zoomController}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MainScreenState extends State<MainScreen> {
   TextEditingController textController = TextEditingController();
 
   @override
@@ -37,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('homeeeee');
     var searchProvider = Provider.of<SearchProvider>(context);
     var searchCatProvider =
         Provider.of<SearchCategoryProvider>(context, listen: false);

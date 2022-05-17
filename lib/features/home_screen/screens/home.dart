@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 
-import 'package:pmpconstractions/features/home_screen/screens/home_screen.dart';
+import 'package:pmpconstractions/features/home_screen/screens/main_screen.dart';
+import 'package:pmpconstractions/features/home_screen/screens/menu..dart';
 
-class CustomDrawer extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   static const routeName = '/';
   @override
-  _CustomDrawerState createState() => _CustomDrawerState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _CustomDrawerState extends State<CustomDrawer> {
+class _HomeScreenState extends State<HomeScreen> {
   final drawerConroller = ZoomDrawerController();
 
   @override
   Widget build(BuildContext context) {
-    print('drawer');
     return Scaffold(
         backgroundColor: darkBlue.withOpacity(0.85),
         body: ZoomDrawer(
@@ -26,14 +26,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
           style: DrawerStyle.Style1,
           menuScreen: InkWell(
             onTap: () => drawerConroller.close!(),
-            child: Center(
-              child: Container(
-                color: Colors.amber,
-                child: const Text('sda'),
-              ),
-            ),
+            child: const MenuScreen(),
           ),
-          mainScreen: HomeScreen(zoomController: drawerConroller),
+          mainScreen: MainScreen(zoomController: drawerConroller),
           borderRadius: 24.0,
           showShadow: true,
           angle: -8,
