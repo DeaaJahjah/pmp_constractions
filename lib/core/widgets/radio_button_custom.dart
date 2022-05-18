@@ -25,7 +25,7 @@ class CustomeRadioButton extends StatelessWidget {
           child: Text(text,
               style: (value == index)
                   ? Theme.of(context).textTheme.bodyMedium
-                  : Theme.of(context).textTheme.headline3),
+                  : Theme.of(context).textTheme.headlineMedium),
           style: OutlinedButton.styleFrom(
               side: const BorderSide(
                   color: beg, width: 1.4, style: BorderStyle.solid))),

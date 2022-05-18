@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
+import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/set_up_company_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/set_up_engineer_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/setup_client_profile.dart';
@@ -28,7 +29,7 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
     print('index =$index');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choose one'),
+        title: Text(context.loc.choose_one),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -41,7 +42,7 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
         Column(
           children: <Widget>[
             CustomeRadioButton(
-                text: 'Company',
+                text: context.loc.company,
                 value: value,
                 index: 1,
                 onPressed: () {
@@ -52,7 +53,7 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
                 }),
             sizedBoxMedium,
             CustomeRadioButton(
-                text: 'Engineer',
+                text: context.loc.engineer,
                 value: value,
                 index: 2,
                 onPressed: () {
@@ -63,7 +64,7 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
                 }),
             sizedBoxMedium,
             CustomeRadioButton(
-                text: 'Client',
+                text: context.loc.client,
                 value: value,
                 index: 3,
                 onPressed: () {
@@ -88,11 +89,13 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
                 Navigator.of(context).pushNamed(SetUpClientProfile.routeName);
                 break;
               default:
-                print('cant');
+                final snakBar =
+                    const SnackBar(content: Text('You should choose one'));
+                ScaffoldMessenger.of(context).showSnackBar(snakBar);
             }
           },
           child: Text(
-            'NEXT',
+            context.loc.next,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         )

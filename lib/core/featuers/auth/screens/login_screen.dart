@@ -11,7 +11,7 @@ import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
 class LogInScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/log_in';
   const LogInScreen({Key? key}) : super(key: key);
 
   @override
@@ -39,7 +39,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   top: 390,
                   left: 10,
                   child: Text(
-                   context.loc.login,
+                    context.loc.login,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
@@ -53,7 +53,7 @@ class _LogInScreenState extends State<LogInScreen> {
             sizedBoxMedium,
             TextFieldCustome(
               controller: passwordController,
-              text:  context.loc.password,
+              text: context.loc.password,
             ),
             sizedBoxMedium,
             Consumer<AuthSataProvider>(
@@ -69,7 +69,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                       context: context);
                             },
                             child: Text(
-                             context.loc.login_btn,
+                              context.loc.login_btn,
                               style: Theme.of(context).textTheme.headlineSmall,
                             ))
                         : const CircularProgressIndicator()),
@@ -77,13 +77,13 @@ class _LogInScreenState extends State<LogInScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                 context.loc.dont_have_account,
+                  context.loc.dont_have_account,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 TextButton(
                   style: const ButtonStyle(),
-                  child: Text(context.loc.signup,                     
-                   style: TextStyle(
+                  child: Text(context.loc.signup,
+                      style: const TextStyle(
                           decoration: TextDecoration.underline,
                           decorationStyle: TextDecorationStyle.solid,
                           color: karmedi,
