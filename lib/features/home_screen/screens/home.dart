@@ -6,7 +6,7 @@ import 'package:pmpconstractions/features/home_screen/screens/main_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/menu..dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/home_screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }

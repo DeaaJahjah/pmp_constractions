@@ -11,7 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 class EngineerProfile extends StatefulWidget {
   final String? engineerId;
   const EngineerProfile({Key? key, this.engineerId}) : super(key: key);
-  static const routeName = '/engineer_profile';
+  static const routeName = '/profile_engineer';
   @override
   State<EngineerProfile> createState() => _EngineerProfileState();
 }

@@ -55,23 +55,43 @@ ThemeData darkTheme = ThemeData(
           fontSize: 26,
           fontWeight: FontWeight.bold),
     ),
-    textTheme: const TextTheme(
-      headlineSmall: TextStyle(
-          color: beg,
-          fontFamily: font,
-          fontSize: 18,
-          fontWeight: FontWeight.normal),
-      headlineMedium: TextStyle(
-          color: beg,
-          fontFamily: font,
-          fontSize: 24,
-          fontWeight: FontWeight.bold),
-      headlineLarge: TextStyle(
-          color: beg,
-          fontFamily: font,
-          fontSize: 28,
-          fontWeight: FontWeight.normal),
-    ),
+    textTheme: TextTheme(
+        headlineSmall: const TextStyle(
+            color: beg,
+            fontFamily: font,
+            fontSize: 18,
+            fontWeight: FontWeight.normal),
+        headlineMedium: const TextStyle(
+            color: beg,
+            fontFamily: font,
+            fontSize: 24,
+            fontWeight: FontWeight.bold),
+        bodyMedium: const TextStyle(
+            color: beg,
+            fontFamily: font,
+            fontSize: 24,
+            fontWeight: FontWeight.normal),
+        headline1: const TextStyle(
+            color: orange,
+            fontFamily: font,
+            fontSize: 18,
+            fontWeight: FontWeight.normal),
+        headline2: const TextStyle(
+            color: orange,
+            fontFamily: font,
+            fontSize: 24,
+            fontWeight: FontWeight.bold),
+        headline3: const TextStyle(
+            color: beg,
+            fontFamily: font,
+            fontSize: 24,
+            fontWeight: FontWeight.normal)),
+    // headlineLarge: TextStyle(
+    //     color: beg,
+    //     fontFamily: font,
+    //     fontSize: 28,
+    //     fontWeight: FontWeight.normal),
+
     switchTheme: SwitchThemeData(
       thumbColor: MaterialStateProperty.all(beg),
       trackColor: MaterialStateProperty.all(darkBlue),

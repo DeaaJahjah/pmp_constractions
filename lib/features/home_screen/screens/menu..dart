@@ -15,7 +15,9 @@ class MenuScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CircleAvatar(backgroundColor: orange, radius: 40),
+          InkWell(
+              onTap: () {},
+              child: const CircleAvatar(backgroundColor: orange, radius: 40)),
           sizedBoxSmall,
           Text(
             'sawsan Ahmad',

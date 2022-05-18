@@ -22,14 +22,10 @@ class CustomeRadioButton extends StatelessWidget {
       height: 40,
       child: OutlinedButton(
           onPressed: onPressed,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: (value == index) ? beg : karmedi,
-              fontFamily: font,
-              fontSize: 24,
-            ),
-          ),
+          child: Text(text,
+              style: (value == index)
+                  ? Theme.of(context).textTheme.bodyMedium
+                  : Theme.of(context).textTheme.headline3),
           style: OutlinedButton.styleFrom(
               side: const BorderSide(
                   color: beg, width: 1.4, style: BorderStyle.solid))),
