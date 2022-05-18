@@ -5,12 +5,13 @@ import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/signup_screen.dart';
+import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
 class LogInScreen extends StatefulWidget {
-  static const routeName = '/log_in';
+  static const routeName = '/';
   const LogInScreen({Key? key}) : super(key: key);
 
   @override
@@ -38,7 +39,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   top: 390,
                   left: 10,
                   child: Text(
-                    'LOGIN',
+                   context.loc.login,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
@@ -47,12 +48,12 @@ class _LogInScreenState extends State<LogInScreen> {
             sizedBoxMedium,
             TextFieldCustome(
               controller: emailController,
-              text: 'Enter email',
+              text: context.loc.email,
             ),
             sizedBoxMedium,
             TextFieldCustome(
               controller: passwordController,
-              text: 'Enter password',
+              text:  context.loc.password,
             ),
             sizedBoxMedium,
             Consumer<AuthSataProvider>(
@@ -68,7 +69,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                       context: context);
                             },
                             child: Text(
-                              'LOGIN',
+                             context.loc.login_btn,
                               style: Theme.of(context).textTheme.headlineSmall,
                             ))
                         : const CircularProgressIndicator()),
@@ -76,13 +77,13 @@ class _LogInScreenState extends State<LogInScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "If you don't have an account ",
+                 context.loc.dont_have_account,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 TextButton(
                   style: const ButtonStyle(),
-                  child: const Text('Sign Up',
-                      style: TextStyle(
+                  child: Text(context.loc.signup,                     
+                   style: TextStyle(
                           decoration: TextDecoration.underline,
                           decorationStyle: TextDecorationStyle.solid,
                           color: karmedi,

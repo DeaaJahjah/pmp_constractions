@@ -56,6 +56,7 @@ ThemeData darkTheme = ThemeData(
           fontWeight: FontWeight.bold),
     ),
     textTheme: TextTheme(
+     
         headlineSmall: const TextStyle(
             color: beg,
             fontFamily: font,
@@ -65,45 +66,38 @@ ThemeData darkTheme = ThemeData(
             color: beg,
             fontFamily: font,
             fontSize: 24,
-            fontWeight: FontWeight.bold),
-        bodyMedium: const TextStyle(
+            fontWeight: FontWeight.normal,),
+      headlineLarge: const TextStyle(
             color: beg,
             fontFamily: font,
-            fontSize: 24,
-            fontWeight: FontWeight.normal),
-        headline1: const TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold),
+        bodySmall: const TextStyle(
             color: orange,
             fontFamily: font,
             fontSize: 18,
             fontWeight: FontWeight.normal),
-        headline2: const TextStyle(
+        bodyMedium: const TextStyle(
             color: orange,
             fontFamily: font,
             fontSize: 24,
             fontWeight: FontWeight.bold),
-        headline3: const TextStyle(
+        bodyLarge: const TextStyle(
             color: beg,
             fontFamily: font,
             fontSize: 24,
-            fontWeight: FontWeight.normal)),
-    // headlineLarge: TextStyle(
-    //     color: beg,
-    //     fontFamily: font,
-    //     fontSize: 28,
-    //     fontWeight: FontWeight.normal),
-
+            fontWeight: FontWeight.normal),
+           
+            ),
+             
     switchTheme: SwitchThemeData(
       thumbColor: MaterialStateProperty.all(beg),
       trackColor: MaterialStateProperty.all(darkBlue),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            primary: orange,
-            textStyle: const TextStyle(
-                fontFamily: font,
-                fontWeight: FontWeight.w900,
-                fontSize: 18,
-                color: beg))),
+        style:ElevatedButton.styleFrom(
+          primary: orange,
+         ),),
     snackBarTheme: const SnackBarThemeData(
         backgroundColor: orange,
         contentTextStyle: TextStyle(

@@ -1,9 +1,12 @@
 {
     "login": "Login",
+    "login_btn": "LOGIN",
     "signup": "Sign up",
     "settings" : "Settings",
     "theme": "Theme",
     "language":"Language",
+    "email":"Email",
+"password":"password",
     "dont_have_account":"Don't have an account",
     "company":"Company",
     "engineer":"Engineer",
