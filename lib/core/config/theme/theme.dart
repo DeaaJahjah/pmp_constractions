@@ -44,7 +44,7 @@ ThemeData darkTheme = ThemeData(
         borderRadius: BorderRadius.circular(5),
       ),
       focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: karmedi, width: 1.0),
+        borderSide: BorderSide(color: orange, width: 1.0),
       ),
     ),
     appBarTheme: const AppBarTheme(
@@ -56,7 +56,6 @@ ThemeData darkTheme = ThemeData(
           fontWeight: FontWeight.bold),
     ),
     textTheme: TextTheme(
-     
         headlineSmall: const TextStyle(
             color: beg,
             fontFamily: font,

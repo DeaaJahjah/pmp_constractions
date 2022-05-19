@@ -17,17 +17,17 @@ class TextFieldCustome extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         cursorHeight: 22,
-        cursorColor: karmedi,
+        cursorColor: orange,
         decoration: InputDecoration(
           isDense: true,
           contentPadding: const EdgeInsets.all(14),
-          labelStyle: Theme.of(context).textTheme.headlineSmall,
+          labelStyle: Theme.of(context).textTheme.bodySmall,
           label: Text(text),
           alignLabelWithHint: true,
         ),
         textAlign: TextAlign.start,
         autofocus: false,
-        style: const TextStyle(color: karmedi),
+        style: const TextStyle(color: orange),
       ),
     );
   }

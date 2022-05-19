@@ -7,8 +7,10 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:pmpconstractions/core/widgets/number_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/client.dart';
+import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/features/home_screen/services/client_db_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:path/path.dart' as path;
@@ -66,18 +68,14 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
             child: CircleAvatar(
                 backgroundColor: karmedi,
                 child: (pickedimage == null)
-                    ? const Icon(Icons.person, size: 60, color: beg)
+                    ? const Icon(Icons.person_add, size: 60, color: beg)
                     : CircleAvatar(
                         radius: 60, backgroundImage: FileImage(imageFile)),
                 radius: 60),
           ),
           sizedBoxMedium,
-          const Text('Add a picture',
-              style: TextStyle(
-                color: beg,
-                fontFamily: font,
-                fontSize: 24,
-              )),
+          Text(context.loc.add_pic,
+              style: Theme.of(context).textTheme.headlineMedium),
         ]),
       ),
       Container(
@@ -94,7 +92,7 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
           sizedBoxMedium,
           TextFieldCustome(
             controller: nameController,
-            text: 'Name',
+            text: context.loc.name,
           ),
           sizedBoxMedium,
         ]),
@@ -112,60 +110,14 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
             ),
             sizedBoxXLarge,
             sizedBoxMedium,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 230,
-                  height: 40,
-                  child: TextFormField(
-                    controller: phoneController,
-                    decoration: const InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.all(14),
-                      label: Text(
-                        'Number',
-                        style: TextStyle(
-                            color: beg,
-                            fontFamily: font,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      alignLabelWithHint: true,
-                    ),
-                    textAlign: TextAlign.start,
-                    autofocus: false,
-                    style: const TextStyle(
-                        color: beg,
-                        fontFamily: font,
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  child: IconButton(
-                      onPressed: () {
+            NumberTextField(controller: phoneController, onPressed:  () {
                         if (phoneController.text != '' && phoneNum.length < 2) {
                           phoneNum.add(phoneController.text);
                           setState(() {
                             phoneController.text = '';
                           });
                         }
-                      },
-                      icon: const Icon(
-                        Icons.add,
-                        size: 15,
-                        color: beg,
-                      )),
-                  decoration: BoxDecoration(
-                    color: orange,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-              ],
-            ),
+                      },),
             sizedBoxMedium,
             SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -181,20 +133,25 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                   ),
                   itemCount: phoneNum.length,
                 )),
-            ElevatedButton(
-                onPressed: () async {
-                  print(fileName);
-                  print(phoneNum.length);
-                  String url =
-                      await FileService().uploadeimage(fileName, imageFile);
-                  ClientDbService().addClient(
-                      Client(
-                          name: nameController.text,
-                          phoneNumbers: phoneNum,
-                          profilePicUrl: url),
-                      context);
-                },
-                child: const Text('DONE'))
+            Padding(
+              padding: const EdgeInsets.only(left: 140,right: 140),
+              child: ElevatedButton(
+                
+                  onPressed: () async {
+                    String url =
+                        await FileService().uploadeimage(fileName, imageFile);
+                    ClientDbService().addClient(
+                        Client(
+                            name: nameController.text,
+                            phoneNumbers: phoneNum,
+                            profilePicUrl: url),
+                        context);
+                  },
+                  child: Text(
+                                context.loc.done,
+                                style: Theme.of(context).textTheme.headlineSmall,
+                              )),
+            )
           ],
         ),
       )
@@ -214,12 +171,8 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                   setState(() {});
                 },
                 child: (activePage != 0)
-                    ? const Text('back',
-                        style: TextStyle(
-                          color: beg,
-                          fontFamily: font,
-                          fontWeight: FontWeight.bold,
-                        ))
+                    ?  Text(context.loc.back,
+                        style: Theme.of(context).textTheme.headlineSmall)
                     : const SizedBox()),
           ),
           SizedBox(
@@ -262,20 +215,16 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                   setState(() {});
                 },
                 child: (activePage != 2)
-                    ? const Text('Next',
-                        style: TextStyle(
-                          color: beg,
-                          fontFamily: font,
-                          fontWeight: FontWeight.bold,
-                        ))
+                    ? Text(context.loc.small_next,
+                        style: Theme.of(context).textTheme.headlineSmall)
                     : const SizedBox()),
           ),
         ],
       ),
       appBar: AppBar(
         elevation: 0.0,
-        title: const Text(
-          'Set up your profile',
+        title: Text(
+          context.loc.setup_profile,
         ),
         centerTitle: true,
       ),

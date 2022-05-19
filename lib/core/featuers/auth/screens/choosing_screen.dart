@@ -8,7 +8,7 @@ import 'package:pmpconstractions/core/featuers/auth/screens/setup_client_profile
 import 'package:pmpconstractions/core/widgets/radio_button_custom.dart';
 
 class ChoosingScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/choose_one';
 
   const ChoosingScreen({
     Key? key,

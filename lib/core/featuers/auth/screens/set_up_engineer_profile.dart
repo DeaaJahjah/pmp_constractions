@@ -6,14 +6,16 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:pmpconstractions/core/widgets/number_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/services/engineer_db_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:path/path.dart' as path;
 
 class SetUpEngineerProfile extends StatefulWidget {
-  static const routeName = '/engineer_set_up';
+  static const routeName = '/';
   const SetUpEngineerProfile({Key? key}) : super(key: key);
 
   @override
@@ -84,12 +86,8 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                 maxRadius: 60),
           ),
           sizedBoxMedium,
-          const Text('Add a picture',
-              style: TextStyle(
-                color: beg,
-                fontFamily: font,
-                fontSize: 24,
-              )),
+          Text(context.loc.add_pic,
+            style: Theme.of(context).textTheme.headlineMedium),
         ]),
       ),
       Container(
@@ -106,7 +104,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
           sizedBoxMedium,
           TextFieldCustome(
             controller: nameController,
-            text: 'Name',
+            text: context.loc.name,
           ),
           sizedBoxMedium,
         ]),
@@ -124,60 +122,14 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             ),
             sizedBoxXLarge,
             sizedBoxMedium,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 230,
-                  height: 40,
-                  child: TextFormField(
-                    controller: phoneController,
-                    decoration: const InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.all(14),
-                      label: Text(
-                        'Number',
-                        style: TextStyle(
-                            color: orange,
-                            fontFamily: font,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      alignLabelWithHint: true,
-                    ),
-                    textAlign: TextAlign.start,
-                    autofocus: false,
-                    style: const TextStyle(
-                        color: beg,
-                        fontFamily: font,
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  child: IconButton(
-                      onPressed: () {
+         NumberTextField(controller: phoneController, onPressed:  () {
                         if (phoneController.text != '' && phoneNum.length < 2) {
                           phoneNum.add(phoneController.text);
                           setState(() {
                             phoneController.text = '';
                           });
                         }
-                      },
-                      icon: const Icon(
-                        Icons.add,
-                        size: 15,
-                        color: beg,
-                      )),
-                  decoration: BoxDecoration(
-                    color: orange,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-              ],
-            ),
+                      },),
             sizedBoxMedium,
             SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -258,104 +210,11 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             fit: BoxFit.fill,
           ),
           sizedBoxXLarge,
-          SizedBox(
-            width: 260,
-            height: 40,
-            child: TextFormField(
-              controller: languageController,
-              decoration: const InputDecoration(
-                prefixStyle: TextStyle(
-                    color: beg,
-                    fontFamily: font,
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal),
-                isDense: true,
-                contentPadding: EdgeInsets.all(14),
-                label: Text(
-                  'Languages',
-                  style: TextStyle(
-                      color: orange,
-                      fontFamily: font,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
-                ),
-                alignLabelWithHint: true,
-              ),
-              textAlign: TextAlign.start,
-              autofocus: false,
-              style: const TextStyle(
-                  color: beg,
-                  fontFamily: font,
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal),
-            ),
-          ),
+         TextFieldCustome(text: context.loc.languages, controller: languageController),
           sizedBoxLarge,
-          SizedBox(
-            width: 260,
-            child: TextFormField(
-              controller: certificateController,
-              decoration: const InputDecoration(
-                hintMaxLines: 3,
-                prefixStyle: TextStyle(
-                    color: beg,
-                    fontFamily: font,
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal),
-                isDense: true,
-                contentPadding: EdgeInsets.all(14),
-                label: Text(
-                  'Certificates',
-                  style: TextStyle(
-                      color: orange,
-                      fontFamily: font,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
-                ),
-                alignLabelWithHint: true,
-              ),
-              textAlign: TextAlign.start,
-              autofocus: false,
-              style: const TextStyle(
-                  color: beg,
-                  fontFamily: font,
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal),
-            ),
-          ),
+            TextFieldCustome(text: context.loc.certificate, controller: certificateController),
           sizedBoxLarge,
-          SizedBox(
-            width: 260,
-            height: 40,
-            child: TextFormField(
-              controller: programController,
-              decoration: const InputDecoration(
-                prefixStyle: TextStyle(
-                    color: beg,
-                    fontFamily: font,
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal),
-                isDense: true,
-                contentPadding: EdgeInsets.all(14),
-                label: Text(
-                  'Programs',
-                  style: TextStyle(
-                      color: orange,
-                      fontFamily: font,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
-                ),
-                alignLabelWithHint: true,
-              ),
-              textAlign: TextAlign.start,
-              autofocus: false,
-              style: const TextStyle(
-                  color: beg,
-                  fontFamily: font,
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal),
-            ),
-          ),
+           TextFieldCustome(text: context.loc.programs, controller: programController),
           ElevatedButton(
               onPressed: () async {
                 var languages = languageController.text.split(',');
@@ -366,9 +225,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                   'certificates': certificates,
                   'programs': programs
                 };
-                print(languages.length);
-                print(fileName);
-                print(phoneNum.length);
+                
                 String url =
                     await FileService().uploadeimage(fileName, imageFile);
                 EngineerDbService().addEngineer(
@@ -380,7 +237,13 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                         profilePicUrl: url),
                     context);
               },
-              child: const Text('DONE'))
+              child: Padding(
+                padding:  EdgeInsets.only(left: 140,right: 140),
+                child: Text(
+                                  context.loc.done,
+                                  style: Theme.of(context).textTheme.headlineSmall,
+                                ),
+              ))
         ]),
       )
     ];
@@ -399,12 +262,8 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                   setState(() {});
                 },
                 child: (activePage != 0)
-                    ? const Text('back',
-                        style: TextStyle(
-                          color: beg,
-                          fontFamily: font,
-                          fontWeight: FontWeight.bold,
-                        ))
+                    ?  Text(context.loc.back,
+                        style: Theme.of(context).textTheme.headlineSmall)
                     : const SizedBox()),
           ),
           SizedBox(
@@ -459,20 +318,16 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                   setState(() {});
                 },
                 child: (activePage != 4)
-                    ? const Text('Next',
-                        style: TextStyle(
-                          color: beg,
-                          fontFamily: font,
-                          fontWeight: FontWeight.bold,
-                        ))
+                    ? Text(context.loc.small_next,
+                        style: Theme.of(context).textTheme.headlineSmall)
                     : const SizedBox()),
           ),
         ],
       ),
       appBar: AppBar(
         elevation: 0.0,
-        title: const Text(
-          'Set up your profile',
+        title:  Text(
+          context.loc.setup_profile,
         ),
         centerTitle: true,
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/widgets/custome_row.dart';
-import 'package:pmpconstractions/core/widgets/elevated_button.dart';
+import 'package:pmpconstractions/core/widgets/elevated_button_custom.dart';
 
 class ClientProfile extends StatefulWidget {
   static const routeName = '/client_profile';

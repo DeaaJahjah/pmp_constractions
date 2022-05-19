@@ -20,7 +20,7 @@ class ElevatedButtonCustom extends StatelessWidget {
     return SizedBox(
         width: 150,
         height: 30,
-        child: ElevatedButton(
+        child: ElevatedButton( 
           style: ButtonStyle(
             side: MaterialStateProperty.all(
               BorderSide(style: BorderStyle.solid, color: color),
