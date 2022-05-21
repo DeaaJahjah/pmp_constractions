@@ -91,12 +91,19 @@ class _CompanyProfileState extends State<CompanyProfile> {
                       child: CircleAvatar(
                           backgroundColor: orange,
                           radius: 70,
-                          child: CircleAvatar(
-                            backgroundColor: darkBlue,
-                            radius: 68,
-                            backgroundImage:
-                                NetworkImage(company.profilePicUrl ?? ''),
-                          )),
+                          child: (company.profilePicUrl != '')
+                              ? CircleAvatar(
+                                  backgroundColor: darkBlue,
+                                  radius: 68,
+                                  backgroundImage:
+                                      NetworkImage(company.profilePicUrl ?? ''),
+                                )
+                              : const CircleAvatar(
+                                  backgroundColor: darkBlue,
+                                  radius: 68,
+                                  backgroundImage: AssetImage(
+                                      'assets/images/comp_orange.png'),
+                                )),
                     ),
                   ]),
                 ),

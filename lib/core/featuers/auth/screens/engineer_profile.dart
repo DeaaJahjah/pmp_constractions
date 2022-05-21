@@ -21,16 +21,17 @@ class _EngineerProfileState extends State<EngineerProfile> {
   String? id;
   @override
   void initState() {
-    pref.then((value) {
-      setState(() {
-        id = value.getString('uid');
-      });
-    });
+    // pref.then((value) {
+    //   setState(() {
+    //     id = value.getString('uid');
+    //   });
+    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.engineerId);
     return Scaffold(
       body: FutureBuilder<Engineer>(
           future:
@@ -77,15 +78,21 @@ class _EngineerProfileState extends State<EngineerProfile> {
                       top: 78,
                       left: 107,
                       child: CircleAvatar(
-                          backgroundColor: orange,
-                          radius: 70,
-                          child: CircleAvatar(
-                            backgroundColor: darkBlue,
-                            radius: 68,
-                            backgroundImage:
-                                NetworkImage(enginner.profilePicUrl ?? ''),
-                          )),
-                    ),
+                        backgroundColor: orange,
+                        radius: 70,
+                        child: (enginner.profilePicUrl != '')
+                            ? CircleAvatar(
+                                backgroundColor: darkBlue,
+                                radius: 68,
+                                backgroundImage:
+                                    NetworkImage(enginner.profilePicUrl ?? ''))
+                            : const CircleAvatar(
+                                backgroundColor: darkBlue,
+                                radius: 68,
+                                backgroundImage: AssetImage(
+                                    'assets/images/engineer_orange.png')),
+                      ),
+                    )
                   ]),
                 ),
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [

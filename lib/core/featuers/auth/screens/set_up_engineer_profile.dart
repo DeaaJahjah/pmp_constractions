@@ -3,19 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
+import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/watting_screen.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:pmpconstractions/core/widgets/number_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/services/engineer_db_service.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:path/path.dart' as path;
 
 class SetUpEngineerProfile extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/va';
   const SetUpEngineerProfile({Key? key}) : super(key: key);
 
   @override
@@ -87,7 +91,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
           ),
           sizedBoxMedium,
           Text(context.loc.add_pic,
-            style: Theme.of(context).textTheme.headlineMedium),
+              style: Theme.of(context).textTheme.headlineMedium),
         ]),
       ),
       Container(
@@ -122,14 +126,17 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             ),
             sizedBoxXLarge,
             sizedBoxMedium,
-         NumberTextField(controller: phoneController, onPressed:  () {
-                        if (phoneController.text != '' && phoneNum.length < 2) {
-                          phoneNum.add(phoneController.text);
-                          setState(() {
-                            phoneController.text = '';
-                          });
-                        }
-                      },),
+            NumberTextField(
+              controller: phoneController,
+              onPressed: () {
+                if (phoneController.text != '' && phoneNum.length < 2) {
+                  phoneNum.add(phoneController.text);
+                  setState(() {
+                    phoneController.text = '';
+                  });
+                }
+              },
+            ),
             sizedBoxMedium,
             SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -210,141 +217,165 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
             fit: BoxFit.fill,
           ),
           sizedBoxXLarge,
-         TextFieldCustome(text: context.loc.languages, controller: languageController),
+          TextFieldCustome(
+              text: context.loc.languages, controller: languageController),
           sizedBoxLarge,
-            TextFieldCustome(text: context.loc.certificate, controller: certificateController),
+          TextFieldCustome(
+              text: context.loc.certificate, controller: certificateController),
           sizedBoxLarge,
-           TextFieldCustome(text: context.loc.programs, controller: programController),
+          TextFieldCustome(
+              text: context.loc.programs, controller: programController),
           ElevatedButton(
               onPressed: () async {
+                Provider.of<AuthSataProvider>(context, listen: false)
+                    .changeAuthState(newState: AuthState.waiting);
+
                 var languages = languageController.text.split(',');
                 var certificates = certificateController.text.split(',');
                 var programs = programController.text.split(',');
+
                 experiens = {
                   'languages': languages,
                   'certificates': certificates,
                   'programs': programs
                 };
-                
-                String url =
-                    await FileService().uploadeimage(fileName, imageFile);
-                EngineerDbService().addEngineer(
-                    Engineer(
-                        name: nameController.text,
-                        specialization: specialization,
-                        experience: experiens,
-                        phoneNumbers: phoneNum,
-                        profilePicUrl: url),
-                    context);
+                String url = '';
+                if (imageFile != File('')) {
+                  url = await FileService()
+                      .uploadeimage(fileName, imageFile, context);
+                }
+                if (url != 'error') {
+                  EngineerDbService().addEngineer(
+                      Engineer(
+                          name: nameController.text,
+                          specialization: specialization,
+                          experience: experiens,
+                          phoneNumbers: phoneNum,
+                          profilePicUrl: url),
+                      context);
+                  return;
+                }
               },
               child: Padding(
-                padding:  EdgeInsets.only(left: 140,right: 140),
+                padding: const EdgeInsets.only(left: 140, right: 140),
                 child: Text(
-                                  context.loc.done,
-                                  style: Theme.of(context).textTheme.headlineSmall,
-                                ),
+                  context.loc.done,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
               ))
         ]),
       )
     ];
 
-    return Scaffold(
-      bottomNavigationBar: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: TextButton(
-                onPressed: () {
-                  if (liquidController.currentPage > 0) {
-                    liquidController.animateToPage(
-                        page: liquidController.currentPage - 1);
-                  }
-                  setState(() {});
-                },
-                child: (activePage != 0)
-                    ?  Text(context.loc.back,
-                        style: Theme.of(context).textTheme.headlineSmall)
-                    : const SizedBox()),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.30,
-          ),
-          Expanded(
-            flex: 3,
-            child: AnimatedSmoothIndicator(
-              activeIndex: activePage,
-              count: pages.length,
-              duration: const Duration(milliseconds: 300),
-              effect: const WormEffect(
-                activeDotColor: orange,
-                dotHeight: 10,
-                dotWidth: 10,
+    return Consumer<AuthSataProvider>(
+      builder: (context, value, child) => (AuthState.waiting ==
+              Provider.of<AuthSataProvider>(context).authState)
+          ? const WattingScreen()
+          : Scaffold(
+              appBar: AppBar(
+                elevation: 0.0,
+                title: Text(
+                  context.loc.setup_profile,
+                ),
+                centerTitle: true,
               ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: TextButton(
-                onPressed: () {
-                  if (activePage == 1 && nameController.text.isNotEmpty) {
-                    liquidController.animateToPage(
-                        page: liquidController.currentPage + 1);
-                    setState(() {});
-                    return;
-                  }
-                  if (activePage == 1 && nameController.text.isEmpty) {
-                    const snackBar =
-                        SnackBar(content: Text('The name is required'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    return;
-                  }
-                  if (activePage == 3 && specialization.isNotEmpty) {
-                    liquidController.animateToPage(
-                        page: liquidController.currentPage + 1);
-                    setState(() {});
-                    return;
-                  }
-                  if (activePage == 3 && specialization.isEmpty) {
-                    const snackBar = SnackBar(
-                        content: Text('The specialization is required'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    return;
-                  }
-
-                  if (activePage + 1 < pages.length) {
-                    liquidController.animateToPage(
-                        page: liquidController.currentPage + 1);
-                  }
-                  setState(() {});
-                },
-                child: (activePage != 4)
-                    ? Text(context.loc.small_next,
-                        style: Theme.of(context).textTheme.headlineSmall)
-                    : const SizedBox()),
-          ),
-        ],
-      ),
-      appBar: AppBar(
-        elevation: 0.0,
-        title:  Text(
-          context.loc.setup_profile,
-        ),
-        centerTitle: true,
-      ),
-      body: Builder(
-          builder: ((context) => Stack(
+              body: Builder(
+                builder: ((context) => Stack(
+                      children: [
+                        LiquidSwipe(
+                          disableUserGesture: true,
+                          pages: pages,
+                          liquidController: liquidController,
+                          onPageChangeCallback: (index) {
+                            activePage = index;
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    )),
+              ),
+              bottomNavigationBar: Row(
                 children: [
-                  LiquidSwipe(
-                    disableUserGesture: true,
-                    pages: pages,
-                    liquidController: liquidController,
-                    onPageChangeCallback: (index) {
-                      activePage = index;
-                      setState(() {});
-                    },
+                  Expanded(
+                    flex: 1,
+                    child: TextButton(
+                        onPressed: () {
+                          if (liquidController.currentPage > 0) {
+                            liquidController.animateToPage(
+                                page: liquidController.currentPage - 1);
+                          }
+                          setState(() {});
+                        },
+                        child: (activePage != 0)
+                            ? Text(context.loc.back,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall)
+                            : const SizedBox()),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.30,
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: AnimatedSmoothIndicator(
+                      activeIndex: activePage,
+                      count: pages.length,
+                      duration: const Duration(milliseconds: 300),
+                      effect: const WormEffect(
+                        activeDotColor: orange,
+                        dotHeight: 10,
+                        dotWidth: 10,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: TextButton(
+                        onPressed: () {
+                          if (activePage == 1 &&
+                              nameController.text.isNotEmpty) {
+                            liquidController.animateToPage(
+                                page: liquidController.currentPage + 1);
+                            setState(() {});
+                            return;
+                          }
+                          if (activePage == 1 && nameController.text.isEmpty) {
+                            const snackBar =
+                                SnackBar(content: Text('The name is required'));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            return;
+                          }
+                          if (activePage == 3 && specialization.isNotEmpty) {
+                            liquidController.animateToPage(
+                                page: liquidController.currentPage + 1);
+                            setState(() {});
+                            return;
+                          }
+                          if (activePage == 3 && specialization.isEmpty) {
+                            const snackBar = SnackBar(
+                                content:
+                                    Text('The specialization is required'));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            return;
+                          }
+
+                          if (activePage + 1 < pages.length) {
+                            liquidController.animateToPage(
+                                page: liquidController.currentPage + 1);
+                          }
+                          setState(() {});
+                        },
+                        child: (activePage != 4)
+                            ? Text(context.loc.small_next,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall)
+                            : const SizedBox()),
                   ),
                 ],
-              ))),
+              ),
+            ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
@@ -25,8 +26,8 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('value =$value');
-    print('index =$index');
+    var firebase = FirebaseAuth.instance;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(context.loc.choose_one),
@@ -78,6 +79,7 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
         sizedBoxLarge,
         ElevatedButton(
           onPressed: () {
+            firebase.currentUser!.updateDisplayName(UserType.engineer.name);
             switch (userType) {
               case UserType.engineer:
                 Navigator.of(context).pushNamed(SetUpEngineerProfile.routeName);
@@ -89,8 +91,8 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
                 Navigator.of(context).pushNamed(SetUpClientProfile.routeName);
                 break;
               default:
-                final snakBar =
-                    const SnackBar(content: Text('You should choose one'));
+                const snakBar =
+                    SnackBar(content: Text('You should choose one'));
                 ScaffoldMessenger.of(context).showSnackBar(snakBar);
             }
           },

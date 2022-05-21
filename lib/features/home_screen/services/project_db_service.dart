@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 
 class ProjectDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<List<Project>> getProjects() async {
-    var queryData = await _db.collection('projects').get();
+    var queryData = await _db
+        .collection('projects')
+        .where('privacy', isEqualTo: ProjectPrivacy.public.name)
+        .get();
+
     List<Project> projects = [];
 
     for (var doc in queryData.docs) {

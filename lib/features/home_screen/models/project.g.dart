@@ -14,7 +14,7 @@ Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
       description: json['description'] as String,
       imageUrl: json['image_url'] as String,
       modelUrl: json['modle_url'] as String,
-      privacy: json['privacy'] as bool,
+      privacy: $enumDecode(_$ProjectPrivacyEnumMap, json['privacy']),
       isOpen: json['is_open'] as bool,
       location: Project._fromJsonGeoPoint(json['location'] as GeoPoint),
       members: (json['members'] as List<dynamic>?)
@@ -30,11 +30,16 @@ Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
       'description': instance.description,
       'image_url': instance.imageUrl,
       'modle_url': instance.modelUrl,
-      'privacy': instance.privacy,
+      'privacy': _$ProjectPrivacyEnumMap[instance.privacy],
       'is_open': instance.isOpen,
       'location': Project._toJsonGeoPoint(instance.location),
       'members': instance.members?.map((e) => e.toJson()).toList(),
     };
+
+const _$ProjectPrivacyEnumMap = {
+  ProjectPrivacy.private: 'private',
+  ProjectPrivacy.public: 'public',
+};
 
 MemberRole _$MemberRoleFromJson(Map<String, dynamic> json) => MemberRole(
       memberId: json['member_id'] as String,

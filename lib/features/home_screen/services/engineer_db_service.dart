@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pmpconstractions/core/config/enums/enums.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class EngineerDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -19,23 +22,27 @@ class EngineerDbService {
   }
 
   Future<Engineer> getEngineerById(String id) async {
-    var doc = await _db.collection('engineers').doc(id).get();
-    Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
-
-    return Engineer.fromJson(cc);
+    try {
+      var doc = await _db.collection('engineers').doc(id).get();
+      Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
+      return Engineer.fromJson(cc);
+    } on FirebaseException catch (e) {
+      print(e.message);
+      return Engineer(name: 'name', specialization: '', experience: const {});
+    }
   }
 
   addEngineer(Engineer engineer, context) async {
     try {
-      final pref = await SharedPreferences.getInstance();
-      _db
-          .collection('engineers')
-          .doc(pref.getString('uid'))
-          .set(engineer.toJson());
+      var user = FirebaseAuth.instance.currentUser;
+      _db.collection('engineers').doc(user!.uid).set(engineer.toJson());
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseException catch (e) {
-      print(e.toString());
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
       final snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }

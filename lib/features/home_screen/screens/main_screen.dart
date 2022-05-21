@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -28,7 +29,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   TextEditingController textController = TextEditingController();
-
+  var user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
@@ -37,6 +38,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     var searchProvider = Provider.of<SearchProvider>(context);
+
     var searchCatProvider =
         Provider.of<SearchCategoryProvider>(context, listen: false);
 

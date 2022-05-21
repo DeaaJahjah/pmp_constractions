@@ -20,7 +20,7 @@ class Project extends Equatable {
   final String imageUrl;
   @JsonKey(name: 'modle_url')
   final String modelUrl;
-  final bool privacy;
+  final ProjectPrivacy privacy;
   @JsonKey(name: 'is_open')
   final bool isOpen;
   @JsonKey(fromJson: _fromJsonGeoPoint, toJson: _toJsonGeoPoint)

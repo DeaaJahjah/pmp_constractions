@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
+import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
+import 'package:pmpconstractions/core/featuers/auth/screens/watting_screen.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SetUpCompanyProfile extends StatefulWidget {
@@ -216,111 +220,121 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
       )
     ];
 
-    return Scaffold(
-      bottomNavigationBar: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: TextButton(
-                onPressed: () {
-                  if (liquidController.currentPage > 0) {
-                    liquidController.animateToPage(
-                        page: liquidController.currentPage - 1);
-                  }
-                  setState(() {});
-                },
-                child: (activePage != 0)
-                    ? const Text('back',
-                        style: TextStyle(
-                          color: beg,
-                          fontFamily: font,
-                          fontWeight: FontWeight.bold,
-                        ))
-                    : const SizedBox()),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.30,
-          ),
-          Expanded(
-            flex: 3,
-            child: AnimatedSmoothIndicator(
-              activeIndex: activePage,
-              count: pages.length,
-              duration: const Duration(milliseconds: 300),
-              effect: const WormEffect(
-                activeDotColor: orange,
-                dotHeight: 10,
-                dotWidth: 10,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: TextButton(
-                onPressed: () {
-                  if (activePage == 1 && nameController.text.isNotEmpty) {
-                    liquidController.animateToPage(
-                        page: liquidController.currentPage + 1);
-                    setState(() {});
-                    return;
-                  }
-                  if (activePage == 1 && nameController.text.isEmpty) {
-                    const snackBar =
-                        SnackBar(content: Text('The name is required'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    return;
-                  }
-                  if (activePage == 3 && descController.text.isNotEmpty) {
-                    liquidController.animateToPage(
-                        page: liquidController.currentPage + 1);
-                    setState(() {});
-                    return;
-                  }
-                  if (activePage == 3 && descController.text.isEmpty) {
-                    const snackBar =
-                        SnackBar(content: Text('The name is required'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    return;
-                  }
+    return Consumer<AuthSataProvider>(
+        builder: (context, value, child) => (AuthState.waiting ==
+                Provider.of<AuthSataProvider>(context).authState)
+            ? const WattingScreen()
+            : Scaffold(
+                bottomNavigationBar: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: TextButton(
+                          onPressed: () {
+                            if (liquidController.currentPage > 0) {
+                              liquidController.animateToPage(
+                                  page: liquidController.currentPage - 1);
+                            }
+                            setState(() {});
+                          },
+                          child: (activePage != 0)
+                              ? const Text('back',
+                                  style: TextStyle(
+                                    color: beg,
+                                    fontFamily: font,
+                                    fontWeight: FontWeight.bold,
+                                  ))
+                              : const SizedBox()),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.30,
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: AnimatedSmoothIndicator(
+                        activeIndex: activePage,
+                        count: pages.length,
+                        duration: const Duration(milliseconds: 300),
+                        effect: const WormEffect(
+                          activeDotColor: orange,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: TextButton(
+                          onPressed: () {
+                            if (activePage == 1 &&
+                                nameController.text.isNotEmpty) {
+                              liquidController.animateToPage(
+                                  page: liquidController.currentPage + 1);
+                              setState(() {});
+                              return;
+                            }
+                            if (activePage == 1 &&
+                                nameController.text.isEmpty) {
+                              const snackBar = SnackBar(
+                                  content: Text('The name is required'));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              return;
+                            }
+                            if (activePage == 3 &&
+                                descController.text.isNotEmpty) {
+                              liquidController.animateToPage(
+                                  page: liquidController.currentPage + 1);
+                              setState(() {});
+                              return;
+                            }
+                            if (activePage == 3 &&
+                                descController.text.isEmpty) {
+                              const snackBar = SnackBar(
+                                  content: Text('The name is required'));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              return;
+                            }
 
-                  if (activePage + 1 < pages.length) {
-                    liquidController.animateToPage(
-                        page: liquidController.currentPage + 1);
-                  }
-                  setState(() {});
-                },
-                child: (activePage != 4)
-                    ? const Text('Next',
-                        style: TextStyle(
-                          color: beg,
-                          fontFamily: font,
-                          fontWeight: FontWeight.bold,
-                        ))
-                    : const SizedBox()),
-          ),
-        ],
-      ),
-      appBar: AppBar(
-        elevation: 0.0,
-        title: const Text(
-          'Set up your profile',
-        ),
-        centerTitle: true,
-      ),
-      body: Builder(
-          builder: ((context) => Stack(
-                children: [
-                  LiquidSwipe(
-                    disableUserGesture: true,
-                    pages: pages,
-                    liquidController: liquidController,
-                    onPageChangeCallback: (index) {
-                      activePage = index;
-                      setState(() {});
-                    },
+                            if (activePage + 1 < pages.length) {
+                              liquidController.animateToPage(
+                                  page: liquidController.currentPage + 1);
+                            }
+                            setState(() {});
+                          },
+                          child: (activePage != 4)
+                              ? const Text('Next',
+                                  style: TextStyle(
+                                    color: beg,
+                                    fontFamily: font,
+                                    fontWeight: FontWeight.bold,
+                                  ))
+                              : const SizedBox()),
+                    ),
+                  ],
+                ),
+                appBar: AppBar(
+                  elevation: 0.0,
+                  title: const Text(
+                    'Set up your profile',
                   ),
-                ],
-              ))),
-    );
+                  centerTitle: true,
+                ),
+                body: Builder(
+                    builder: ((context) => Stack(
+                          children: [
+                            LiquidSwipe(
+                              disableUserGesture: true,
+                              pages: pages,
+                              liquidController: liquidController,
+                              onPageChangeCallback: (index) {
+                                activePage = index;
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                        ))),
+              ));
   }
 }

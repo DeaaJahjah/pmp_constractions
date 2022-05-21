@@ -6,18 +6,15 @@ import 'package:pmpconstractions/core/featuers/auth/screens/choosing_screen.dart
 import 'package:pmpconstractions/core/featuers/auth/screens/login_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FlutterFireAuthService {
   final FirebaseAuth _firebaseAuth;
-  final pref = SharedPreferences.getInstance();
   FlutterFireAuthService(this._firebaseAuth);
 
   Stream<User?> get authStateChanges => _firebaseAuth.idTokenChanges();
 
   Future<void> signOut(context) async {
     await _firebaseAuth.signOut();
-    pref.then((value) => value.remove('uid'));
     Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);
   }
 
@@ -25,20 +22,17 @@ class FlutterFireAuthService {
       {required String email,
       required String password,
       required BuildContext context}) async {
-    UserCredential crid;
     context
         .read<AuthSataProvider>()
         .changeAuthState(newState: AuthState.waiting);
 
     try {
-      crid = await _firebaseAuth.signInWithEmailAndPassword(
+      _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
 
       context
           .read<AuthSataProvider>()
           .changeAuthState(newState: AuthState.notSet);
-
-      pref.then((value) => value.setString('uid', crid.user!.uid));
 
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
 
@@ -61,12 +55,13 @@ class FlutterFireAuthService {
         .read<AuthSataProvider>()
         .changeAuthState(newState: AuthState.waiting);
     try {
-      var crid = await _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+
       context
           .read<AuthSataProvider>()
           .changeAuthState(newState: AuthState.notSet);
-      pref.then((value) => value.setString('uid', crid.user!.uid));
+
       Navigator.of(context).pushReplacementNamed(ChoosingScreen.routeName);
 
       return "Success";

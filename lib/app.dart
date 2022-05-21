@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/routes/router.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/user_credential_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
@@ -11,7 +13,6 @@ import 'package:pmpconstractions/features/home_screen/providers/engineer_provide
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_category_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
-import 'package:pmpconstractions/features/home_screen/screens/project_details_screen.dart';
 import 'package:pmpconstractions/language_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -56,6 +57,10 @@ class App extends StatelessWidget {
             create: (context) =>
                 context.read<FlutterFireAuthService>().authStateChanges,
           ),
+          ChangeNotifierProvider<AuthSataProvider>(
+              create: (context) => AuthSataProvider()),
+          ChangeNotifierProvider<UserCredentialProvider>(
+              create: (context) => UserCredentialProvider()),
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(
