@@ -5,8 +5,9 @@ import 'package:pmpconstractions/core/widgets/custome_row.dart';
 import 'package:pmpconstractions/core/widgets/elevated_button_custom.dart';
 import 'package:pmpconstractions/features/home_screen/models/company.dart';
 import 'package:pmpconstractions/features/home_screen/services/company_db_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart' as latLng;
 
 class CompanyProfile extends StatefulWidget {
   static const routeName = '/company_profile';
@@ -18,16 +19,9 @@ class CompanyProfile extends StatefulWidget {
 }
 
 class _CompanyProfileState extends State<CompanyProfile> {
-  var pref = SharedPreferences.getInstance();
   String? id;
   @override
   void initState() {
-    pref.then((value) {
-      setState(() {
-        id = value.getString('uid');
-      });
-    });
-    print(widget.companyId);
     super.initState();
   }
 
@@ -148,11 +142,38 @@ class _CompanyProfileState extends State<CompanyProfile> {
                       color: beg,
                     ),
                     Container(
-                      width: 320,
-                      height: 145,
-                      child: Image.asset(
-                        'assets/images/map.png',
-                        fit: BoxFit.fill,
+                      margin: const EdgeInsets.all(10),
+                      width: MediaQuery.of(context).size.width,
+                      height: 250,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: FlutterMap(
+                          options: MapOptions(
+                            center: latLng.LatLng(51.5, -0.09),
+                            zoom: 13.0,
+                          ),
+                          layers: [
+                            TileLayerOptions(
+                              urlTemplate:
+                                  'https://api.mapbox.com/styles/v1/semicolon1212/cl37ar3u7000b14ml7vgxou0y/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic2VtaWNvbG9uMTIxMiIsImEiOiJjbDM3YWk5YmYxNGRjM2NxenFwcmtkczB2In0.xF4OPPtXQETo4loq0BeS2g',
+                              additionalOptions: {
+                                'accessToken':
+                                    'pk.eyJ1Ijoic2VtaWNvbG9uMTIxMiIsImEiOiJjbDM3YWk5YmYxNGRjM2NxenFwcmtkczB2In0.xF4OPPtXQETo4loq0BeS2g',
+                                'id': 'mapbox.mapbox-streets-v8',
+                              },
+                            ),
+                            MarkerLayerOptions(
+                              markers: [
+                                Marker(
+                                    width: 50.0,
+                                    height: 50.0,
+                                    point: latLng.LatLng(51.5, -0.09),
+                                    builder: (ctx) => Image.asset(
+                                        'assets/images/marker.png')),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),

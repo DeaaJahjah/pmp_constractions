@@ -77,6 +77,9 @@ dependencies:
   file_picker: ^4.5.1
   #json
   json_annotation: ^4.4.0 
+  #map
+  flutter_map: ^0.14.0
+  latlong2: ^0.8.1
   
 
 dev_dependencies:
