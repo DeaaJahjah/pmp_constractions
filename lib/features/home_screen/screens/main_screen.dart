@@ -46,13 +46,8 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-                onTap: () {
-                  Provider.of<FlutterFireAuthService>(context, listen: false)
-                      .signOut(context);
-                },
-                child: const Icon(Icons.notifications, color: darkBlue)),
+            padding:  EdgeInsets.all(8.0),             
+                child: const Icon(Icons.notifications, color: darkBlue)
           )
         ],
         leading: InkWell(

@@ -6,8 +6,11 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/watting_screen.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
+import 'package:pmpconstractions/core/widgets/number_text_field.dart';
+import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:pmpconstractions/core/extensions/loc.dart';
 
 class SetUpCompanyProfile extends StatefulWidget {
   static const routeName = '/c';
@@ -23,6 +26,8 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
   final liquidController = LiquidController();
   final nameController = TextEditingController();
   final descController = TextEditingController();
+   var phoneController = TextEditingController();
+    List<String> phoneNum = [];
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +52,8 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
               ),
               maxRadius: 60),
           sizedBoxMedium,
-          const Text('Add a picture',
-              style: TextStyle(
-                color: beg,
-                fontFamily: font,
-                fontSize: 24,
-              )),
+         Text(context.loc.add_pic,
+              style: Theme.of(context).textTheme.headlineMedium),
         ]),
       ),
       Container(
@@ -69,7 +70,7 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
           sizedBoxMedium,
           TextFieldCustome(
             controller: nameController,
-            text: 'Name',
+            text: context.loc.name,
           ),
           sizedBoxMedium,
         ]),
@@ -87,52 +88,32 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
             ),
             sizedBoxXLarge,
             sizedBoxMedium,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 230,
-                  height: 40,
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.all(14),
-                      label: Text(
-                        'Number',
-                        style: TextStyle(
-                            color: beg,
-                            fontFamily: font,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal),
-                      ),
-                      alignLabelWithHint: true,
-                    ),
-                    textAlign: TextAlign.start,
-                    autofocus: false,
-                    style: const TextStyle(
-                        color: beg,
-                        fontFamily: font,
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal),
+          NumberTextField(
+              controller: phoneController,
+              onPressed: () {
+                if (phoneController.text != '' && phoneNum.length < 2) {
+                  phoneNum.add(phoneController.text);
+                  setState(() {
+                    phoneController.text = '';
+                  });
+                }
+              },
+            ),
+            sizedBoxMedium,
+            SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => PhoneCard(
+                    text: phoneNum[index],
+                    onTap: () {
+                      phoneNum.removeAt(index);
+                      setState(() {});
+                    },
                   ),
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.add,
-                        size: 15,
-                        color: beg,
-                      )),
-                  decoration: BoxDecoration(
-                    color: orange,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                )
-              ],
-            )
+                  itemCount: phoneNum.length,
+                )),
           ],
         ),
       ),
@@ -152,36 +133,17 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
               child: TextFormField(
                 controller: descController,
                 maxLines: 4,
-                decoration: const InputDecoration(
-                  prefixStyle: TextStyle(
-                      color: beg,
-                      fontFamily: font,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
+                decoration:  InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.all(14),
-                  labelStyle: TextStyle(
-                    color: beg,
-                    fontFamily: font,
-                    fontSize: 24,
-                  ),
                   label: Text(
-                    'Describtion',
-                    style: TextStyle(
-                        color: orange,
-                        fontFamily: font,
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal),
+                    context.loc.descripton,
+                    style:Theme.of(context).textTheme.bodySmall
                   ),
                   alignLabelWithHint: true,
                 ),
                 textAlign: TextAlign.start,
                 autofocus: false,
-                style: const TextStyle(
-                    color: beg,
-                    fontFamily: font,
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal),
               ),
             ),
           ],
@@ -203,15 +165,11 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
             height: 200,
             child: TextFormField(
               onTap: () {},
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(
                 isDense: true,
                 label: Text(
-                  'Location',
-                  style: TextStyle(
-                      color: orange,
-                      fontFamily: font,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
+                  context.loc.location,
+                  style:Theme.of(context).textTheme.bodySmall,
                 ),
               ),
             ),

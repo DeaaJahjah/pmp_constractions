@@ -2,11 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/client_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/company_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/engineer_profile.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
 import 'package:pmpconstractions/features/home_screen/screens/menu_row.dart';
 import 'package:pmpconstractions/features/settings/settings_screen.dart';
+import 'package:provider/provider.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -80,7 +83,11 @@ class _MenuScreenState extends State<MenuScreen> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.47,
           ),
-          const MenuRow(icon: Icons.logout, text: 'Logout')
+          InkWell(onTap: () {
+                  Provider.of<FlutterFireAuthService>(context, listen: false)
+                      .signOut(context);
+                },
+            child:  MenuRow(icon: Icons.logout, text: context.loc.location))
         ],
       ),
     );
