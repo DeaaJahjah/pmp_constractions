@@ -13,9 +13,11 @@ import 'package:pmpconstractions/features/home_screen/providers/engineer_provide
 import 'package:pmpconstractions/features/home_screen/screens/menu_row.dart';
 import 'package:pmpconstractions/features/settings/settings_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MenuScreen extends StatefulWidget {
-  const MenuScreen({Key? key}) : super(key: key);
+  PanelController? panelController;
+  MenuScreen({Key? key, this.panelController}) : super(key: key);
 
   @override
   State<MenuScreen> createState() => _MenuScreenState();
@@ -30,7 +32,6 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     var user = FirebaseAuth.instance.currentUser;
-    print('menu');
 
     String? imgUrl;
     String name = '';
@@ -120,7 +121,9 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
           sizedBoxLarge,
           InkWell(
-            onTap: () {},
+            onTap: () {
+              widget.panelController!.open();
+            },
             child: MenuRow(
               icon: Icons.home,
               text: context.loc.projects,

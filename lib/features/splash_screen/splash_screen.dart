@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/login_screen.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
+import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -44,11 +45,9 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-
-    //fetch Data form database  
+    ProjectDbService().getOpenProjects(['21sFqVCd5qwcwtYWTO02']);
+    //fetch Data form database
     Provider.of<DataProvider>(context, listen: false).fetchData();
-        // Provider.of<UserCredentialProvider>(context, listen: false)
-        //     .setUser(user.uid, user.displayName.toString());
 
     Timer(
         const Duration(
@@ -57,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen>
       _animationController.stop();
       if (user != null) {
         print(user.displayName);
-      
+
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } else {
         Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);
