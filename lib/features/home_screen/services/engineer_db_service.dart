@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
+import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class EngineerDbService {
   Future<Engineer> getEngineerById(String id) async {
     try {
       var doc = await _db.collection('engineers').doc(id).get();
-      
+
       Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
       return Engineer.fromJson(cc);
     } on FirebaseException catch (e) {
@@ -37,6 +38,9 @@ class EngineerDbService {
     try {
       var user = FirebaseAuth.instance.currentUser;
       _db.collection('engineers').doc(user!.uid).set(engineer.toJson());
+
+      await Provider.of<DataProvider>(context, listen: false).fetchData();
+
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
       Navigator.push(

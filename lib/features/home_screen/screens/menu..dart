@@ -7,7 +7,6 @@ import 'package:pmpconstractions/core/featuers/auth/screens/client_profile.dart'
 import 'package:pmpconstractions/core/featuers/auth/screens/company_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/engineer_profile.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
-import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
@@ -30,39 +29,48 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-     var user = FirebaseAuth.instance.currentUser;
-     print('menu');
+    var user = FirebaseAuth.instance.currentUser;
+    print('menu');
 
-String? imgUrl;
-String name = '';
-      switch (user!.displayName) {
-                  case 'engineer':
-               if ( Provider.of<EnginnerProvider>(context,listen:true).engineers.isNotEmpty)
-                 {
-                   var engineer= Provider.of<EnginnerProvider>(context,listen:true).engineers.firstWhere((element) => element.userId==user.uid);
-                 imgUrl = engineer.profilePicUrl;
-                  name= engineer.name;
-                  }
-                    break;
-                  case 'company':
-                    if(Provider.of<CompanyProvider>(context,listen: true).companies.isNotEmpty){
- var company = Provider.of<CompanyProvider>(context,listen: true).companies.firstWhere((element) => element.userId==user.uid);
-                  imgUrl=company.profilePicUrl;
-                  name= company.name;
-                    }
-                 
-                   
-                    break;
-                  case 'client':
-                  if(Provider.of<DataProvider>(context,listen:  true).clients.isNotEmpty){
-               var client = Provider.of<DataProvider>(context,listen:  true).clients.firstWhere((element) => element.userId==user.uid);
-                  imgUrl=client.profilePicUrl;
-                  name= client.name;
+    String? imgUrl;
+    String name = '';
+    switch (user!.displayName) {
+      case 'engineer':
+        if (Provider.of<EnginnerProvider>(context, listen: true)
+            .engineers
+            .isNotEmpty) {
+          var engineer = Provider.of<EnginnerProvider>(context, listen: true)
+              .engineers
+              .firstWhere((element) => element.userId == user.uid);
+          imgUrl = engineer.profilePicUrl;
+          name = engineer.name;
+        }
+        break;
+      case 'company':
+        if (Provider.of<CompanyProvider>(context, listen: true)
+            .companies
+            .isNotEmpty) {
+          var company = Provider.of<CompanyProvider>(context, listen: true)
+              .companies
+              .firstWhere((element) => element.userId == user.uid);
+          imgUrl = company.profilePicUrl;
+          name = company.name;
+        }
 
-                  }
-              
-                    break;
-                    }
+        break;
+      case 'client':
+        if (Provider.of<DataProvider>(context, listen: true)
+            .clients
+            .isNotEmpty) {
+          var client = Provider.of<DataProvider>(context, listen: true)
+              .clients
+              .firstWhere((element) => element.userId == user.uid);
+          imgUrl = client.profilePicUrl;
+          name = client.name;
+        }
+
+        break;
+    }
 
     return Padding(
       padding: const EdgeInsets.only(top: 50, left: 30),
@@ -72,7 +80,6 @@ String name = '';
         children: [
           InkWell(
               onTap: () async {
-               
                 print(user.displayName);
                 switch (user.displayName) {
                   case 'engineer':
@@ -95,17 +102,17 @@ String name = '';
                     break;
                 }
               },
-              child:(imgUrl!=null) ? CircleAvatar(
-                
-                backgroundColor: orange, radius: 40,
-                backgroundImage: NetworkImage(imgUrl),
-                ):CircleAvatar(
-                
-                backgroundColor: orange, radius: 40,
-                backgroundImage:AssetImage('assets/images/prof.png'),
-                )
-                
-                ),
+              child: (imgUrl != null)
+                  ? CircleAvatar(
+                      backgroundColor: orange,
+                      radius: 40,
+                      backgroundImage: NetworkImage(imgUrl),
+                    )
+                  : const CircleAvatar(
+                      backgroundColor: orange,
+                      radius: 40,
+                      backgroundImage: AssetImage('assets/images/prof.png'),
+                    )),
           sizedBoxSmall,
           Text(
             name,
@@ -114,7 +121,7 @@ String name = '';
           sizedBoxLarge,
           InkWell(
             onTap: () {},
-            child:  MenuRow(
+            child: MenuRow(
               icon: Icons.home,
               text: context.loc.projects,
             ),
@@ -123,19 +130,20 @@ String name = '';
           InkWell(
             onTap: (() =>
                 Navigator.of(context).pushNamed(SettingsScreen.routeName)),
-            child:  MenuRow(
+            child: MenuRow(
               icon: Icons.settings,
-              text:context.loc.settings,
+              text: context.loc.settings,
             ),
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.47,
           ),
-          InkWell(onTap: () {
-                  Provider.of<FlutterFireAuthService>(context, listen: false)
-                      .signOut(context);
-                },
-            child:  MenuRow(icon: Icons.logout, text: context.loc.log_out))
+          InkWell(
+              onTap: () {
+                Provider.of<FlutterFireAuthService>(context, listen: false)
+                    .signOut(context);
+              },
+              child: MenuRow(icon: Icons.logout, text: context.loc.log_out))
         ],
       ),
     );

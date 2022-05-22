@@ -32,6 +32,7 @@ class _MainScreenState extends State<MainScreen> {
   var user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
+    setState(() {});
     super.initState();
   }
 
@@ -44,11 +45,10 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
+        actions: const [
           Padding(
-            padding:  EdgeInsets.all(8.0),             
-                child: const Icon(Icons.notifications, color: darkBlue)
-          )
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.notifications, color: darkBlue))
         ],
         leading: InkWell(
             onTap: () {
