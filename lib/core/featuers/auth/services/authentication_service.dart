@@ -18,7 +18,7 @@ class FlutterFireAuthService {
     Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);
   }
 
-  Future<String?> signIn(
+  Future<void> signIn(
       {required String email,
       required String password,
       required BuildContext context}) async {
@@ -36,7 +36,7 @@ class FlutterFireAuthService {
 
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
 
-      return "Success";
+     
     } on FirebaseAuthException catch (e) {
       context
           .read<AuthSataProvider>()
@@ -44,7 +44,7 @@ class FlutterFireAuthService {
       final snakBar = SnackBar(content: Text(e.message.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snakBar);
     }
-    return null;
+   
   }
 
   Future<String?> signUp(

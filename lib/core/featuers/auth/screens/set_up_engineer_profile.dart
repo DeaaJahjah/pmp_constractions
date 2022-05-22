@@ -12,6 +12,7 @@ import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:pmpconstractions/core/widgets/number_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
+import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/services/engineer_db_service.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -19,7 +20,7 @@ import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:path/path.dart' as path;
 
 class SetUpEngineerProfile extends StatefulWidget {
-  static const routeName = '/va';
+  static const routeName = '/MNMN';
   const SetUpEngineerProfile({Key? key}) : super(key: key);
 
   @override
@@ -36,10 +37,9 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
   var programController = TextEditingController();
   final nameController = TextEditingController();
   XFile? pickedimage;
-  String name = '';
   List<String> phoneNum = [];
   Map<String, List<String>>? experiens;
-  String specialization = '';
+  String specialization = 'Select';
   String fileName = '';
   File imageFile = File('');
   _pickImage() async {
@@ -54,8 +54,9 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
     }
   }
 
-  String dropdownvalue = 'Architectural engineer';
+
   var items = [
+    'Select',
     'Architectural engineer',
     'Civil engineer',
     'Elctricity  engineer',
@@ -185,12 +186,12 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                           fontWeight: FontWeight.bold),
                       alignment: AlignmentDirectional.center,
                       focusColor: orange,
-                      value: dropdownvalue,
+                      value: specialization,
                       isDense: true,
                       onChanged: (String? newValue) {
                         setState(() {
-                          dropdownvalue = newValue!;
-                          specialization = newValue;
+                          
+                          specialization = newValue!;
                         });
                       },
                       items: items.map((String items) {
@@ -253,7 +254,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                           phoneNumbers: phoneNum,
                           profilePicUrl: url),
                       context);
-                  return;
+              
                 }
               },
               child: Padding(
@@ -346,16 +347,11 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                                 .showSnackBar(snackBar);
                             return;
                           }
-                          if (activePage == 3 && specialization.isNotEmpty) {
-                            liquidController.animateToPage(
-                                page: liquidController.currentPage + 1);
-                            setState(() {});
-                            return;
-                          }
-                          if (activePage == 3 && specialization.isEmpty) {
+                        
+                          if (activePage == 3 && specialization== 'Select') {
                             const snackBar = SnackBar(
                                 content:
-                                    Text('The specialization is required'));
+                                    Text('choose one frome items'));
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                             return;

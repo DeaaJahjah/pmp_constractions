@@ -24,6 +24,7 @@ class EngineerDbService {
   Future<Engineer> getEngineerById(String id) async {
     try {
       var doc = await _db.collection('engineers').doc(id).get();
+      
       Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
       return Engineer.fromJson(cc);
     } on FirebaseException catch (e) {

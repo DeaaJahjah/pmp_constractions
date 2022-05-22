@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/features/home_screen/models/company.dart';
+import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:provider/provider.dart';
 
 class CompanyDbService {
@@ -33,6 +34,8 @@ class CompanyDbService {
       _db.collection('companies').doc(user!.uid).set(company.toJson());
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
+            Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);

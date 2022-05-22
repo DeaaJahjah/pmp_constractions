@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pmpconstractions/core/featuers/auth/providers/user_credential_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/login_screen.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
@@ -46,7 +45,10 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
 
-    //fetch Data form database
+    //fetch Data form database  
+    Provider.of<DataProvider>(context, listen: false).fetchData();
+        // Provider.of<UserCredentialProvider>(context, listen: false)
+        //     .setUser(user.uid, user.displayName.toString());
 
     Timer(
         const Duration(
@@ -55,9 +57,7 @@ class _SplashScreenState extends State<SplashScreen>
       _animationController.stop();
       if (user != null) {
         print(user.displayName);
-        Provider.of<DataProvider>(context, listen: false).fetchData();
-        Provider.of<UserCredentialProvider>(context, listen: false)
-            .setUser(user.uid, user.displayName.toString());
+      
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } else {
         Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);

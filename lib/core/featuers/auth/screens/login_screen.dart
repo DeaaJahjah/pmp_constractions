@@ -61,12 +61,18 @@ class _LogInScreenState extends State<LogInScreen> {
                     (state.authState == AuthState.notSet)
                         ? ElevatedButton(
                             onPressed: () {
-                              Provider.of<FlutterFireAuthService>(context,
+if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty)
+
+                          {    Provider.of<FlutterFireAuthService>(context,
                                       listen: false)
                                   .signIn(
                                       email: emailController.text,
                                       password: passwordController.text,
-                                      context: context);
+                                      context: context);}
+                                      else {
+                                         final snakBar = SnackBar(content: Text('Please enter email and password'));
+      ScaffoldMessenger.of(context).showSnackBar(snakBar);
+                                      }
                             },
                             child: Text(
                               context.loc.login_btn,

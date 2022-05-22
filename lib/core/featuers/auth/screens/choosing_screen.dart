@@ -79,15 +79,18 @@ class _ChoosingScreenState extends State<ChoosingScreen> {
         sizedBoxLarge,
         ElevatedButton(
           onPressed: () {
-            firebase.currentUser!.updateDisplayName(UserType.engineer.name);
+            
             switch (userType) {
               case UserType.engineer:
+              firebase.currentUser!.updateDisplayName(UserType.engineer.name);
                 Navigator.of(context).pushNamed(SetUpEngineerProfile.routeName);
                 break;
               case UserType.company:
+              firebase.currentUser!.updateDisplayName(UserType.company.name);
                 Navigator.of(context).pushNamed(SetUpCompanyProfile.routeName);
                 break;
               case UserType.client:
+              firebase.currentUser!.updateDisplayName(UserType.client.name);
                 Navigator.of(context).pushNamed(SetUpClientProfile.routeName);
                 break;
               default:

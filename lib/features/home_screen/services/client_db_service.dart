@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/features/home_screen/models/client.dart';
+import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -31,11 +32,12 @@ class ClientDbService {
   addClient(Client client, context) async {
     try {
       var user = FirebaseAuth.instance.currentUser;
-      _db.collection('client').doc(user!.uid).set(client.toJson());
-
-      Provider.of<AuthSataProvider>(context, listen: false)
+      _db.collection('clients').doc(user!.uid).set(client.toJson());
+ 
+      
+   await Provider.of<DataProvider>(context, listen: false).fetchData();
+Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
-
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MainScreen()));
     } on FirebaseException catch (e) {

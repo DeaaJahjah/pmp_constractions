@@ -1,17 +1,24 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/watting_screen.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:pmpconstractions/core/widgets/number_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
+import 'package:pmpconstractions/features/home_screen/models/company.dart';
+import 'package:pmpconstractions/features/home_screen/services/company_db_service.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
-
+import 'package:path/path.dart' as path;
 class SetUpCompanyProfile extends StatefulWidget {
   static const routeName = '/c';
   const SetUpCompanyProfile({Key? key}) : super(key: key);
@@ -27,6 +34,20 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
   final nameController = TextEditingController();
   final descController = TextEditingController();
    var phoneController = TextEditingController();
+    XFile? pickedimage;
+String fileName = '';
+  File imageFile = File('');
+  _pickImage() async {
+    final picker = ImagePicker();
+    try {
+      pickedimage = await picker.pickImage(source: ImageSource.gallery);
+      fileName = path.basename(pickedimage!.path);
+      imageFile = File(pickedimage!.path);
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
     List<String> phoneNum = [];
 
   @override
@@ -43,14 +64,26 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
             fit: BoxFit.fill,
           ),
           sizedBoxXLarge,
-          const CircleAvatar(
-              backgroundColor: karmedi,
-              child: Icon(
-                Icons.person_add,
-                size: 50,
-                color: beg,
+          InkWell(
+              onTap: () {
+              _pickImage();
+              setState(() {});
+              print(imageFile);
+            },
+            child: CircleAvatar(
+                backgroundColor: karmedi,
+                  radius: 60,                
+                child: (pickedimage == null)?
+                Icon(
+                  Icons.person_add,
+                  size: 50,
+                  color: beg,
+                ): CircleAvatar(
+                        radius: 60,
+                         backgroundImage: FileImage(imageFile),
+               ),
               ),
-              maxRadius: 60),
+        ),
           sizedBoxMedium,
          Text(context.loc.add_pic,
               style: Theme.of(context).textTheme.headlineMedium),
@@ -174,6 +207,38 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
               ),
             ),
           ),
+       
+              ElevatedButton(
+              onPressed: () async {
+                Provider.of<AuthSataProvider>(context, listen: false)
+                    .changeAuthState(newState: AuthState.waiting);
+
+               
+                String url = '';
+                if (imageFile != File('')) {
+                  url = await FileService()
+                      .uploadeimage(fileName, imageFile, context);
+                }
+                if (url != 'error') {
+                  CompanyDbService().addCompany(
+                      Company(
+                          name: nameController.text,
+                          phoneNumbers: phoneNum,
+                          profilePicUrl: url,
+                          description: descController.text,
+                          location: GeoPoint(12,20)
+                          ),
+                      context);
+                  return;
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 140, right: 140),
+                child: Text(
+                  context.loc.done,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ))
         ]),
       )
     ];
