@@ -13,6 +13,9 @@ Client _$ClientFromJson(Map<String, dynamic> json) => Client(
           ?.map((e) => e as String)
           .toList(),
       profilePicUrl: json['profile_pic_url'] as String?,
+      projectsIDs: (json['projects_ids'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
@@ -20,4 +23,5 @@ Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
       'name': instance.name,
       'phone_numbers': instance.phoneNumbers,
       'profile_pic_url': instance.profilePicUrl,
+      'projects_ids': instance.projectsIDs,
     };

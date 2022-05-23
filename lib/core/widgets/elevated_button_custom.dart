@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 
-class ElevatedButtonCustom extends StatelessWidget {
+class ElevatedButtonCustom extends StatefulWidget {
   final String text;
-  final Function onPressed;
-  final Color color;
+  final Function()? onPressed;
   final Color bgColor;
   const ElevatedButtonCustom(
       {Key? key,
       required this.text,
       required this.onPressed,
-      required this.color,
       required this.bgColor})
       : super(
           key: key,
         );
+
+  @override
+  State<ElevatedButtonCustom> createState() => _ElevatedButtonCustomState();
+}
+
+class _ElevatedButtonCustomState extends State<ElevatedButtonCustom> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -23,18 +27,14 @@ class ElevatedButtonCustom extends StatelessWidget {
         child: ElevatedButton( 
           style: ButtonStyle(
             side: MaterialStateProperty.all(
-              BorderSide(style: BorderStyle.solid, color: color),
+              BorderSide(style: BorderStyle.solid, color: beg),
             ),
-            backgroundColor: MaterialStateProperty.all<Color>(bgColor),
+            backgroundColor: MaterialStateProperty.all<Color>(widget.bgColor),
           ),
-          onPressed: onPressed(),
+          onPressed: widget.onPressed,
           child: Text(
-            text,
-            style: const TextStyle(
-                color: orange,
-                fontFamily: font,
-                fontSize: 20,
-                fontWeight: FontWeight.normal),
+            widget.text,
+            style: Theme.of(context).textTheme.bodySmall
           ),
         ));
   }

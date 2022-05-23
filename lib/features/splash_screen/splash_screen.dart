@@ -8,7 +8,7 @@ import 'package:pmpconstractions/features/home_screen/services/project_db_servic
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/h';
   const SplashScreen({Key? key}) : super(key: key);
 
   @override

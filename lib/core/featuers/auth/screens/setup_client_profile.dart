@@ -156,7 +156,9 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                           Client(
                               name: nameController.text,
                               phoneNumbers: phoneNum,
-                              profilePicUrl: url),
+                              profilePicUrl: url,
+                              projectsIDs: []
+                              ),
                           context);
                     }
                   },

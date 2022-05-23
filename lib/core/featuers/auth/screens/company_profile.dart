@@ -119,13 +119,11 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         ElevatedButtonCustom(
                           text: 'About',
                           onPressed: () {},
-                          color: beg,
-                          bgColor: beg,
+                         bgColor: beg
                         ),
                         ElevatedButtonCustom(
                           text: 'Contact info',
                           onPressed: () {},
-                          color: beg,
                           bgColor: darkBlue,
                         )
                       ],
@@ -183,7 +181,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                     CustomeRow(
                         icon: Icons.filter_frames_sharp,
                         text: 'Contact info',
-                        editIcon: Icons.phone),
+                       ),
                     Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(

@@ -37,7 +37,23 @@ class ProjectDbService {
     }
     return projects;
   }
+Future<List<Project>> getPublicProjects(List<String> projectsIDs) async {
+    List<DocumentSnapshot<Map<String, dynamic>>> queryData = [];
 
+    for (var docID in projectsIDs) {
+      queryData.add(await _db.collection('projects').doc(docID).get());
+    }
+
+    List<Project> projects = [];
+
+    for (var doc in queryData) {
+      Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
+      if (cc['privacy'] == 'public') {
+        projects.add(Project.fromFirestore(doc));
+      }
+    }
+    return projects;
+  }
   Future<Project> getProjectById(String id) async {
     var doc = await _db.collection('projects').doc(id).get();
     Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;

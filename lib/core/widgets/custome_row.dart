@@ -5,9 +5,9 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 class CustomeRow extends StatelessWidget {
   final IconData icon;
   final String text;
-  IconData? editIcon;
 
-  CustomeRow({Key? key, required this.icon, required this.text, this.editIcon})
+
+  CustomeRow({Key? key, required this.icon, required this.text})
       : super(key: key);
 
   @override
@@ -22,7 +22,8 @@ class CustomeRow extends StatelessWidget {
                 icon,
                 size: 20,
                 color: orange,
-              ),           
+              ),  
+              SizedBox(width: 5),         
               Text(
                 text,
                 style: const TextStyle(
@@ -34,14 +35,7 @@ class CustomeRow extends StatelessWidget {
             ],
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: Icon(
-            editIcon,
-            color: orange,
-            size: 20,
-          ),
-        )
+       
       ],
     );
   }

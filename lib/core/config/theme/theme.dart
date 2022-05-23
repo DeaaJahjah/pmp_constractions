@@ -79,7 +79,7 @@ ThemeData darkTheme = ThemeData(
         bodyMedium: const TextStyle(
             color: orange,
             fontFamily: font,
-            fontSize: 24,
+            fontSize: 32,
             fontWeight: FontWeight.bold),
         bodyLarge: const TextStyle(
             color: beg,
