@@ -12,7 +12,6 @@ import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:pmpconstractions/core/widgets/number_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
-import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/services/engineer_db_service.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -53,7 +52,6 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
       print(e);
     }
   }
-
 
   var items = [
     'Select',
@@ -190,7 +188,6 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                       isDense: true,
                       onChanged: (String? newValue) {
                         setState(() {
-                          
                           specialization = newValue!;
                         });
                       },
@@ -252,9 +249,9 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                           specialization: specialization,
                           experience: experiens,
                           phoneNumbers: phoneNum,
-                          profilePicUrl: url),
+                          profilePicUrl: url,
+                          projectsIDs: const []),
                       context);
-              
                 }
               },
               child: Padding(
@@ -347,11 +344,10 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                                 .showSnackBar(snackBar);
                             return;
                           }
-                        
-                          if (activePage == 3 && specialization== 'Select') {
+
+                          if (activePage == 3 && specialization == 'Select') {
                             const snackBar = SnackBar(
-                                content:
-                                    Text('choose one frome items'));
+                                content: Text('choose one frome items'));
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                             return;

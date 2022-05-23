@@ -18,6 +18,9 @@ Engineer _$EngineerFromJson(Map<String, dynamic> json) => Engineer(
         (k, e) =>
             MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
+      projectsIDs: (json['projects_ids'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$EngineerToJson(Engineer instance) => <String, dynamic>{
@@ -27,4 +30,5 @@ Map<String, dynamic> _$EngineerToJson(Engineer instance) => <String, dynamic>{
       'profile_pic_url': instance.profilePicUrl,
       'specialization': instance.specialization,
       'experience': instance.experience,
+      'projects_ids': instance.projectsIDs,
     };

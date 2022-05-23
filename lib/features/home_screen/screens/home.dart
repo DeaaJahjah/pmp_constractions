@@ -38,8 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30), topRight: Radius.circular(30)),
             color: beg,
-            panelBuilder: (scrollController) =>
-                OpenProjects(scrollController: scrollController),
+            panelBuilder: (scrollController) => OpenProjects(
+                  drawerConroller: drawerConroller,
+                  scrollController: scrollController,
+                  panelController: panelController,
+                ),
             body: ZoomDrawer(
               controller: drawerConroller,
               shadowLayer2Color: white.withOpacity(0.9),

@@ -1,58 +1,71 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
+import 'package:pmpconstractions/features/home_screen/screens/project_details_managmentr_screen.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
+import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class OpenProjects extends StatelessWidget {
+  final ZoomDrawerController drawerConroller;
   final ScrollController scrollController;
-  OpenProjects({Key? key, required this.scrollController}) : super(key: key);
+  final PanelController panelController;
+  OpenProjects(
+      {Key? key,
+      required this.scrollController,
+      required this.panelController,
+      required this.drawerConroller})
+      : super(key: key);
 
   var user = FirebaseAuth.instance.currentUser;
-
-  String? imgUrl;
   List<String>? projectIds;
 
   @override
   Widget build(BuildContext context) {
-    //  switch (user!.displayName) {
-    //   case 'engineer':
-    //     if (Provider.of<EnginnerProvider>(context, listen: true)
-    //         .engineers
-    //         .isNotEmpty) {
-    //       var engineer = Provider.of<EnginnerProvider>(context, listen: true)
-    //           .engineers
-    //           .firstWhere((element) => element.userId == user!.uid);
-    //       projectIds = engineer.profilePicUrl;
-    //       name = engineer.name;
-    //     }
-    //     break;
-    //   case 'company':
-    //     if (Provider.of<CompanyProvider>(context, listen: true)
-    //         .companies
-    //         .isNotEmpty) {
-    //       var company = Provider.of<CompanyProvider>(context, listen: true)
-    //           .companies
-    //           .firstWhere((element) => element.userId == user.uid);
-    //       imgUrl = company.profilePicUrl;
-    //       name = company.name;
-    //     }
+    switch (user!.displayName) {
+      case 'engineer':
+        if (Provider.of<EnginnerProvider>(context, listen: true)
+            .engineers
+            .isNotEmpty) {
+          var engineer = Provider.of<EnginnerProvider>(context, listen: true)
+              .engineers
+              .firstWhere((element) => element.userId == user!.uid);
+          projectIds = engineer.projectsIDs;
+          print(projectIds!.length);
+        }
+        break;
+      // case 'company':
+      //   if (Provider.of<CompanyProvider>(context, listen: true)
+      //       .companies
+      //       .isNotEmpty) {
+      //     var company = Provider.of<CompanyProvider>(context, listen: true)
+      //         .companies
+      //         .firstWhere((element) => element.userId == user.uid);
+      //     imgUrl = company.profilePicUrl;
+      //     name = company.name;
+      //   }
 
-    //     break;
-    //   case 'client':
-    //     if (Provider.of<DataProvider>(context, listen: true)
-    //         .clients
-    //         .isNotEmpty) {
-    //       var client = Provider.of<DataProvider>(context, listen: true)
-    //           .clients
-    //           .firstWhere((element) => element.userId == user.uid);
-    //       imgUrl = client.profilePicUrl;
-    //       name = client.name;
-    //     }
+      //   break;
+      // case 'client':
+      //   if (Provider.of<DataProvider>(context, listen: true)
+      //       .clients
+      //       .isNotEmpty) {
+      //     var client = Provider.of<DataProvider>(context, listen: true)
+      //         .clients
+      //         .firstWhere((element) => element.userId == user.uid);
+      //     imgUrl = client.profilePicUrl;
+      //     name = client.name;
+      //   }
 
-    //     break;
-    // }
+      //   break;
+    }
+    if (projectIds != null) {
+      print(projectIds?.length);
+    }
     return FutureBuilder<List<Project>>(
-      future: ProjectDbService().getOpenProjects(['21sFqVCd5qwcwtYWTO02']),
+      future: ProjectDbService().getOpenProjects(projectIds ?? []),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Project> projects = snapshot.data!;
@@ -64,13 +77,22 @@ class OpenProjects extends StatelessWidget {
               return Container(
                 margin:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                        backgroundImage: NetworkImage(project.imageUrl)),
-                    const SizedBox(width: 10),
-                    Text(project.name)
-                  ],
+                child: InkWell(
+                  onTap: () {
+                    panelController.close();
+                    drawerConroller.close!();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ProjectDetailsManagmentScreen(
+                            projectId: project.projectId)));
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                          backgroundImage: NetworkImage(project.imageUrl)),
+                      const SizedBox(width: 10),
+                      Text(project.name)
+                    ],
+                  ),
                 ),
               );
             },
