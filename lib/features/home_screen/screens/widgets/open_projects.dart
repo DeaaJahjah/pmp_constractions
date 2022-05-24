@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/project_details_managmentr_screen.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
@@ -36,6 +37,20 @@ class OpenProjects extends StatelessWidget {
           print(projectIds!.length);
         }
         break;
+
+      case 'client':
+        if (Provider.of<DataProvider>(context, listen: true)
+            .clients
+            .isNotEmpty) {
+          var client = Provider.of<DataProvider>(context, listen: true)
+              .clients
+              .firstWhere((element) => element.userId == user!.uid);
+
+          projectIds = client.projectsIDs;
+        }
+
+        break;
+
       // case 'company':
       //   if (Provider.of<CompanyProvider>(context, listen: true)
       //       .companies
@@ -47,28 +62,19 @@ class OpenProjects extends StatelessWidget {
       //     name = company.name;
       //   }
 
-      //   break;
-      // case 'client':
-      //   if (Provider.of<DataProvider>(context, listen: true)
-      //       .clients
-      //       .isNotEmpty) {
-      //     var client = Provider.of<DataProvider>(context, listen: true)
-      //         .clients
-      //         .firstWhere((element) => element.userId == user.uid);
-      //     imgUrl = client.profilePicUrl;
-      //     name = client.name;
-      //   }
-
-      //   break;
-    }
-    if (projectIds != null) {
-      print(projectIds?.length);
+      //  break;
     }
     return FutureBuilder<List<Project>>(
       future: ProjectDbService().getOpenProjects(projectIds ?? []),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Project> projects = snapshot.data!;
+
+          if (projects.isEmpty) {
+            return const Center(
+              child: Text('no open projects'),
+            );
+          }
           return ListView.builder(
             controller: scrollController,
             itemCount: projects.length,

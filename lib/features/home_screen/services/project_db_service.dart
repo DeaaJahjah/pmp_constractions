@@ -37,11 +37,12 @@ class ProjectDbService {
     }
     return projects;
   }
-Future<List<Project>> getPublicProjects(List<String> projectsIDs) async {
+
+  Future<List<Project>> getPublicProjects(List<String> projectsIDs) async {
     List<DocumentSnapshot<Map<String, dynamic>>> queryData = [];
 
     for (var docID in projectsIDs) {
-      queryData.add(await _db.collection('projects').doc(docID).get());
+      queryData.add(await _db.collection('projects').doc(docID.trim()).get());
     }
 
     List<Project> projects = [];
@@ -54,6 +55,7 @@ Future<List<Project>> getPublicProjects(List<String> projectsIDs) async {
     }
     return projects;
   }
+
   Future<Project> getProjectById(String id) async {
     var doc = await _db.collection('projects').doc(id).get();
     Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
