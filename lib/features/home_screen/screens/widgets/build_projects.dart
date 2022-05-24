@@ -6,11 +6,14 @@ import 'package:pmpconstractions/features/home_screen/screens/widgets/project_ca
 
 class BuildProjects extends StatelessWidget {
   final List<Project> projects;
-  const BuildProjects({Key? key, required this.projects}) : super(key: key);
+  final ScrollController? scrollController;
+  const BuildProjects({Key? key, required this.projects, this.scrollController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MasonryGridView.builder(
+        controller: scrollController,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         // vertical gap between two items
         mainAxisSpacing: 40,
