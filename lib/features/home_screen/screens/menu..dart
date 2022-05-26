@@ -35,14 +35,14 @@ class _MenuScreenState extends State<MenuScreen> {
 
     String? imgUrl;
     String name = '';
-    switch (user!.displayName) {
+    switch (user?.displayName) {
       case 'engineer':
         if (Provider.of<EnginnerProvider>(context, listen: true)
             .engineers
             .isNotEmpty) {
           var engineer = Provider.of<EnginnerProvider>(context, listen: true)
               .engineers
-              .firstWhere((element) => element.userId == user.uid);
+              .firstWhere((element) => element.userId == user!.uid);
           imgUrl = engineer.profilePicUrl;
           name = engineer.name;
         }
@@ -53,7 +53,7 @@ class _MenuScreenState extends State<MenuScreen> {
             .isNotEmpty) {
           var company = Provider.of<CompanyProvider>(context, listen: true)
               .companies
-              .firstWhere((element) => element.userId == user.uid);
+              .firstWhere((element) => element.userId == user!.uid);
           imgUrl = company.profilePicUrl;
           name = company.name;
         }
@@ -65,7 +65,7 @@ class _MenuScreenState extends State<MenuScreen> {
             .isNotEmpty) {
           var client = Provider.of<DataProvider>(context, listen: true)
               .clients
-              .firstWhere((element) => element.userId == user.uid);
+              .firstWhere((element) => element.userId == user!.uid);
           imgUrl = client.profilePicUrl;
           name = client.name;
         }
@@ -81,7 +81,7 @@ class _MenuScreenState extends State<MenuScreen> {
         children: [
           InkWell(
               onTap: () async {
-                print(user.displayName);
+                print(user!.displayName);
                 switch (user.displayName) {
                   case 'engineer':
                     Navigator.of(context).push(MaterialPageRoute(

@@ -6,6 +6,8 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/navigation_service.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
@@ -58,11 +60,14 @@ class App extends StatelessWidget {
           ),
           ChangeNotifierProvider<AuthSataProvider>(
               create: (context) => AuthSataProvider()),
-       
+          StreamProvider(
+              create: (context) => NotificationProvider().showNotification(),
+              lazy: true,
+              initialData: null)
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(
-            // initialRoute: '/',
+            navigatorKey: GlobalVariable.navState,
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
             supportedLocales: AppLocalizations.supportedLocales,

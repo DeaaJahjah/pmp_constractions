@@ -5,7 +5,8 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
+import 'package:pmpconstractions/core/featuers/notification/notification_screen.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_service.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
@@ -42,13 +43,20 @@ class _MainScreenState extends State<MainScreen> {
 
     var searchCatProvider =
         Provider.of<SearchCategoryProvider>(context, listen: false);
-
+    NotificationService notificationService = NotificationService();
     return Scaffold(
       appBar: AppBar(
-        actions: const [
+        actions: [
           Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.notifications, color: darkBlue))
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(NotificationScreen.routeName);
+                    notificationService.showNotifications(
+                        title: 'title', body: 'body', pauload: '/notification');
+                  },
+                  child: const Icon(Icons.notifications, color: darkBlue)))
         ],
         leading: InkWell(
             onTap: () {
