@@ -6,7 +6,8 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/notification/notification_screen.dart';
-import 'package:pmpconstractions/core/featuers/notification/services/notification_service.dart';
+import 'package:pmpconstractions/core/featuers/notification/providers/notification_provider.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
@@ -43,20 +44,28 @@ class _MainScreenState extends State<MainScreen> {
 
     var searchCatProvider =
         Provider.of<SearchCategoryProvider>(context, listen: false);
-    NotificationService notificationService = NotificationService();
+
     return Scaffold(
       appBar: AppBar(
         actions: [
           Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(NotificationScreen.routeName);
-                    notificationService.showNotifications(
-                        title: 'title', body: 'body', pauload: '/notification');
-                  },
-                  child: const Icon(Icons.notifications, color: darkBlue)))
+              child: InkWell(onTap: () async {
+                Navigator.of(context).pushNamed(NotificationScreen.routeName);
+                await NotificationDbService().makeNotificationAsReaded();
+              }, child: Consumer<NotificationProvider>(
+                builder: (context, value, child) {
+                  return Stack(children: [
+                    const Icon(Icons.notifications, color: darkBlue),
+                    Positioned(
+                        child: CircleAvatar(
+                      backgroundColor: beg,
+                      radius: 10,
+                      child: Text(value.count.toString()),
+                    )),
+                  ]);
+                },
+              )))
         ],
         leading: InkWell(
             onTap: () {

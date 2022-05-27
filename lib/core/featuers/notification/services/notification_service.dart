@@ -58,8 +58,11 @@ class NotificationService {
   );
 
   Future<void> showNotifications(
-      {required String title, required String body, required pauload}) async {
-    await flutterLocalNotificationsPlugin.show(0, title, body,
+      {required int id,
+      required String title,
+      required String body,
+      required pauload}) async {
+    await flutterLocalNotificationsPlugin.show(id, title, body,
         NotificationDetails(android: _androidNotificationDetails),
         payload: '/notification');
   }

@@ -8,7 +8,6 @@ part of 'notification_model.dart';
 
 NotificationModle _$NotificationModleFromJson(Map<String, dynamic> json) =>
     NotificationModle(
-      notificationId: json['notification_id'] as String,
       title: json['title'] as String,
       body: json['body'] as String,
       isReaded: json['is_readed'] as bool,

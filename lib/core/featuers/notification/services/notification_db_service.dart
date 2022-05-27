@@ -3,26 +3,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_service.dart';
 
-class NotificationProvider {
+class NotificationDbService {
   final NotificationService _notificationService = NotificationService();
   var user = FirebaseAuth.instance.currentUser;
+  int unReaded = 0;
 
   showNotification() {
     var collection = collectionName(user!.displayName!);
     FirebaseFirestore.instance
-        .collection('engineers')
+        .collection(collection)
         .doc(user!.uid)
         .collection('notifications')
+        .where('is_readed', isEqualTo: false)
         .snapshots()
         .listen((event) async {
-      var docs = event.docChanges;
+      var docs = event.docs;
 
       for (var doc in docs) {
-        var data = doc.doc.data();
-        print(data!['is_readed']);
-        print(data['title']);
+        var data = doc.data();
         if (data['is_readed'] == false) {
-          return await _notificationService.showNotifications(
+          await _notificationService.showNotifications(
+              id: DateTime.now().millisecond,
               title: data['title'],
               body: data['body'],
               pauload: '/notification');
@@ -33,19 +34,12 @@ class NotificationProvider {
 
   getNotification() {
     String? collection = collectionName(user!.displayName);
+
     return FirebaseFirestore.instance
         .collection(collection)
         .doc(user!.uid)
         .collection('notifications')
-        .snapshots();
-
-// .map((event) {
-//          var docs= event.docs;
-//          for (var doc in docs) {
-
-//        ret   notifications.add( NotificationModle.fromFirestore(doc));
-//          }
-//         } );
+        .snapshots(includeMetadataChanges: true);
   }
 
   addNotification(NotificationModle notificationModle) async {
@@ -55,6 +49,20 @@ class NotificationProvider {
         .doc(user!.uid)
         .collection('notifications')
         .add(notificationModle.toJson());
+  }
+
+  makeNotificationAsReaded() async {
+    String? collection = collectionName(user!.displayName);
+    var query = await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(user!.uid)
+        .collection('notifications')
+        .where('is_readed', isEqualTo: false)
+        .get();
+
+    for (var doc in query.docs) {
+      doc.data().update('is_readed', (value) => true, ifAbsent: () => true);
+    }
   }
 }
 

@@ -30,8 +30,7 @@ class EngineerDbService {
 
       Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
       return Engineer.fromJson(cc);
-    } on FirebaseException catch (e) {
-      print(e.message);
+    } on FirebaseException {
       return Engineer(name: 'name', specialization: '', experience: const {});
     }
   }
@@ -45,9 +44,9 @@ class EngineerDbService {
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
-      NotificationProvider().addNotification(NotificationModle(
-        title: 'New here',
-        body: 'welcome new',
+      NotificationDbService().addNotification(NotificationModle(
+        title: 'Welcome',
+        body: 'hi ${engineer.name} hope you have a great time',
         category: 'new',
         imageUrl: engineer.profilePicUrl!,
         isReaded: false,
