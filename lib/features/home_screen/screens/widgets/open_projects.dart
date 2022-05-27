@@ -25,44 +25,46 @@ class OpenProjects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (user!.displayName) {
-      case 'engineer':
-        if (Provider.of<EnginnerProvider>(context, listen: true)
-            .engineers
-            .isNotEmpty) {
-          var engineer = Provider.of<EnginnerProvider>(context, listen: true)
+    if (user != null) {
+      switch (user!.displayName) {
+        case 'engineer':
+          if (Provider.of<EnginnerProvider>(context, listen: true)
               .engineers
-              .firstWhere((element) => element.userId == user!.uid);
-          projectIds = engineer.projectsIDs;
-          print(projectIds!.length);
-        }
-        break;
+              .isNotEmpty) {
+            var engineer = Provider.of<EnginnerProvider>(context, listen: true)
+                .engineers
+                .firstWhere((element) => element.userId == user!.uid);
+            projectIds = engineer.projectsIDs;
+            print(projectIds!.length);
+          }
+          break;
 
-      case 'client':
-        if (Provider.of<DataProvider>(context, listen: true)
-            .clients
-            .isNotEmpty) {
-          var client = Provider.of<DataProvider>(context, listen: true)
+        case 'client':
+          if (Provider.of<DataProvider>(context, listen: true)
               .clients
-              .firstWhere((element) => element.userId == user!.uid);
+              .isNotEmpty) {
+            var client = Provider.of<DataProvider>(context, listen: true)
+                .clients
+                .firstWhere((element) => element.userId == user!.uid);
 
-          projectIds = client.projectsIDs;
-        }
+            projectIds = client.projectsIDs;
+          }
 
-        break;
+          break;
 
-      // case 'company':
-      //   if (Provider.of<CompanyProvider>(context, listen: true)
-      //       .companies
-      //       .isNotEmpty) {
-      //     var company = Provider.of<CompanyProvider>(context, listen: true)
-      //         .companies
-      //         .firstWhere((element) => element.userId == user.uid);
-      //     imgUrl = company.profilePicUrl;
-      //     name = company.name;
-      //   }
+        // case 'company':
+        //   if (Provider.of<CompanyProvider>(context, listen: true)
+        //       .companies
+        //       .isNotEmpty) {
+        //     var company = Provider.of<CompanyProvider>(context, listen: true)
+        //         .companies
+        //         .firstWhere((element) => element.userId == user.uid);
+        //     imgUrl = company.profilePicUrl;
+        //     name = company.name;
+        //   }
 
-      //  break;
+        //  break;
+      }
     }
     return FutureBuilder<List<Project>>(
       future: ProjectDbService().getOpenProjects(projectIds ?? []),

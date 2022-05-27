@@ -46,7 +46,7 @@ class EngineerDbService {
           .changeAuthState(newState: AuthState.notSet);
       NotificationDbService().addNotification(NotificationModle(
         title: 'Welcome',
-        body: 'hi ${engineer.name} hope you have a great time',
+        body: 'hi ${engineer.name} have a great time',
         category: 'new',
         imageUrl: engineer.profilePicUrl!,
         isReaded: false,

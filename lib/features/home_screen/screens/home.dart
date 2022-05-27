@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
@@ -28,7 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     //NotificationProvider().showNotification();
-    Provider.of<NotificationProvider>(context).showNotification();
+    var user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Provider.of<NotificationProvider>(context).showNotification();
+    }
 
     return Scaffold(
         backgroundColor: darkBlue.withOpacity(0.85),

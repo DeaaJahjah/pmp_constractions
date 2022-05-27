@@ -13,7 +13,7 @@ class NotificationProvider extends ChangeNotifier {
     var user = FirebaseAuth.instance.currentUser;
     var collection = collectionName(user!.displayName!);
     var s = FirebaseFirestore.instance
-        .collection('engineers')
+        .collection(collection)
         .doc(user.uid)
         .collection('notifications')
         .where('is_readed', isEqualTo: false)

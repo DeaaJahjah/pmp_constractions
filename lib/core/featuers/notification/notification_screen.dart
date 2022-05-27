@@ -7,8 +7,13 @@ class NotificationScreen extends StatelessWidget {
   static const String routeName = '/notification';
   const NotificationScreen({Key? key}) : super(key: key);
 
+  updateNotification() async {
+    await NotificationDbService().makeNotificationAsReaded();
+  }
+
   @override
   Widget build(BuildContext context) {
+    updateNotification();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notification'),

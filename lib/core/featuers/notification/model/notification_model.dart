@@ -11,7 +11,7 @@ class NotificationModle {
   final String title;
   final String body;
   @JsonKey(name: 'is_readed')
-  final bool isReaded;
+  bool isReaded;
   @JsonKey(name: 'project_id')
   final String? projectId;
   @JsonKey(name: 'task_id')

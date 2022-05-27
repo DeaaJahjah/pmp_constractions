@@ -59,9 +59,19 @@ class NotificationDbService {
         .collection('notifications')
         .where('is_readed', isEqualTo: false)
         .get();
-
+    List<NotificationModle> notification = [];
     for (var doc in query.docs) {
-      doc.data().update('is_readed', (value) => true, ifAbsent: () => true);
+      var noti = NotificationModle.fromFirestore(doc);
+      noti.isReaded = true;
+      notification.add(noti);
+    }
+    for (var noti in notification) {
+      FirebaseFirestore.instance
+          .collection(collection)
+          .doc(user!.uid)
+          .collection('notifications')
+          .doc(noti.notificationId)
+          .update(noti.toJson());
     }
   }
 }

@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
+import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/models/client.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
@@ -38,6 +40,16 @@ class ClientDbService {
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
+
+      NotificationDbService().addNotification(NotificationModle(
+        title: 'Welcome',
+        body: 'hi ${client.name} Have a great time',
+        category: 'new',
+        imageUrl: client.profilePicUrl!,
+        isReaded: false,
+        pauload: '/notification',
+      ));
+
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseException catch (e) {
