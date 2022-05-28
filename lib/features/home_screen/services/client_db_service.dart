@@ -40,7 +40,6 @@ class ClientDbService {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
 
-
       NotificationDbService().addNotification(NotificationModle(
         title: 'Welcome',
         body: 'hi ${client.name} Have a great time',
@@ -75,7 +74,6 @@ class ClientDbService {
           .changeAuthState(newState: AuthState.notSet);
 
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
