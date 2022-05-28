@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 class ClientDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  var user = FirebaseAuth.instance.currentUser;
 
   Future<List<Client>> getClients() async {
     var queryData = await _db.collection('clients').get();
@@ -26,20 +27,19 @@ class ClientDbService {
 
   Future<Client> getClientById(String id) async {
     var doc = await _db.collection('clients').doc(id).get();
-    Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
 
     return Client.fromFirestore(doc);
   }
 
   addClient(Client client, context) async {
     try {
-      var user = FirebaseAuth.instance.currentUser;
       _db.collection('clients').doc(user!.uid).set(client.toJson());
 
       await Provider.of<DataProvider>(context, listen: false).fetchData();
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
+
 
       NotificationDbService().addNotification(NotificationModle(
         title: 'Welcome',
@@ -52,6 +52,30 @@ class ClientDbService {
 
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
+
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } on FirebaseException catch (e) {
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+
+      final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  updateClient(Client client, context) async {
+    try {
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.waiting);
+
+      await _db.collection('clients').doc(user!.uid).update(client.toJson());
+      await Provider.of<DataProvider>(context, listen: false).fetchData();
+
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);

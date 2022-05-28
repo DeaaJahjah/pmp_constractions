@@ -71,6 +71,8 @@ dependencies:
   shared_preferences: ^2.0.13
    #tools
   intl_phone_number_input: ^0.7.0+2
+  flutter_cache_manager: ^3.3.0
+  path_provider: ^2.0.10
   url_launcher: ^6.1.2 
   image_picker: ^0.8.5+3
   path: ^1.8.0

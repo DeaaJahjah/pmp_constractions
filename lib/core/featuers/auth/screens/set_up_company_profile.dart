@@ -36,7 +36,7 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
    var phoneController = TextEditingController();
     XFile? pickedimage;
 String fileName = '';
-  File imageFile = File('');
+  File? imageFile ;
   _pickImage() async {
     final picker = ImagePicker();
     try {
@@ -80,7 +80,7 @@ String fileName = '';
                   color: beg,
                 ): CircleAvatar(
                         radius: 60,
-                         backgroundImage: FileImage(imageFile),
+                         backgroundImage: FileImage(imageFile!),
                ),
               ),
         ),
@@ -215,9 +215,9 @@ String fileName = '';
 
                
                 String url = '';
-                if (imageFile != File('')) {
+                if (imageFile != null) {
                   url = await FileService()
-                      .uploadeimage(fileName, imageFile, context);
+                      .uploadeimage(fileName, imageFile!, context);
                 }
                 if (url != 'error') {
                   CompanyDbService().addCompany(

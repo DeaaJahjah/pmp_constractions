@@ -14,8 +14,6 @@ class _UpdateEngineerProfileScreenState
     extends State<UpdateEngineerProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.engineer!.name)),
-    );
+    return Scaffold(appBar:AppBar(title: Text('Update your data'),));
   }
 }

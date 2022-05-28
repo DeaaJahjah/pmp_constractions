@@ -13,6 +13,7 @@ ThemeData lightTheme = ThemeData(
   backgroundColor: white,
   scaffoldBackgroundColor: white,
   appBarTheme: const AppBarTheme(
+    elevation: 0.0,
       color: white,
       titleTextStyle: TextStyle(
           color: darkBlue,

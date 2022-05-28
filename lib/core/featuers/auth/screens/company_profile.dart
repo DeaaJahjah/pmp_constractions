@@ -58,15 +58,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                               bottomLeft: Radius.circular(10),
                               bottomRight: Radius.circular(10))),
                     ),
-                    Positioned(
-                        top: 15,
-                        left: 7,
-                        child: IconButton(
-                            icon: const Icon(
-                              Icons.menu,
-                              color: darkBlue,
-                            ),
-                            onPressed: () {})),
+                  
                     const Positioned(
                       top: 20,
                       left: 135,

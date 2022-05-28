@@ -40,7 +40,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
   Map<String, List<String>>? experiens;
   String specialization = 'Select';
   String fileName = '';
-  File imageFile = File('');
+  File? imageFile ;
   _pickImage() async {
     final picker = ImagePicker();
     try {
@@ -85,7 +85,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                 child: (pickedimage == null)
                     ? const Icon(Icons.person, size: 60, color: beg)
                     : CircleAvatar(
-                        radius: 60, backgroundImage: FileImage(imageFile)),
+                        radius: 60, backgroundImage: FileImage(imageFile!)),
                 maxRadius: 60),
           ),
           sizedBoxMedium,
@@ -238,9 +238,9 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                   'programs': programs
                 };
                 String url = '';
-                if (imageFile != File('')) {
+                if (imageFile != null) {
                   url = await FileService()
-                      .uploadeimage(fileName, imageFile, context);
+                      .uploadeimage(fileName, imageFile!, context);
                 }
                 if (url != 'error') {
                   EngineerDbService().addEngineer(

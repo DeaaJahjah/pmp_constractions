@@ -70,7 +70,9 @@ class App extends StatelessWidget {
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(
+
             navigatorKey: GlobalVariable.navState,
+            initialRoute: '/',
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
             supportedLocales: AppLocalizations.supportedLocales,

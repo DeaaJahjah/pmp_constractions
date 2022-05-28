@@ -62,15 +62,15 @@ class _MenuScreenState extends State<MenuScreen> {
       case 'client':
         if (Provider.of<DataProvider>(context, listen: true)
             .clients
-            .isNotEmpty) {
-          var client = Provider.of<DataProvider>(context, listen: true)
+            .isNotEmpty) {        
+          var client = Provider.of<DataProvider>(context, listen:true)
               .clients
               .firstWhere((element) => element.userId == user!.uid);
           imgUrl = client.profilePicUrl;
           name = client.name;
         }
 
-        break;
+        break; 
     }
 
     return Padding(

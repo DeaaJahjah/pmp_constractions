@@ -44,6 +44,7 @@ class EngineerDbService {
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
+
       NotificationDbService().addNotification(NotificationModle(
         title: 'Welcome',
         body: 'hi ${engineer.name} have a great time',
@@ -52,8 +53,9 @@ class EngineerDbService {
         isReaded: false,
         pauload: '/notification',
       ));
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
