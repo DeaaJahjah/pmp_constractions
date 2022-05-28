@@ -294,7 +294,7 @@ class _EngineerProfileState extends State<EngineerProfile> {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => UpdateEngineerProfileScreen(
-                            engineer: engineer,
+                            engineer: engineer!,
                           )));
                 },
                 child: const Icon(

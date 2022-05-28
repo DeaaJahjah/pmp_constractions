@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
@@ -27,7 +26,7 @@ class UpdateClientProfileScreen extends StatefulWidget {
 }
 
 class _UpdateClientProfileScreenState extends State<UpdateClientProfileScreen> {
-  TextEditingController? controller;
+  TextEditingController? nameController;
   TextEditingController? phoneController;
   List<String> phoneNum = [];
   String fileName = '';
@@ -47,7 +46,7 @@ class _UpdateClientProfileScreenState extends State<UpdateClientProfileScreen> {
 
   @override
   void initState() {
-    controller = TextEditingController(text: widget.client.name);
+    nameController = TextEditingController(text: widget.client.name);
     phoneController = TextEditingController();
     phoneNum = widget.client.phoneNumbers!;
 
@@ -73,7 +72,7 @@ class _UpdateClientProfileScreenState extends State<UpdateClientProfileScreen> {
                 backgroundColor: karmedi,
                 child: (pickedimage == null)
                     ? (widget.client.profilePicUrl == null)
-                        ? CircleAvatar(child: Icon(Icons.person_add))
+                        ? const CircleAvatar(child: Icon(Icons.person_add))
                         : CircleAvatar(
                             radius: 60,
                             backgroundImage:
@@ -86,20 +85,23 @@ class _UpdateClientProfileScreenState extends State<UpdateClientProfileScreen> {
           const SizedBox(
             height: 40,
           ),
-          TextFieldCustome(text: 'Name', controller: controller!),
+          TextFieldCustome(text: 'Name', controller: nameController!),
           const SizedBox(
             height: 40,
           ),
-          NumberTextField(
-            controller: phoneController!,
-            onPressed: () {
-              if (phoneController!.text != '' && phoneNum.length < 2) {
-                phoneNum.add(phoneController!.text);
-                setState(() {
-                  phoneController!.text = '';
-                });
-              }
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 85),
+            child: NumberTextField(
+              controller: phoneController!,
+              onPressed: () {
+                if (phoneController!.text != '' && phoneNum.length < 2) {
+                  phoneNum.add(phoneController!.text);
+                  setState(() {
+                    phoneController!.text = '';
+                  });
+                }
+              },
+            ),
           ),
           sizedBoxMedium,
           SizedBox(
@@ -117,11 +119,10 @@ class _UpdateClientProfileScreenState extends State<UpdateClientProfileScreen> {
                 itemCount: phoneNum.length,
               )),
           Consumer<AuthSataProvider>(builder: (context, state, child) {
-
             if (state.authState == AuthState.notSet) {
               return ElevatedButton(
                   onPressed: () async {
-                    if (controller!.text != '') {
+                    if (nameController!.text != '') {
                       Provider.of<AuthSataProvider>(context, listen: false)
                           .changeAuthState(newState: AuthState.waiting);
 
@@ -131,19 +132,16 @@ class _UpdateClientProfileScreenState extends State<UpdateClientProfileScreen> {
                         url = await FileService()
                             .uploadeimage(fileName, imageFile!, context);
                       }
-                    
+
                       ClientDbService().updateClient(
                           Client(
-                              name: controller!.text,
+                              name: nameController!.text,
                               phoneNumbers: phoneNum,
                               profilePicUrl: url,
                               projectsIDs: widget.client.projectsIDs),
                           context);
-
-
-                        
                     } else {
-                      final snackBar =
+                      const snackBar =
                           SnackBar(content: Text('The name is required'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
@@ -151,9 +149,9 @@ class _UpdateClientProfileScreenState extends State<UpdateClientProfileScreen> {
                   child: Text(context.loc.update));
             }
             if (state.authState == AuthState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
-            return SizedBox();
+            return const SizedBox();
           })
         ]),
       ),

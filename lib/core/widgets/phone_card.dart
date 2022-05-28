@@ -11,7 +11,7 @@ class PhoneCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
-        height: 50,
+        height: 53,
         padding: const EdgeInsets.all(10),
         child: Container(
           padding: const EdgeInsets.all(5),

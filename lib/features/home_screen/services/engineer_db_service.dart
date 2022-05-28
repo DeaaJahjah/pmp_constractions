@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class EngineerDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-
+  var user = FirebaseAuth.instance.currentUser;
   Future<List<Engineer>> getEngineers() async {
     var queryData = await _db.collection('engineers').get();
     List<Engineer> engineers = [];
@@ -37,7 +37,6 @@ class EngineerDbService {
 
   addEngineer(Engineer engineer, context) async {
     try {
-      var user = FirebaseAuth.instance.currentUser;
       _db.collection('engineers').doc(user!.uid).set(engineer.toJson());
 
       await Provider.of<DataProvider>(context, listen: false).fetchData();
@@ -55,11 +54,37 @@ class EngineerDbService {
       ));
 
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
       final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  updateEngineer(Engineer engineer, context) async {
+    try {
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.waiting);
+
+      await _db
+          .collection('engineers')
+          .doc(user!.uid)
+          .update(engineer.toJson());
+      await Provider.of<DataProvider>(context, listen: false).fetchData();
+
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+      const snackBar = SnackBar(content: Text('Sucess MSG'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } on FirebaseException catch (e) {
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+
+      final snackBar = SnackBar(
+          backgroundColor: Colors.red[500], content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }

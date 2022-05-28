@@ -73,12 +73,15 @@ class ClientDbService {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
 
+      const snackBar = SnackBar(content: Text('Sucess MSG'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
 
-      final snackBar = SnackBar(content: Text(e.toString()));
+      final snackBar = SnackBar(
+          backgroundColor: Colors.red[500], content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
