@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
+import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
@@ -28,8 +30,7 @@ class EngineerDbService {
 
       Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
       return Engineer.fromJson(cc);
-    } on FirebaseException catch (e) {
-      print(e.message);
+    } on FirebaseException {
       return Engineer(name: 'name', specialization: '', experience: const {});
     }
   }
@@ -43,7 +44,18 @@ class EngineerDbService {
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
+
+      NotificationDbService().addNotification(NotificationModle(
+        title: 'Welcome',
+        body: 'hi ${engineer.name} have a great time',
+        category: 'new',
+        imageUrl: engineer.profilePicUrl!,
+        isReaded: false,
+        pauload: '/notification',
+      ));
+
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);

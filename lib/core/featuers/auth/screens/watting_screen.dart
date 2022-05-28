@@ -22,10 +22,10 @@ class WattingScreen extends StatelessWidget {
               SizedBox(
                 height: 80,
                 child: AnimatedTextKit(
-                  totalRepeatCount: 1,
+                  repeatForever: true,
                   animatedTexts: [
                     FadeAnimatedText('Just a moment'),
-                    FadeAnimatedText('.........'),
+                    FadeAnimatedText('We setup everything to you'),
                     FadeAnimatedText('Almost done'),
                   ],
                 ),

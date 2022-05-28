@@ -6,6 +6,9 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
+import 'package:pmpconstractions/core/featuers/notification/providers/notification_provider.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/navigation_service.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
@@ -58,10 +61,17 @@ class App extends StatelessWidget {
           ),
           ChangeNotifierProvider<AuthSataProvider>(
               create: (context) => AuthSataProvider()),
-       
+          StreamProvider(
+              create: (context) => NotificationDbService().showNotification(),
+              lazy: true,
+              initialData: null),
+          ChangeNotifierProvider<NotificationProvider>(
+              create: (context) => NotificationProvider())
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(
+
+            navigatorKey: GlobalVariable.navState,
             initialRoute: '/',
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
