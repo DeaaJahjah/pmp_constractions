@@ -62,7 +62,7 @@ class App extends StatelessWidget {
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(
-            // initialRoute: '/',
+            initialRoute: '/',
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
             supportedLocales: AppLocalizations.supportedLocales,

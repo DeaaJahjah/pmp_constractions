@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    //fetch Data form database
+    
     Provider.of<DataProvider>(context, listen: false).fetchData();
 
     Timer(

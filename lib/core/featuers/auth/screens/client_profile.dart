@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
@@ -24,14 +28,16 @@ class ClientProfile extends StatefulWidget {
 }
 
 class _ClientProfileState extends State<ClientProfile> {
-  Client? client;
-  String? id;
+  late Client client;
+
   bool loading = true;
   ScrollController scrollController = ScrollController();
   String uid = FirebaseAuth.instance.currentUser!.uid;
+
   @override
-  void initState() {
-    ClientDbService().getClientById(id!).then((data) {
+  void didChangeDependencies() {
+    loading = true;
+    ClientDbService().getClientById(widget.clientId!).then((data) {
       print(data.phoneNumbers!.length);
       ids = data.projectsIDs;
       client = data;
@@ -39,7 +45,8 @@ class _ClientProfileState extends State<ClientProfile> {
         loading = false;
       });
     });
-    super.initState();
+
+    super.didChangeDependencies();
   }
 
   List<String>? ids;
@@ -66,15 +73,6 @@ class _ClientProfileState extends State<ClientProfile> {
                                   bottomRight: Radius.circular(10))),
                         ),
                         Positioned(
-                            top: 15,
-                            left: 7,
-                            child: IconButton(
-                                icon: const Icon(
-                                  Icons.menu,
-                                  color: darkBlue,
-                                ),
-                                onPressed: () {})),
-                        Positioned(
                           top: 20,
                           left: 135,
                           child: Text(
@@ -97,13 +95,12 @@ class _ClientProfileState extends State<ClientProfile> {
                                 child: CircleAvatar(
                                     backgroundColor: orange,
                                     radius: 70,
-                                    child: (client!.profilePicUrl != '')
+                                    child: (client.profilePicUrl != '')
                                         ? CircleAvatar(
                                             backgroundColor: darkBlue,
                                             radius: 68,
                                             backgroundImage: NetworkImage(
-                                                client!.profilePicUrl ?? ''),
-                                          )
+                                                  client.profilePicUrl!))
                                         : const CircleAvatar(
                                             backgroundColor: darkBlue,
                                             radius: 68,
@@ -112,7 +109,7 @@ class _ClientProfileState extends State<ClientProfile> {
                                           )),
                               ),
                               Text(
-                                client!.name,
+                                client.name,
                                 style:
                                     Theme.of(context).textTheme.headlineLarge,
                               ),
@@ -147,7 +144,7 @@ class _ClientProfileState extends State<ClientProfile> {
                             padding: const EdgeInsets.all(12),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: client!.phoneNumbers!
+                              children: client.phoneNumbers!
                                   .map((e) => InkWell(
                                         onTap: () async {
                                           await launch('tel:$e');
@@ -225,10 +222,14 @@ class _ClientProfileState extends State<ClientProfile> {
             ? FloatingActionButton(
                 backgroundColor: orange,
                 onPressed: () {
-                  MaterialPageRoute(
-                      builder: (context) => UpdateClientProfileScreen(
-                            client: client,
-                          ));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => UpdateClientProfileScreen(
+                                client: client,
+                              )))
+                      .then((value) async {
+                    setState(() {});
+                  });
                 },
                 child: const Icon(
                   Icons.edit,

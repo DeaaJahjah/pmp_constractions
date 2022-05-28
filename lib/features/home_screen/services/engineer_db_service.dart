@@ -43,8 +43,7 @@ class EngineerDbService {
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);

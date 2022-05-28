@@ -36,7 +36,7 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
   String name = '';
   List<String> phoneNum = [];
   String fileName = '';
-  File imageFile = File('');
+  File? imageFile ;
   _pickImage() async {
     final picker = ImagePicker();
     try {
@@ -74,7 +74,7 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                 child: (pickedimage == null)
                     ? const Icon(Icons.person_add, size: 60, color: beg)
                     : CircleAvatar(
-                        radius: 60, backgroundImage: FileImage(imageFile)),
+                        radius: 60, backgroundImage: FileImage(imageFile!)),
                 radius: 60),
           ),
           sizedBoxMedium,
@@ -147,9 +147,9 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                     Provider.of<AuthSataProvider>(context, listen: false)
                         .changeAuthState(newState: AuthState.waiting);
                     String url = '';
-                    if (imageFile != File('')) {
+                    if (imageFile != null) {
                       url = await FileService()
-                          .uploadeimage(fileName, imageFile, context);
+                          .uploadeimage(fileName, imageFile!, context);
                     }
                     if (url != 'error') {
                       ClientDbService().addClient(
