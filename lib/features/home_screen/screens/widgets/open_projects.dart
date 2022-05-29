@@ -66,7 +66,7 @@ class OpenProjects extends StatelessWidget {
     }
     return FutureBuilder<List<Project>>(
       future: (user?.displayName == 'companies')
-          ? ProjectDbService().geCompanyOpenProjects()
+          ? ProjectDbService().geCompanyOpenProjects(user!.uid)
           : ProjectDbService().getOpenProjects(projectIds ?? []),
       builder: (context, snapshot) {
         if (snapshot.hasData) {

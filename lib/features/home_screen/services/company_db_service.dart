@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class CompanyDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-
+var user = FirebaseAuth.instance.currentUser;
   Future<List<Company>> getCompanies() async {
     var queryData = await _db.collection('companies').get();
     List<Company> companies = [];
@@ -33,7 +33,7 @@ class CompanyDbService {
 
   addCompany(Company company, context) async {
     try {
-      var user = FirebaseAuth.instance.currentUser;
+      
       _db.collection('companies').doc(user!.uid).set(company.toJson());
 
       await Provider.of<DataProvider>(context, listen: false).fetchData();
@@ -60,6 +60,30 @@ class CompanyDbService {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
       final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+   updateCompany(Company company, context) async {
+    try {
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.waiting);
+
+      await _db.collection('companies').doc(user!.uid).update(company.toJson());
+      await Provider.of<DataProvider>(context, listen: false).fetchData();
+
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+
+      const snackBar = SnackBar(content: Text('Sucess MSG'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } on FirebaseException catch (e) {
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+
+      final snackBar = SnackBar(
+          backgroundColor: Colors.red[500], content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
