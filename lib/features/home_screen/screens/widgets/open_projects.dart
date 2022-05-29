@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/project_details_managmentr_screen.dart';
@@ -35,7 +36,6 @@ class OpenProjects extends StatelessWidget {
                 .engineers
                 .firstWhere((element) => element.userId == user!.uid);
             projectIds = engineer.projectsIDs;
-            print(projectIds!.length);
           }
           break;
 
@@ -52,22 +52,22 @@ class OpenProjects extends StatelessWidget {
 
           break;
 
-        // case 'company':
-        //   if (Provider.of<CompanyProvider>(context, listen: true)
-        //       .companies
-        //       .isNotEmpty) {
-        //     var company = Provider.of<CompanyProvider>(context, listen: true)
-        //         .companies
-        //         .firstWhere((element) => element.userId == user.uid);
-        //     imgUrl = company.profilePicUrl;
-        //     name = company.name;
-        //   }
+        case 'company':
+          if (Provider.of<CompanyProvider>(context, listen: true)
+              .companies
+              .isNotEmpty) {
+            var company = Provider.of<CompanyProvider>(context, listen: true)
+                .companies
+                .firstWhere((element) => element.userId == user!.uid);
+          }
 
-        //  break;
+          break;
       }
     }
     return FutureBuilder<List<Project>>(
-      future: ProjectDbService().getOpenProjects(projectIds ?? []),
+      future: (user?.displayName == 'companies')
+          ? ProjectDbService().geCompanyOpenProjects()
+          : ProjectDbService().getOpenProjects(projectIds ?? []),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Project> projects = snapshot.data!;

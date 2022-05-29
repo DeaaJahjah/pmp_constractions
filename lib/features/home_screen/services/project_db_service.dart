@@ -62,4 +62,18 @@ class ProjectDbService {
 
     return Project.fromJson(cc);
   }
+
+  Future<List<Project>> geCompanyOpenProjects() async {
+    List<Project> projects = [];
+
+    var query = await _db
+        .collection('projects')
+        .where('is_open', isEqualTo: 'true')
+        .get();
+
+    for (var doc in query.docs) {
+      projects.add(Project.fromFirestore(doc));
+    }
+    return projects;
+  }
 }

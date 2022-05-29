@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/core/featuers/profile/screens/company_profile.dart';
-import 'package:pmpconstractions/core/featuers/profile/screens/engineer_profile.dart';
+
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/project_card.dart';
+import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
+import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
 import 'package:provider/provider.dart';
 
 class BuildAll extends StatelessWidget {

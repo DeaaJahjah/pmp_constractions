@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/core/featuers/profile/screens/company_profile.dart';
+import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
 
 class CompanyCard extends StatelessWidget {
   final String imageUrl;

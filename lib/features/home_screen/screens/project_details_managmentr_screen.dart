@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/core/featuers/profile/screens/company_profile.dart';
-import 'package:pmpconstractions/core/featuers/profile/screens/engineer_profile.dart';
+
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
+import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
+import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ProjectDetailsManagmentScreen extends StatefulWidget {
