@@ -1,13 +1,10 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
-import 'package:pmpconstractions/core/featuers/auth/screens/update_client_profile.dart';
+import 'package:pmpconstractions/core/featuers/profile/screens/update_client_profile.dart';
 import 'package:pmpconstractions/core/widgets/custome_row.dart';
 import 'package:pmpconstractions/core/widgets/elevated_button_custom.dart';
 import 'package:pmpconstractions/features/home_screen/models/client.dart';
@@ -100,7 +97,7 @@ class _ClientProfileState extends State<ClientProfile> {
                                             backgroundColor: darkBlue,
                                             radius: 68,
                                             backgroundImage: NetworkImage(
-                                                  client.profilePicUrl!))
+                                                client.profilePicUrl!))
                                         : const CircleAvatar(
                                             backgroundColor: darkBlue,
                                             radius: 68,

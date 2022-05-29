@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/core/featuers/auth/screens/engineer_profile.dart';
+import 'package:pmpconstractions/core/featuers/profile/screens/engineer_profile.dart';
 
 class EngineerCard extends StatelessWidget {
   const EngineerCard(

@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
-import 'package:pmpconstractions/core/featuers/auth/screens/client_profile.dart';
-import 'package:pmpconstractions/core/featuers/auth/screens/company_profile.dart';
-import 'package:pmpconstractions/core/featuers/auth/screens/engineer_profile.dart';
+
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
+import 'package:pmpconstractions/core/featuers/profile/screens/client_profile.dart';
+import 'package:pmpconstractions/core/featuers/profile/screens/company_profile.dart';
+import 'package:pmpconstractions/core/featuers/profile/screens/engineer_profile.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
@@ -62,15 +63,15 @@ class _MenuScreenState extends State<MenuScreen> {
       case 'client':
         if (Provider.of<DataProvider>(context, listen: true)
             .clients
-            .isNotEmpty) {        
-          var client = Provider.of<DataProvider>(context, listen:true)
+            .isNotEmpty) {
+          var client = Provider.of<DataProvider>(context, listen: true)
               .clients
               .firstWhere((element) => element.userId == user!.uid);
           imgUrl = client.profilePicUrl;
           name = client.name;
         }
 
-        break; 
+        break;
     }
 
     return Padding(
