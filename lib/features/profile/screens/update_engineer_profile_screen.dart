@@ -36,7 +36,7 @@ class _UpdateEngineerProfileScreenState
   Map<String, List<String>>? experiens;
   List<String> phoneNum = [];
   String specialization = 'Select';
-  var items = [
+  List<String> items = [
     'Select',
     'Architectural engineer',
     'Civil engineer',
@@ -130,45 +130,44 @@ class _UpdateEngineerProfileScreenState
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
-              height: 40,
-              child: FormField<String>(
-                builder: (FormFieldState<String> state) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            gapPadding: 4,
-                            borderRadius: BorderRadius.circular(5.0))),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        dropdownColor: beg,
-                        elevation: 10,
-                        iconEnabledColor: orange,
-                        style: const TextStyle(
-                            color: orange,
-                            fontFamily: font,
-                            fontWeight: FontWeight.bold),
-                        alignment: AlignmentDirectional.center,
-                        focusColor: orange,
-                        value: specialization,
-                        isDense: true,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            specialization = newValue!;
-                          });
-                        },
-                        items: items.map((String item) {
-                          print(item);
-                          return DropdownMenuItem(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                height: 40,
+                child: FormField<String>(
+                    initialValue: 'Select',
+                    builder: (FormFieldState<String> state) {
+                      return InputDecorator(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                gapPadding: 4,
+                                borderRadius: BorderRadius.circular(5.0))),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            dropdownColor: beg,
+                            elevation: 10,
+                            iconEnabledColor: orange,
+                            style: const TextStyle(
+                                color: orange,
+                                fontFamily: font,
+                                fontWeight: FontWeight.bold),
+                            alignment: AlignmentDirectional.center,
+                            focusColor: orange,
+                            value: specialization,
+                            isDense: true,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                specialization = newValue!;
+                              });
+                            },
+                            items: items.map((String item) {
+                              //print(item);
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Text(item),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      );
+                    })),
           ),
           sizedBoxMedium,
           sizedBoxMedium,

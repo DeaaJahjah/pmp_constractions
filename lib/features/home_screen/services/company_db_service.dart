@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 class CompanyDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-var user = FirebaseAuth.instance.currentUser;
+  var user = FirebaseAuth.instance.currentUser;
   Future<List<Company>> getCompanies() async {
     var queryData = await _db.collection('companies').get();
     List<Company> companies = [];
@@ -33,14 +33,12 @@ var user = FirebaseAuth.instance.currentUser;
 
   addCompany(Company company, context) async {
     try {
-      
       _db.collection('companies').doc(user!.uid).set(company.toJson());
 
       await Provider.of<DataProvider>(context, listen: false).fetchData();
 
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
-
 
       NotificationDbService().addNotification(NotificationModle(
         title: 'Welcome',
@@ -51,11 +49,8 @@ var user = FirebaseAuth.instance.currentUser;
         pauload: '/notification',
       ));
 
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
-
-     Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
@@ -64,7 +59,7 @@ var user = FirebaseAuth.instance.currentUser;
     }
   }
 
-   updateCompany(Company company, context) async {
+  updateCompany(Company company, context) async {
     try {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.waiting);
@@ -77,7 +72,8 @@ var user = FirebaseAuth.instance.currentUser;
 
       const snackBar = SnackBar(content: Text('Sucess MSG'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);

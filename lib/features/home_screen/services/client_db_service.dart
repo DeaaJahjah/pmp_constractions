@@ -52,7 +52,8 @@ class ClientDbService {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
@@ -75,7 +76,8 @@ class ClientDbService {
 
       const snackBar = SnackBar(content: Text('Sucess MSG'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
     } on FirebaseException catch (e) {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
