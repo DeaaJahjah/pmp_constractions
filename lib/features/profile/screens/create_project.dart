@@ -1,155 +1,171 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/watting_screen.dart';
-import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
-import 'package:pmpconstractions/core/widgets/number_text_field.dart';
-import 'package:pmpconstractions/core/widgets/phone_card.dart';
-import 'package:pmpconstractions/features/home_screen/models/company.dart';
-import 'package:pmpconstractions/features/home_screen/services/company_db_service.dart';
+import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/member_card.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:pmpconstractions/core/extensions/loc.dart';
-import 'package:path/path.dart' as path;
 
-class SetUpCompanyProfile extends StatefulWidget {
-  static const routeName = '/c';
-  const SetUpCompanyProfile({Key? key}) : super(key: key);
+class CreateProject extends StatefulWidget {
+  static const routeName = '/create_project';
+  const CreateProject({Key? key}) : super(key: key);
 
   @override
-  State<SetUpCompanyProfile> createState() => _SetUpCompanyProfileState();
+  State<CreateProject> createState() => _CreateProjectState();
 }
 
-int activePage = 0;
-
-class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
+class _CreateProjectState extends State<CreateProject> {
   final liquidController = LiquidController();
   final nameController = TextEditingController();
   final descController = TextEditingController();
-  var phoneController = TextEditingController();
+  int activePage = 0;
+
   XFile? pickedimage;
   String fileName = '';
   File? imageFile;
-  _pickImage() async {
-    final picker = ImagePicker();
-    try {
-      pickedimage = await picker.pickImage(source: ImageSource.gallery);
-      fileName = path.basename(pickedimage!.path);
-      imageFile = File(pickedimage!.path);
-      setState(() {});
-    } catch (e) {
-      print(e);
+  List<MemberRole> members = [];
+  List<MemberRole> selectedMembers = [];
+  Role selectedRole = Role.projectEngineer;
+  getMembers() {
+    var clients = Provider.of<DataProvider>(context, listen: false).clients;
+    var enginners = Provider.of<DataProvider>(context, listen: false).engineers;
+
+    for (var client in clients) {
+      members.add(MemberRole(
+          memberId: client.userId!,
+          memberName: client.name,
+          profilePicUrl: client.profilePicUrl!));
     }
+    for (var enginner in enginners) {
+      members.add(MemberRole(
+          memberId: enginner.userId!,
+          memberName: enginner.name,
+          profilePicUrl: enginner.profilePicUrl));
+    }
+    return members;
   }
 
-  List<String> phoneNum = [];
+  @override
+  void initState() {
+    getMembers();
+    super.initState();
+  }
 
+  ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    final pages = [
+    MemberRole selectedItem = members.first;
+    var pages = [
       Container(
+        color: darkBlue,
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: darkBlue,
-        child: Column(children: [
-          sizedBoxXLarge,
-          Image.asset(
-            'assets/images/setup_profile1.png',
-            fit: BoxFit.fill,
-          ),
-          sizedBoxXLarge,
-          InkWell(
-            onTap: () {
-              _pickImage();
-              setState(() {});
-              print(imageFile);
-            },
-            child: CircleAvatar(
-              backgroundColor: karmedi,
-              radius: 60,
-              child: (pickedimage == null)
-                  ? const Icon(
-                      Icons.person_add,
-                      size: 50,
-                      color: beg,
-                    )
-                  : CircleAvatar(
-                      radius: 60,
-                      backgroundImage: FileImage(imageFile!),
-                    ),
-            ),
-          ),
-          sizedBoxMedium,
-          Text(context.loc.add_pic,
-              style: Theme.of(context).textTheme.headlineMedium),
-        ]),
-      ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: darkBlue,
-        child: ListView(children: [
-          sizedBoxXLarge,
-          Image.asset(
-            'assets/images/setup_profile2.png',
-            fit: BoxFit.fill,
-          ),
-          sizedBoxXLarge,
-          sizedBoxMedium,
-          TextFieldCustome(
-            controller: nameController,
-            text: context.loc.name,
-          ),
-          sizedBoxMedium,
-        ]),
-      ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: darkBlue,
         child: ListView(
+          controller: scrollController,
           children: [
-            sizedBoxXLarge,
-            Image.asset(
-              'assets/images/setup_profile2.png',
-              fit: BoxFit.fill,
-            ),
-            sizedBoxXLarge,
-            sizedBoxMedium,
-            NumberTextField(
-              controller: phoneController,
-              onPressed: () {
-                if (phoneController.text != '' && phoneNum.length < 2) {
-                  phoneNum.add(phoneController.text);
-                  setState(() {
-                    phoneController.text = '';
-                  });
-                }
+            DropdownSearch<MemberRole>(
+              mode: Mode.BOTTOM_SHEET,
+              items: members,
+              popupItemBuilder: buildItem,
+              popupBackgroundColor: const Color.fromARGB(146, 11, 29, 55),
+              //showSelectedItems: true,
+              searchFieldProps: const TextFieldProps(),
+              showSearchBox: true,
+              itemAsString: (member) {
+                return member!.memberName;
+              },
+              selectedItem: selectedItem,
+              onChanged: (member) {
+                selectedItem = member!;
               },
             ),
             sizedBoxMedium,
+            FormField<String>(
+                initialValue: 'Select',
+                builder: (FormFieldState<String> state) {
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            gapPadding: 4,
+                            borderRadius: BorderRadius.circular(5.0))),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<Role>(
+                        dropdownColor: beg,
+                        elevation: 10,
+                        iconEnabledColor: orange,
+                        style: const TextStyle(
+                            color: orange,
+                            fontFamily: font,
+                            fontWeight: FontWeight.bold),
+                        alignment: AlignmentDirectional.center,
+                        focusColor: orange,
+                        value: selectedRole,
+                        isDense: true,
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedRole = newValue!;
+                          });
+                        },
+                        items: [
+                          DropdownMenuItem(
+                            child: Text(Role.projectManager.name),
+                            value: Role.projectManager,
+                          ),
+                          DropdownMenuItem(
+                            child: Text(Role.projectEngineer.name),
+                            value: Role.projectEngineer,
+                          ),
+                          DropdownMenuItem(
+                            child: Text(Role.siteEngineer.name),
+                            value: Role.siteEngineer,
+                          ),
+                          DropdownMenuItem(
+                            child: Text(Role.client.name),
+                            value: Role.client,
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    selectedItem.role = selectedRole;
+                    selectedMembers.add(selectedItem);
+                    selectedRole = Role.projectManager;
+                    selectedItem = members.first;
+                  });
+                },
+                child: const Text('Add')),
             SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 60,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => PhoneCard(
-                    text: phoneNum[index],
-                    onTap: () {
-                      phoneNum.removeAt(index);
-                      setState(() {});
-                    },
-                  ),
-                  itemCount: phoneNum.length,
-                )),
+              height: MediaQuery.of(context).size.height,
+              child: ListView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  controller: scrollController,
+                  itemCount: selectedMembers.length,
+                  itemBuilder: (context, i) => MemberCard(
+                      name: selectedMembers[i].memberName,
+                      role: selectedMembers[i].role!,
+                      photoUrl: selectedMembers[i].profilePicUrl,
+                      onTap: () {
+                        setState(() {
+                          selectedMembers.removeAt(i);
+                        });
+                      })),
+            )
           ],
         ),
       ),
@@ -159,9 +175,10 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
         height: MediaQuery.of(context).size.height,
         child: ListView(
           children: [
-            Image.asset(
-              'assets/images/setub_profile3.png',
-              fit: BoxFit.fill,
+            sizedBoxXLarge,
+            TextFieldCustome(
+              controller: nameController,
+              text: context.loc.name,
             ),
             sizedBoxXLarge,
             Padding(
@@ -183,64 +200,7 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
           ],
         ),
       ),
-      Container(
-        color: darkBlue,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: ListView(children: [
-          Image.asset(
-            'assets/images/setup_profile4.png',
-            fit: BoxFit.fill,
-          ),
-          sizedBoxXLarge,
-          sizedBoxMedium,
-          SizedBox(
-            width: 300,
-            height: 200,
-            child: TextFormField(
-              onTap: () {},
-              decoration: InputDecoration(
-                isDense: true,
-                label: Text(
-                  context.loc.location,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ),
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () async {
-                Provider.of<AuthSataProvider>(context, listen: false)
-                    .changeAuthState(newState: AuthState.waiting);
-
-                String url = '';
-                if (imageFile != null) {
-                  url = await FileService()
-                      .uploadeimage(fileName, imageFile!, context);
-                }
-                if (url != 'error') {
-                  CompanyDbService().addCompany(
-                      Company(
-                          name: nameController.text,
-                          phoneNumbers: phoneNum,
-                          profilePicUrl: url,
-                          description: descController.text,
-                          location: const GeoPoint(12, 20)),
-                      context);
-                  return;
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 140, right: 140),
-                child: Text(
-                  context.loc.done,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ))
-        ]),
-      )
     ];
-
     return Consumer<AuthSataProvider>(
         builder: (context, value, child) => (AuthState.waiting ==
                 Provider.of<AuthSataProvider>(context).authState)
@@ -338,7 +298,7 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
                 appBar: AppBar(
                   elevation: 0.0,
                   title: const Text(
-                    'Set up your profile',
+                    'Create Project',
                   ),
                   centerTitle: true,
                 ),
@@ -357,5 +317,28 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
                           ],
                         ))),
               ));
+  }
+
+  Widget buildItem(BuildContext context, MemberRole item, bool isSelected) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: orange,
+            child: CircleAvatar(
+                radius: 19, backgroundImage: NetworkImage(item.profilePicUrl!)),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            item.memberName,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+        ],
+      ),
+    );
   }
 }

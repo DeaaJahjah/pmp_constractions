@@ -172,7 +172,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                                           backgroundImage:
                                                               NetworkImage(
                                                                   member
-                                                                      .profilePicUrl,
+                                                                      .profilePicUrl!,
                                                                   scale: 1)),
                                                     ),
                                                     Text(
@@ -181,7 +181,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                                           .textTheme
                                                           .headlineSmall,
                                                     ),
-                                                    Text(member.role.name)
+                                                    Text(member.role!.name)
                                                   ]),
                                             ),
                                           );

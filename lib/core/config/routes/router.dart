@@ -11,6 +11,7 @@ import 'package:pmpconstractions/features/home_screen/screens/project_details_sc
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:pmpconstractions/features/profile/screens/client_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
+import 'package:pmpconstractions/features/profile/screens/create_project.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
 import 'package:pmpconstractions/features/settings/settings_screen.dart';
 import 'package:pmpconstractions/features/splash_screen/splash_screen.dart';
@@ -49,6 +50,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
 
     case NotificationScreen.routeName:
       return MaterialPageRoute(builder: (_) => const NotificationScreen());
+    case CreateProject.routeName:
+      return MaterialPageRoute(builder: (_) => const CreateProject());
   }
 
   return null;

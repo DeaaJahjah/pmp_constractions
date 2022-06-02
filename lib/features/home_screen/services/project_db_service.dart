@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path/path.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 
@@ -69,7 +68,7 @@ class ProjectDbService {
 
     var query = await _db
         .collection('projects')
-        .where('company_id',isEqualTo: uid)
+        .where('company_id', isEqualTo: uid)
         .where('is_open', isEqualTo: 'true')
         .get();
 
@@ -79,13 +78,13 @@ class ProjectDbService {
     return projects;
   }
 
-   Future<List<Project>> geCompanyProjects(String companyId) async {
+  // show the copmpany projects
+  Future<List<Project>> geCompanyProjects(String companyId) async {
     List<Project> projects = [];
 
     var query = await _db
         .collection('projects')
-        .where('company_id',isEqualTo: companyId)
-
+        .where('company_id', isEqualTo: companyId)
         .get();
 
     for (var doc in query.docs) {
@@ -93,12 +92,14 @@ class ProjectDbService {
     }
     return projects;
   }
-    Future<List<Project>> geCompanyPublicProjects(String companyId) async {
+
+  // for any one vist the company profile
+  Future<List<Project>> geCompanyPublicProjects(String companyId) async {
     List<Project> projects = [];
 
     var query = await _db
         .collection('projects')
-        .where('company_id',isEqualTo: companyId)
+        .where('company_id', isEqualTo: companyId)
         .where('privacy', isEqualTo: 'public')
         .get();
 
