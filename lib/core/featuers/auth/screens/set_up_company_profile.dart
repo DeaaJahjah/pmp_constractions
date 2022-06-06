@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:path/path.dart' as path;
+
 class SetUpCompanyProfile extends StatefulWidget {
   static const routeName = '/c';
   const SetUpCompanyProfile({Key? key}) : super(key: key);
@@ -33,10 +34,10 @@ class _SetUpCompanyProfileState extends State<SetUpCompanyProfile> {
   final liquidController = LiquidController();
   final nameController = TextEditingController();
   final descController = TextEditingController();
-   var phoneController = TextEditingController();
-    XFile? pickedimage;
-String fileName = '';
-  File? imageFile ;
+  var phoneController = TextEditingController();
+  XFile? pickedimage;
+  String fileName = '';
+  File? imageFile;
   _pickImage() async {
     final picker = ImagePicker();
     try {
@@ -48,7 +49,8 @@ String fileName = '';
       print(e);
     }
   }
-    List<String> phoneNum = [];
+
+  List<String> phoneNum = [];
 
   @override
   Widget build(BuildContext context) {
@@ -65,27 +67,28 @@ String fileName = '';
           ),
           sizedBoxXLarge,
           InkWell(
-              onTap: () {
+            onTap: () {
               _pickImage();
               setState(() {});
               print(imageFile);
             },
             child: CircleAvatar(
-                backgroundColor: karmedi,
-                  radius: 60,                
-                child: (pickedimage == null)?
-                Icon(
-                  Icons.person_add,
-                  size: 50,
-                  color: beg,
-                ): CircleAvatar(
-                        radius: 60,
-                         backgroundImage: FileImage(imageFile!),
-               ),
-              ),
-        ),
+              backgroundColor: karmedi,
+              radius: 60,
+              child: (pickedimage == null)
+                  ? const Icon(
+                      Icons.person_add,
+                      size: 50,
+                      color: beg,
+                    )
+                  : CircleAvatar(
+                      radius: 60,
+                      backgroundImage: FileImage(imageFile!),
+                    ),
+            ),
+          ),
           sizedBoxMedium,
-         Text(context.loc.add_pic,
+          Text(context.loc.add_pic,
               style: Theme.of(context).textTheme.headlineMedium),
         ]),
       ),
@@ -121,7 +124,7 @@ String fileName = '';
             ),
             sizedBoxXLarge,
             sizedBoxMedium,
-          NumberTextField(
+            NumberTextField(
               controller: phoneController,
               onPressed: () {
                 if (phoneController.text != '' && phoneNum.length < 2) {
@@ -161,18 +164,16 @@ String fileName = '';
               fit: BoxFit.fill,
             ),
             sizedBoxXLarge,
-            SizedBox(
-              width: 300,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: TextFormField(
                 controller: descController,
                 maxLines: 4,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   isDense: true,
-                  contentPadding: EdgeInsets.all(14),
-                  label: Text(
-                    context.loc.descripton,
-                    style:Theme.of(context).textTheme.bodySmall
-                  ),
+                  contentPadding: const EdgeInsets.all(14),
+                  label: Text(context.loc.descripton,
+                      style: Theme.of(context).textTheme.bodySmall),
                   alignLabelWithHint: true,
                 ),
                 textAlign: TextAlign.start,
@@ -198,22 +199,20 @@ String fileName = '';
             height: 200,
             child: TextFormField(
               onTap: () {},
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 isDense: true,
                 label: Text(
                   context.loc.location,
-                  style:Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
             ),
           ),
-       
-              ElevatedButton(
+          ElevatedButton(
               onPressed: () async {
                 Provider.of<AuthSataProvider>(context, listen: false)
                     .changeAuthState(newState: AuthState.waiting);
 
-               
                 String url = '';
                 if (imageFile != null) {
                   url = await FileService()
@@ -226,8 +225,7 @@ String fileName = '';
                           phoneNumbers: phoneNum,
                           profilePicUrl: url,
                           description: descController.text,
-                          location: GeoPoint(12,20)
-                          ),
+                          location: const GeoPoint(12, 20)),
                       context);
                   return;
                 }

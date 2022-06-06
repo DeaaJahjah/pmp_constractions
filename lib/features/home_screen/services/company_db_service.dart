@@ -26,9 +26,8 @@ class CompanyDbService {
 
   Future<Company> getCompanyById(String id) async {
     var doc = await _db.collection('companies').doc(id).get();
-    Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
 
-    return Company.fromJson(cc);
+    return Company.fromFirestore(doc);
   }
 
   addCompany(Company company, context) async {

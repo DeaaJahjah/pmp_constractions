@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,24 @@ class FileService {
       Provider.of<AuthSataProvider>(context, listen: false)
           .changeAuthState(newState: AuthState.notSet);
       final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return 'error';
+    }
+  }
+
+  Future<String> uploadeFile(
+      String name, Uint8List file, BuildContext context) async {
+    try {
+      await storage.ref(name).putData(file);
+      return storage.ref(name).getDownloadURL();
+    } on FirebaseException catch (e) {
+      print(e.toString());
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+      final snackBar = SnackBar(
+        content: Text(e.toString()),
+        backgroundColor: Colors.red[500],
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return 'error';
     }

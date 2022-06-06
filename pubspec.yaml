@@ -47,6 +47,8 @@ dependencies:
   #UI
   liquid_swipe: ^2.1.1
   flutter_zoom_drawer: ^2.3.1+1
+  dropdown_search: ^3.0.1
+  
 
   flutter_layout_grid: ^1.0.6
   smooth_page_indicator: ^1.0.0+2

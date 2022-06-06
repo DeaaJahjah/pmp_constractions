@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
-import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/project_details_managmentr_screen.dart';
@@ -51,21 +50,10 @@ class OpenProjects extends StatelessWidget {
           }
 
           break;
-
-        case 'company':
-          if (Provider.of<CompanyProvider>(context, listen: true)
-              .companies
-              .isNotEmpty) {
-            var company = Provider.of<CompanyProvider>(context, listen: true)
-                .companies
-                .firstWhere((element) => element.userId == user!.uid);
-          }
-
-          break;
       }
     }
     return FutureBuilder<List<Project>>(
-      future: (user?.displayName == 'companies')
+      future: (user?.displayName == 'company')
           ? ProjectDbService().geCompanyOpenProjects(user!.uid)
           : ProjectDbService().getOpenProjects(projectIds ?? []),
       builder: (context, snapshot) {

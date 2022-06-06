@@ -175,7 +175,7 @@ class _ProjectDetailsManagmentScreenState
                                                           backgroundImage:
                                                               NetworkImage(
                                                                   member
-                                                                      .profilePicUrl,
+                                                                      .profilePicUrl!,
                                                                   scale: 1)),
                                                     ),
                                                     Text(
@@ -184,7 +184,7 @@ class _ProjectDetailsManagmentScreenState
                                                           .textTheme
                                                           .headlineSmall,
                                                     ),
-                                                    Text(member.role.name)
+                                                    Text(member.role!.name)
                                                   ]),
                                             ),
                                           );

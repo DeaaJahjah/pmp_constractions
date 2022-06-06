@@ -1,10 +1,52 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path/path.dart';
+import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
+import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:provider/provider.dart';
 
 class ProjectDbService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  createProject(Project project, context, String profilePicUrl) async {
+    try {
+      final projectDoc = await _db.collection('projects').add(project.toJson());
+
+      for (MemberRole member in project.members ?? []) {
+        // add project id to all members
+        _db.collection(member.collectionName!).doc(member.memberId).update(
+          {
+            'projects_ids': FieldValue.arrayUnion([projectDoc.id])
+          },
+        );
+        //send [Added to project] notification fpr all members
+        String role = member.role!.name;
+        await NotificationDbService().sendNotification(
+            member: member,
+            notification: NotificationModle(
+              title: project.name,
+              body: '${project.companyName} added you as a $role',
+              category: 'project',
+              imageUrl: profilePicUrl,
+              isReaded: false,
+              pauload: '/notification',
+            ));
+      }
+
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+      const snackBar = SnackBar(
+        content: Text('Project created successfully'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } on FirebaseException catch (e) {
+      print(e);
+
+      //TODO -- impliment error snackbar
+    }
+  }
 
   Future<List<Project>> getProjects() async {
     var queryData = await _db
@@ -69,36 +111,40 @@ class ProjectDbService {
 
     var query = await _db
         .collection('projects')
-        .where('company_id',isEqualTo: uid)
-        .where('is_open', isEqualTo: 'true')
+        .where('company_id', isEqualTo: uid)
+        .where('is_open', isEqualTo: true)
         .get();
 
     for (var doc in query.docs) {
       projects.add(Project.fromFirestore(doc));
     }
+
     return projects;
   }
 
-   Future<List<Project>> geCompanyProjects(String companyId) async {
+  // show the copmpany projects
+  Future<List<Project>> geCompanyProjects(String companyId) async {
     List<Project> projects = [];
 
     var query = await _db
         .collection('projects')
-        .where('company_id',isEqualTo: companyId)
-
+        .where('company_id', isEqualTo: companyId)
         .get();
 
     for (var doc in query.docs) {
       projects.add(Project.fromFirestore(doc));
     }
+    print(projects.length);
     return projects;
   }
-    Future<List<Project>> geCompanyPublicProjects(String companyId) async {
+
+  // for any one vist the company profile
+  Future<List<Project>> geCompanyPublicProjects(String companyId) async {
     List<Project> projects = [];
 
     var query = await _db
         .collection('projects')
-        .where('company_id',isEqualTo: companyId)
+        .where('company_id', isEqualTo: companyId)
         .where('privacy', isEqualTo: 'public')
         .get();
 
