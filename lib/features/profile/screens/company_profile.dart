@@ -9,7 +9,6 @@ import 'package:pmpconstractions/features/home_screen/models/company.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
 import 'package:pmpconstractions/features/home_screen/services/company_db_service.dart';
-import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:pmpconstractions/features/profile/screens/create_project.dart';
 import 'package:pmpconstractions/features/profile/screens/update_company_profile_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,7 +46,6 @@ class _CompanyProfileState extends State<CompanyProfile> {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
-    print(uid);
     return Scaffold(
         floatingActionButton: (uid == widget.companyId)
             ? Column(
@@ -71,7 +69,13 @@ class _CompanyProfileState extends State<CompanyProfile> {
                   FloatingActionButton(
                     backgroundColor: orange,
                     onPressed: () {
-                      Navigator.of(context).pushNamed(CreateProject.routeName);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreateProject(
+                                    companyName: company!.name,
+                                    profilePicUrl: company!.profilePicUrl,
+                                  )));
                     },
                     child: const Icon(
                       Icons.add,
@@ -264,18 +268,13 @@ class _CompanyProfileState extends State<CompanyProfile> {
           (!loading)
               ? SliverFillRemaining(
                   child: FutureBuilder<List<Project>>(
-                    future: (uid == company?.userId)
-                        ? ProjectDbService().geCompanyProjects(company!.userId!)
-                        : ProjectDbService()
-                            .geCompanyPublicProjects(company!.userId ?? ''),
+                    // future: (uid == company!.userId)
+                    //     ? ProjectDbService().geCompanyProjects(uid)
+                    //     : ProjectDbService().geCompanyPublicProjects(uid),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         List<Project> projects = snapshot.data!;
-                        if (projects.isEmpty) {
-                          return const Center(
-                            child: Text('no open project'),
-                          );
-                        }
+
                         return BuildProjects(
                           projects: projects,
                           scrollController: scrollController,

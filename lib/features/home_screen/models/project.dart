@@ -72,13 +72,16 @@ class MemberRole extends Equatable {
   final String memberName;
   @JsonKey(name: 'profile_pic_url')
   final String? profilePicUrl;
+  @JsonKey(name: 'collection_name')
+  String? collectionName;
   Role? role;
 
   MemberRole(
       {required this.memberId,
       required this.memberName,
       required this.profilePicUrl,
-      this.role});
+      this.role,
+      this.collectionName});
 
   factory MemberRole.fromJson(Map<String, dynamic> json) =>
       _$MemberRoleFromJson(json);

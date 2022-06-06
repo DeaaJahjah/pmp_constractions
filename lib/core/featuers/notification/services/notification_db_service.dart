@@ -2,11 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_service.dart';
+import 'package:pmpconstractions/features/home_screen/models/project.dart';
 
 class NotificationDbService {
   final NotificationService _notificationService = NotificationService();
   var user = FirebaseAuth.instance.currentUser;
   int unReaded = 0;
+  sendNotification(
+      {required MemberRole member,
+      required NotificationModle notification}) async {
+    FirebaseFirestore.instance
+        .collection(member.collectionName!)
+        .doc(member.memberId)
+        .collection('notifications')
+        .add(notification.toJson());
+  }
 
   showNotification() {
     var collection = collectionName(user!.displayName!);

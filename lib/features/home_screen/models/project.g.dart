@@ -44,8 +44,9 @@ const _$ProjectPrivacyEnumMap = {
 MemberRole _$MemberRoleFromJson(Map<String, dynamic> json) => MemberRole(
       memberId: json['member_id'] as String,
       memberName: json['member_name'] as String,
-      profilePicUrl: json['profile_pic_url'] as String,
-      role: $enumDecode(_$RoleEnumMap, json['role']),
+      profilePicUrl: json['profile_pic_url'] as String?,
+      role: $enumDecodeNullable(_$RoleEnumMap, json['role']),
+      collectionName: json['collection_name'],
     );
 
 Map<String, dynamic> _$MemberRoleToJson(MemberRole instance) =>
@@ -53,6 +54,7 @@ Map<String, dynamic> _$MemberRoleToJson(MemberRole instance) =>
       'member_id': instance.memberId,
       'member_name': instance.memberName,
       'profile_pic_url': instance.profilePicUrl,
+      'user_type': instance.collectionName,
       'role': _$RoleEnumMap[instance.role],
     };
 
@@ -61,4 +63,10 @@ const _$RoleEnumMap = {
   Role.projectEngineer: 'projectEngineer',
   Role.siteEngineer: 'siteEngineer',
   Role.client: 'client',
+};
+
+const _$UserTypeEnumMap = {
+  UserType.engineer: 'engineer',
+  UserType.company: 'company',
+  UserType.client: 'client',
 };

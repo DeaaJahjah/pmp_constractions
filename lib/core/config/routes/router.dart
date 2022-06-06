@@ -51,7 +51,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case NotificationScreen.routeName:
       return MaterialPageRoute(builder: (_) => const NotificationScreen());
     case CreateProject.routeName:
-      return MaterialPageRoute(builder: (_) => const CreateProject());
+      return MaterialPageRoute(builder: (_) => CreateProject());
   }
 
   return null;
