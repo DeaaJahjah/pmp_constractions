@@ -100,8 +100,8 @@ class _CreateProjectState extends State<CreateProject> {
         setState(() {});
       } else {
         // User canceled the picker
-        model3D = null;
-        modelName = null;
+        // model3D = null;
+        // modelName = null;
       }
     } catch (e) {
       print(e);
@@ -489,17 +489,24 @@ class _CreateProjectState extends State<CreateProject> {
                                   .showSnackBar(snackBar);
                               return;
                             }
-                            if (activePage == 0 &&
-                                descController.text.isNotEmpty) {
-                              liquidController.animateToPage(
-                                  page: liquidController.currentPage + 1);
-                              setState(() {});
+
+                            if (activePage == 0 && descController.text == '') {
+                              const snackBar = SnackBar(
+                                  content: Text('The description is required'));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
                               return;
                             }
-                            if (activePage == 0 &&
-                                descController.text.isEmpty) {
+                            if (activePage == 1 && imageFile == null) {
                               const snackBar = SnackBar(
-                                  content: Text('The name is required'));
+                                  content: Text('please select image'));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              return;
+                            }
+                            if (activePage == 1 && modelName == null) {
+                              const snackBar = SnackBar(
+                                  content: Text('please select 3D model'));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                               return;

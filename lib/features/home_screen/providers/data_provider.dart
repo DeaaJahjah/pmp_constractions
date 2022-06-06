@@ -12,17 +12,32 @@ class DataProvider extends ChangeNotifier {
   List<Project> projects = [];
   List<Company> companies = [];
   List<Engineer> engineers = [];
-  List<Client> clients= [];
+  List<Client> clients = [];
 
   fetchData() async {
-    projects = await ProjectDbService().getProjects();
-    companies = await CompanyDbService().getCompanies();
-    engineers = await EngineerDbService().getEngineers();
-    clients   =  await ClientDbService().getClients();
+    await fetchProjects();
+    await fetchClients();
+    await fetchEngineers();
+    await fetchCompanies();
+  }
 
-    print('Projects lenght ${projects.length}');
-    print('companies lenght ${companies.length}');
-    print('engineers lenght ${engineers.length}');
+  fetchProjects() async {
+    projects = await ProjectDbService().getProjects();
+    notifyListeners();
+  }
+
+  fetchEngineers() async {
+    engineers = await EngineerDbService().getEngineers();
+    notifyListeners();
+  }
+
+  fetchCompanies() async {
+    companies = await CompanyDbService().getCompanies();
+    notifyListeners();
+  }
+
+  fetchClients() async {
+    clients = await ClientDbService().getClients();
     notifyListeners();
   }
 }

@@ -5,7 +5,7 @@ import 'package:pmpconstractions/features/home_screen/screens/project_details_sc
 class ProjectCard extends StatelessWidget {
   final String projectId;
   final String name;
-  final String imageUrl;
+  final String? imageUrl;
   final int index;
   const ProjectCard(
       {Key? key,
@@ -17,11 +17,8 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //?TODO add random marging
     return InkWell(
         onTap: () {
-          // Navigator.pushNamed(context, '/home/project_details',
-          //     arguments: projectId);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
                   ProjectDetailsScreen(projectId: projectId)));
@@ -31,7 +28,6 @@ class ProjectCard extends StatelessWidget {
           child: Container(
               height: (index % 2 == 0) ? 300 : 200,
               color: karmedi,
-              //   padding: const EdgeInsets.all(5),
               child: Expanded(
                 flex: 1,
                 child: Stack(children: [
@@ -41,7 +37,7 @@ class ProjectCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Image.network(
-                          imageUrl,
+                          imageUrl!,
                           fit: BoxFit.cover,
                         ),
                       ),

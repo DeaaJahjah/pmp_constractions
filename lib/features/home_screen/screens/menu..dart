@@ -5,6 +5,7 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
+import 'package:pmpconstractions/core/featuers/settings/settings_screen.dart';
 
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
@@ -13,7 +14,6 @@ import 'package:pmpconstractions/features/home_screen/screens/menu_row.dart';
 import 'package:pmpconstractions/features/profile/screens/client_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
-import 'package:pmpconstractions/features/settings/settings_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 

@@ -1,12 +1,12 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/widgets/custom_appbar.dart';
 import 'package:pmpconstractions/language_provider.dart';
 
 import 'package:provider/provider.dart';
-import '../../core/config/theme/theme.dart';
 import 'custome_row.dart';
 
 class SettingsScreen extends StatefulWidget {

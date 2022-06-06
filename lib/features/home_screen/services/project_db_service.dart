@@ -5,6 +5,7 @@ import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provide
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProjectDbService {
@@ -41,6 +42,10 @@ class ProjectDbService {
         content: Text('Project created successfully'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // refresh the data
+      Provider.of<DataProvider>(context, listen: false).fetchProjects();
+      Navigator.of(context).pop();
     } on FirebaseException catch (e) {
       print(e);
 
