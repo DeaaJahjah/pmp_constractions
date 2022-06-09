@@ -16,6 +16,7 @@ import 'package:pmpconstractions/features/profile/screens/create_project.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
 
 import 'package:pmpconstractions/features/splash_screen/splash_screen.dart';
+import 'package:pmpconstractions/features/tasks/screens/tasks_screen.dart';
 
 import '../../featuers/auth/screens/choosing_screen.dart';
 
@@ -53,6 +54,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const NotificationScreen());
     case CreateProject.routeName:
       return MaterialPageRoute(builder: (_) => CreateProject());
+
+    case TasksScrenn.routeName:
+      return MaterialPageRoute(builder: (_) => const TasksScrenn());
   }
 
   return null;

@@ -7,7 +7,7 @@ import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/splash';
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    
+
     Provider.of<DataProvider>(context, listen: false).fetchData();
 
     Timer(
