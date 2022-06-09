@@ -4,7 +4,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
-import 'package:pmpconstractions/features/home_screen/screens/project_details_managmentr_screen.dart';
+import 'package:pmpconstractions/features/home_screen/screens/project_details_managment_screen.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

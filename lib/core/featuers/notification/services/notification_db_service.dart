@@ -19,7 +19,7 @@ class NotificationDbService {
   }
 
   showNotification() {
-    var collection = collectionName(user!.displayName!);
+    var collection = collectionName(user?.displayName!);
     FirebaseFirestore.instance
         .collection(collection)
         .doc(user!.uid)
@@ -31,13 +31,11 @@ class NotificationDbService {
 
       for (var doc in docs) {
         var data = doc.data();
-        if (data['is_readed'] == false) {
-          await _notificationService.showNotifications(
-              id: DateTime.now().millisecond,
-              title: data['title'],
-              body: data['body'],
-              pauload: '/notification');
-        }
+        await _notificationService.showNotifications(
+            id: DateTime.now().millisecond,
+            title: data['title'],
+            body: data['body'],
+            pauload: '/notification');
       }
     });
   }
