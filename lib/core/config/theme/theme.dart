@@ -13,7 +13,7 @@ ThemeData lightTheme = ThemeData(
   backgroundColor: white,
   scaffoldBackgroundColor: white,
   appBarTheme: const AppBarTheme(
-    elevation: 0.0,
+      elevation: 0.0,
       color: white,
       titleTextStyle: TextStyle(
           color: darkBlue,
@@ -56,48 +56,48 @@ ThemeData darkTheme = ThemeData(
           fontSize: 26,
           fontWeight: FontWeight.bold),
     ),
-    textTheme: TextTheme(
-        headlineSmall: const TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 18,
-            fontWeight: FontWeight.normal),
-        headlineMedium: const TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 24,
-            fontWeight: FontWeight.normal,),
-      headlineLarge: const TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 32,
-            fontWeight: FontWeight.bold),
-        bodySmall: const TextStyle(
-            color: orange,
-            fontFamily: font,
-            fontSize: 18,
-            fontWeight: FontWeight.normal),
-        bodyMedium: const TextStyle(
-            color: orange,
-            fontFamily: font,
-            fontSize: 32,
-            fontWeight: FontWeight.bold),
-        bodyLarge: const TextStyle(
-            color: beg,
-            fontFamily: font,
-            fontSize: 24,
-            fontWeight: FontWeight.normal),
-           
-            ),
-             
+    textTheme: const TextTheme(
+      headlineSmall: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 18,
+          fontWeight: FontWeight.normal),
+      headlineMedium: TextStyle(
+        color: beg,
+        fontFamily: font,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+      headlineLarge: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 24,
+          fontWeight: FontWeight.bold),
+      bodySmall: TextStyle(
+          color: orange,
+          fontFamily: font,
+          fontSize: 18,
+          fontWeight: FontWeight.normal),
+      bodyMedium: TextStyle(
+          color: orange,
+          fontFamily: font,
+          fontSize: 20,
+          fontWeight: FontWeight.bold),
+      bodyLarge: TextStyle(
+          color: beg,
+          fontFamily: font,
+          fontSize: 24,
+          fontWeight: FontWeight.normal),
+    ),
     switchTheme: SwitchThemeData(
       thumbColor: MaterialStateProperty.all(beg),
       trackColor: MaterialStateProperty.all(darkBlue),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style:ElevatedButton.styleFrom(
-          primary: orange,
-         ),),
+      style: ElevatedButton.styleFrom(
+        primary: orange,
+      ),
+    ),
     snackBarTheme: const SnackBarThemeData(
         backgroundColor: orange,
         contentTextStyle: TextStyle(

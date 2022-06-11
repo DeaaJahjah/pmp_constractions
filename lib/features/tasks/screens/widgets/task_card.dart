@@ -20,34 +20,14 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   List<String> images = [];
-  int submitedMembers = 0;
-  int notSubmitedMembers = 0;
-  int days = 0;
 
-  initilizData() async {
+  @override
+  void initState() {
     for (var member in widget.task.members!) {
       //get members images
       images.add(member.profilePicUrl!);
-
-      //count submited members
-      if (member.submited) {
-        submitedMembers++;
-      }
-      //count not submited members
-      if (!member.submited) {
-        notSubmitedMembers++;
-      }
     }
-  }
 
-  int progressValue = 0;
-  @override
-  void initState() {
-    initilizData();
-    days = widget.task.endPoint.difference(widget.task.startPoint).inDays;
-    progressValue =
-        ((submitedMembers / (submitedMembers + notSubmitedMembers)) * 100)
-            .toInt();
     super.initState();
   }
 
@@ -65,7 +45,7 @@ class _TaskCardState extends State<TaskCard> {
               autoClose: true,
               borderRadius: BorderRadius.circular(8),
               onPressed: (Context) {},
-              backgroundColor: const Color(0xFFFE4A49),
+              backgroundColor: orange.withOpacity(0.6),
               foregroundColor: Colors.white,
               icon: Icons.delete,
               label: 'Delete',
@@ -80,7 +60,7 @@ class _TaskCardState extends State<TaskCard> {
               autoClose: true,
               borderRadius: BorderRadius.circular(8),
               onPressed: (Context) {},
-              backgroundColor: const Color.fromARGB(255, 33, 202, 120),
+              backgroundColor: beg.withOpacity(0.6),
               foregroundColor: Colors.white,
               icon: Icons.edit,
               label: 'edit',
@@ -93,7 +73,7 @@ class _TaskCardState extends State<TaskCard> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 12),
-            child: Text('$days Days',
+            child: Text('${widget.task.getTaskDays()} Days',
                 style: Theme.of(context).textTheme.bodySmall),
           ),
           Expanded(
@@ -120,10 +100,9 @@ class _TaskCardState extends State<TaskCard> {
                     sizedBoxSmall,
                     LinearPercentIndicator(
                       lineHeight: 14.0,
-                      percent: submitedMembers /
-                          (notSubmitedMembers + submitedMembers),
+                      percent: widget.task.getProgressValue(),
                       center: Text(
-                        "$progressValue %",
+                        "${widget.task.getProgressValue() * 100} %",
                         style: TextStyle(
                             fontSize: 10.0,
                             color: (widget.index % 2 == 0) ? beg : orange),
@@ -140,7 +119,7 @@ class _TaskCardState extends State<TaskCard> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        '$progressValue% completed',
+                        '${widget.task.getProgressValue() * 100}% completed',
                         style: (widget.index % 2 == 0)
                             ? Theme.of(context).textTheme.bodySmall
                             : Theme.of(context).textTheme.headlineSmall,

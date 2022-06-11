@@ -17,6 +17,8 @@ class Task extends Equatable {
   final DateTime startPoint;
   @JsonKey(name: 'end_oint')
   final DateTime endPoint;
+  final String attchmentUrl;
+  final bool checkByManager;
   List<TaskMember>? members;
 
   Task(
@@ -26,6 +28,8 @@ class Task extends Equatable {
       required this.taskState,
       required this.startPoint,
       required this.endPoint,
+      required this.attchmentUrl,
+      required this.checkByManager,
       this.members});
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
@@ -38,7 +42,28 @@ class Task extends Equatable {
     return task;
   }
 
+  getProgressValue() {
+    int submitedMembers = 0;
+    for (var member in members!) {
+      if (member.submited) {
+        submitedMembers++;
+      }
+    }
+    return submitedMembers / members!.length;
+  }
+
+  getStartPoint() {
+    return "${startPoint.day}-${startPoint.month}-${startPoint.year}";
+  }
+
+  getEndPoint() {
+    return "${endPoint.day}-${endPoint.month}-${endPoint.year}";
+  }
+
+  getTaskDays() {
+    return endPoint.difference(startPoint).inDays;
+  }
+
   @override
-  // TODO: implement props
   List<Object?> get props => [id, members];
 }

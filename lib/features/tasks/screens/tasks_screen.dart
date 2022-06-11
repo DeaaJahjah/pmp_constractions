@@ -24,31 +24,34 @@ class _TasksScrennState extends State<TasksScrenn> {
       Task(
           id: '1',
           title: 'Water pipes extention',
-          description: 'some data some data some data',
+          description:
+              'some data some data some data some data some data some data some data some data some data some data some data some data',
           taskState: TaskState.notStarted,
           startPoint: DateTime(2022, DateTime.june, 5),
           endPoint: DateTime(2022, DateTime.june, 10),
+          attchmentUrl: '',
+          checkByManager: true,
           members: [
             TaskMember(
                 memberId: '1',
+                memberName: 'Sawsan ah',
+                role: Role.projectEngineer,
+                profilePicUrl: "assets/images/sawsan.png",
+                submited: true),
+            TaskMember(
+                memberId: '2',
                 memberName: 'Deaa jah',
                 role: Role.projectEngineer,
                 profilePicUrl: "assets/images/sawsan.png",
                 submited: true),
             TaskMember(
-                memberId: '1',
+                memberId: '3',
                 memberName: 'Deaa jah',
                 role: Role.projectEngineer,
                 profilePicUrl: "assets/images/sawsan.png",
                 submited: true),
             TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
+                memberId: '4',
                 memberName: 'Deaa jah',
                 role: Role.projectEngineer,
                 profilePicUrl: "assets/images/sawsan.png",
@@ -61,6 +64,8 @@ class _TasksScrennState extends State<TasksScrenn> {
           taskState: TaskState.notStarted,
           startPoint: DateTime(2022, DateTime.june, 3),
           endPoint: DateTime(2022, DateTime.june, 9),
+          attchmentUrl: '',
+          checkByManager: false,
           members: [
             TaskMember(
                 memberId: '1',
@@ -97,7 +102,9 @@ class _TasksScrennState extends State<TasksScrenn> {
           id: '3',
           title: 'Water pipes extention',
           description: 'some data some data some data',
-          taskState: TaskState.notStarted,
+          attchmentUrl: '',
+          checkByManager: false,
+          taskState: TaskState.inProgress,
           startPoint: DateTime(2022, DateTime.june, 5),
           endPoint: DateTime(2022, DateTime.june, 10),
           members: [
@@ -130,6 +137,8 @@ class _TasksScrennState extends State<TasksScrenn> {
           id: '4',
           title: 'Water pipes extention',
           description: 'some data some data some data',
+          attchmentUrl: '',
+          checkByManager: false,
           taskState: TaskState.notStarted,
           startPoint: DateTime(2022, DateTime.june, 3),
           endPoint: DateTime(2022, DateTime.june, 9),
@@ -167,54 +176,61 @@ class _TasksScrennState extends State<TasksScrenn> {
           ]),
     ];
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Tasks'),
-          centerTitle: true,
-          backgroundColor: orange,
-          elevation: 0.0,
-        ),
-        body: ListView(
-          children: [
-            Stack(children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 30,
-                color: orange,
-              ),
-              SizedBox(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                child: AnimationConfiguration.staggeredList(
-                    position: 1,
-                    duration: const Duration(milliseconds: 375),
-                    child: SlideAnimation(
-                        horizontalOffset: 50.0,
-                        child: FadeInAnimation(
-                            child: ListView.builder(
-                          itemCount: 3,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) => TaskStateCard(
-                            title: statesName[index],
-                            isSelected: states[index],
-                            onTap: () {
-                              for (int i = 0; i < states.length; i++) {
-                                if (i == index) {
-                                  states[index] = true;
-                                } else {
-                                  states[i] = false;
-                                }
+      appBar: AppBar(
+        title: const Text('Tasks'),
+        centerTitle: true,
+        backgroundColor: orange,
+        elevation: 0.0,
+      ),
+      body: ListView(
+        children: [
+          Stack(children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 30,
+              color: orange,
+            ),
+            SizedBox(
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              child: AnimationConfiguration.staggeredList(
+                  position: 1,
+                  duration: const Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                      horizontalOffset: 50.0,
+                      child: FadeInAnimation(
+                          child: ListView.builder(
+                        itemCount: 3,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => TaskStateCard(
+                          title: statesName[index],
+                          isSelected: states[index],
+                          onTap: () {
+                            for (int i = 0; i < states.length; i++) {
+                              if (i == index) {
+                                states[index] = true;
+                              } else {
+                                states[i] = false;
                               }
-                              setState(() {});
-                            },
-                          ),
-                        )))),
-              ),
-            ]),
-            TaskCard(task: tasks[0], index: 0),
-            TaskCard(task: tasks[1], index: 1),
-            TaskCard(task: tasks[2], index: 2),
-            TaskCard(task: tasks[3], index: 3),
-          ],
-        ));
+                            }
+                            setState(() {});
+                          },
+                        ),
+                      )))),
+            ),
+          ]),
+          TaskCard(task: tasks[0], index: 0),
+          TaskCard(task: tasks[1], index: 1),
+          TaskCard(task: tasks[2], index: 2),
+          TaskCard(task: tasks[3], index: 3),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add, color: beg, size: 30),
+        elevation: 10,
+        backgroundColor: orange,
+      ),
+    );
   }
 }

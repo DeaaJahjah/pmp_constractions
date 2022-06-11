@@ -13,6 +13,8 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       taskState: $enumDecode(_$TaskStateEnumMap, json['task_state']),
       startPoint: DateTime.parse(json['start_point'] as String),
       endPoint: DateTime.parse(json['end_oint'] as String),
+      attchmentUrl: json['attchmentUrl'] as String,
+      checkByManager: json['checkByManager'] as bool,
       members: (json['members'] as List<dynamic>?)
           ?.map((e) => TaskMember.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -25,6 +27,8 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'task_state': _$TaskStateEnumMap[instance.taskState],
       'start_point': instance.startPoint.toIso8601String(),
       'end_oint': instance.endPoint.toIso8601String(),
+      'attchmentUrl': instance.attchmentUrl,
+      'checkByManager': instance.checkByManager,
       'members': instance.members?.map((e) => e.toJson()).toList(),
     };
 
