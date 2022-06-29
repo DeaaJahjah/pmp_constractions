@@ -39,6 +39,7 @@ ThemeData darkTheme = ThemeData(
     primaryColor: darkBlue,
     backgroundColor: darkBlue,
     scaffoldBackgroundColor: darkBlue,
+    dialogTheme: const DialogTheme(backgroundColor: darkBlue),
     inputDecorationTheme: InputDecorationTheme(
       enabledBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: beg, width: 1.0),

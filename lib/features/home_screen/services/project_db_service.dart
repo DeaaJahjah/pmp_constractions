@@ -111,6 +111,13 @@ class ProjectDbService {
     return Project.fromJson(cc);
   }
 
+  //get project realtime updates
+  Stream<Project> getProjectUpdates(String id) {
+    return _db.collection('projects').doc(id).snapshots().map((doc) {
+      return Project.fromFirestore(doc);
+    });
+  }
+
   Future<List<Project>> geCompanyOpenProjects(String uid) async {
     List<Project> projects = [];
 

@@ -15,6 +15,7 @@ import 'package:pmpconstractions/features/home_screen/providers/engineer_provide
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_category_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
+import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/language_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -65,14 +66,14 @@ class App extends StatelessWidget {
               create: (context) => NotificationDbService().showNotification(),
               lazy: true,
               initialData: null),
+          ChangeNotifierProvider<SelectedProjectProvider>(
+              create: (context) => SelectedProjectProvider(null)),
           ChangeNotifierProvider<NotificationProvider>(
               create: (context) => NotificationProvider())
         ],
         child: Consumer<LanguageProvider>(
           builder: (context, value, _) => MaterialApp(
-
             navigatorKey: GlobalVariable.navState,
-            initialRoute: '/',
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
             supportedLocales: AppLocalizations.supportedLocales,
