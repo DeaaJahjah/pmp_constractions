@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/features/home_screen/screens/project_details_screen.dart';
+import 'package:pmpconstractions/features/project/project_details_screen.dart';
 
 class ProjectCard extends StatelessWidget {
   final String projectId;

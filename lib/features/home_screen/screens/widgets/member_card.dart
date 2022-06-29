@@ -23,10 +23,10 @@ class MemberCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 30,
+            radius: 25,
             backgroundColor: orange,
             child: CircleAvatar(
-              radius: 28,
+              radius: 24,
               backgroundImage: NetworkImage(photoUrl!),
             ),
           ),

@@ -88,5 +88,6 @@ class MemberRole extends Equatable {
 
   Map<String, dynamic> toJson() => _$MemberRoleToJson(this);
   @override
-  List<Object?> get props => [memberId, role];
+  List<Object?> get props =>
+      [memberId, role, collectionName, memberName, profilePicUrl];
 }

@@ -10,7 +10,7 @@ import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
 import 'package:pmpconstractions/features/home_screen/services/company_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
-import 'package:pmpconstractions/features/profile/screens/create_project.dart';
+import 'package:pmpconstractions/features/project/create_project_screen.dart';
 import 'package:pmpconstractions/features/profile/screens/update_company_profile_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -73,7 +73,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CreateProject(
+                              builder: (context) => CreateProjectScreen(
                                     companyName: company!.name,
                                     profilePicUrl: company!.profilePicUrl,
                                   ))).then((value) {

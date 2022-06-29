@@ -26,19 +26,20 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:path/path.dart' as path;
 
-class CreateProject extends StatefulWidget {
+class CreateProjectScreen extends StatefulWidget {
   static const routeName = '/create_project';
   String? companyName;
   String? profilePicUrl;
-  CreateProject({Key? key, this.companyName, this.profilePicUrl})
+  CreateProjectScreen({Key? key, this.companyName, this.profilePicUrl})
       : super(key: key);
 
   @override
-  State<CreateProject> createState() => _CreateProjectState();
+  State<CreateProjectScreen> createState() => _CreateProjectScreenState();
 }
 
-class _CreateProjectState extends State<CreateProject> {
+class _CreateProjectScreenState extends State<CreateProjectScreen> {
   final liquidController = LiquidController();
+  ScrollController scrollController = ScrollController();
   final nameController = TextEditingController();
   final descController = TextEditingController();
   int activePage = 0;
@@ -115,7 +116,6 @@ class _CreateProjectState extends State<CreateProject> {
     super.initState();
   }
 
-  ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     var pages = [

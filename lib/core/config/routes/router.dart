@@ -8,11 +8,11 @@ import 'package:pmpconstractions/core/featuers/auth/screens/signup_screen.dart';
 import 'package:pmpconstractions/core/featuers/notification/notification_screen.dart';
 import 'package:pmpconstractions/core/featuers/settings/settings_screen.dart';
 
-import 'package:pmpconstractions/features/home_screen/screens/project_details_screen.dart';
+import 'package:pmpconstractions/features/project/project_details_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:pmpconstractions/features/profile/screens/client_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
-import 'package:pmpconstractions/features/profile/screens/create_project.dart';
+import 'package:pmpconstractions/features/project/create_project_screen.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
 
 import 'package:pmpconstractions/features/splash_screen/splash_screen.dart';
@@ -54,8 +54,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
 
     case NotificationScreen.routeName:
       return MaterialPageRoute(builder: (_) => const NotificationScreen());
-    case CreateProject.routeName:
-      return MaterialPageRoute(builder: (_) => CreateProject());
+    case CreateProjectScreen.routeName:
+      return MaterialPageRoute(builder: (_) => CreateProjectScreen());
 
     case TasksScreen.routeName:
       return MaterialPageRoute(builder: (_) => const TasksScreen());

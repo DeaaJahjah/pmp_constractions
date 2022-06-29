@@ -47,8 +47,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         backgroundColor: darkBlue,
         body: Stack(
           children: [
-            ListView(controller: scrollController,
-             children: [
+            ListView(controller: scrollController, children: [
               Container(
                   alignment: Alignment.center,
                   padding:

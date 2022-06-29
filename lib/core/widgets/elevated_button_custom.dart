@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pmpconstractions/core/config/theme/theme.dart';
 
 class ElevatedButtonCustom extends StatefulWidget {
   final String text;
@@ -24,18 +23,16 @@ class _ElevatedButtonCustomState extends State<ElevatedButtonCustom> {
     return SizedBox(
         width: 150,
         height: 30,
-        child: ElevatedButton( 
+        child: ElevatedButton(
           style: ButtonStyle(
             side: MaterialStateProperty.all(
-              BorderSide(style: BorderStyle.solid, color: beg),
+              BorderSide(style: BorderStyle.solid, color: widget.bgColor),
             ),
             backgroundColor: MaterialStateProperty.all<Color>(widget.bgColor),
           ),
           onPressed: widget.onPressed,
-          child: Text(
-            widget.text,
-            style: Theme.of(context).textTheme.bodySmall
-          ),
+          child:
+              Text(widget.text, style: Theme.of(context).textTheme.bodySmall),
         ));
   }
 }
