@@ -90,9 +90,14 @@ class _TaskCardState extends State<TaskCard> {
             flex: 1,
             child: InkWell(
               onTap: () {
+                final projectId =
+                    Provider.of<SelectedProjectProvider>(context, listen: false)
+                        .project!
+                        .projectId;
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => TaskDetailsScreen(
                           taskId: widget.task.id,
+                          projectId: projectId,
                         )));
               },
               child: Container(

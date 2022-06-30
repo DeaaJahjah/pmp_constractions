@@ -64,6 +64,28 @@ class Task extends Equatable {
     return endPoint.difference(startPoint).inDays;
   }
 
+  bool allMembersSubmited() {
+    int submitedMembers = 0;
+    for (var member in members!) {
+      if (member.submited) {
+        submitedMembers++;
+      }
+    }
+    if (submitedMembers == members!.length) {
+      return true;
+    }
+    return false;
+  }
+
+  submited(String memberId) {
+    for (var member in members!) {
+      if (member.memberId == memberId && member.submited) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   List<Object?> get props => [id, members];
 }

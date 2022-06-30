@@ -1,22 +1,21 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
-import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/contributer_card.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
-import 'package:provider/provider.dart';
 import 'dart:isolate';
 import 'dart:ui';
 
 class TaskDetailsScreen extends StatefulWidget {
   static const String routeName = '/task_details';
-  String? taskId;
-  TaskDetailsScreen({Key? key, this.taskId}) : super(key: key);
+  final String? taskId;
+  final String? projectId;
+  const TaskDetailsScreen({Key? key, this.taskId, this.projectId})
+      : super(key: key);
 
   @override
   State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
@@ -42,37 +41,37 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   final ReceivePort _port = ReceivePort();
   @override
   void initState() {
-    IsolateNameServer.registerPortWithName(
-        _port.sendPort, 'downloader_send_port');
-    _port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
+    // IsolateNameServer.registerPortWithName(
+    //     _port.sendPort, 'downloader_send_port');
+    // _port.listen((dynamic data) {
+    //   String id = data[0];
+    //   DownloadTaskStatus status = data[1];
+    //   int progress = data[2];
 
-      setState(() {});
-    });
+    //   setState(() {});
+    // });
 
-    FlutterDownloader.registerCallback(downloadCallback);
+    // FlutterDownloader.registerCallback(downloadCallback);
     super.initState();
   }
 
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port')!;
-    send.send([id, status, progress]);
-  }
+  // static void downloadCallback(
+  //     String id, DownloadTaskStatus status, int progress) {
+  //   final SendPort send =
+  //       IsolateNameServer.lookupPortByName('downloader_send_port')!;
+  //   send.send([id, status, progress]);
+  // }
 
-  void download(String url) async {
-    final externalDir = await getExternalStorageDirectory();
+  // void download(String url) async {
+  //   final externalDir = await getExternalStorageDirectory();
 
-    final id = await FlutterDownloader.enqueue(
-      url: url,
-      savedDir: externalDir!.path,
-      showNotification: true,
-      openFileFromNotification: true,
-    );
-  }
+  //   final id = await FlutterDownloader.enqueue(
+  //     url: url,
+  //     savedDir: externalDir!.path,
+  //     showNotification: true,
+  //     openFileFromNotification: true,
+  //   );
+  // }
 
   @override
   void dispose() {
@@ -82,13 +81,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final projectId =
-        Provider.of<SelectedProjectProvider>(context, listen: false)
-            .project!
-            .projectId;
+    // final projectId =
+    //     Provider.of<SelectedProjectProvider>(context, listen: false)
+    //         .project!
+    //         .projectId;
     return StreamBuilder<Task>(
         stream: TasksDbService()
-            .getTaskById(projectId: projectId!, taskId: widget.taskId!),
+            .getTaskById(projectId: widget.projectId!, taskId: widget.taskId!),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final task = snapshot.data!;
@@ -224,7 +223,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           if (task.attchmentUrl != '')
                             ElevatedButton(
                               onPressed: () async {
-                                download(task.attchmentUrl);
+                                //  download(task.attchmentUrl);
                                 // FileService().requestDownload(
                                 //     , task.attchmentUrl);
                               },
@@ -257,47 +256,64 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                       )
                     ]),
-                    Positioned(
-                      bottom: 15.0,
-                      left: 50,
-                      child: ActionSlider.standard(
-                        sliderBehavior: SliderBehavior.stretch,
-                        rolling: true,
-                        width: 300.0,
-                        height: 54,
-                        child: Text('Swipe to submit',
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        backgroundColor: beg.withOpacity(0.25),
-                        toggleColor: orange,
-                        iconAlignment: Alignment.centerRight,
-                        loadingIcon: const SizedBox(
+                    if (!task.submited(context.userUid!))
+                      Positioned(
+                        bottom: 15.0,
+                        left: 50,
+                        child: ActionSlider.standard(
+                          sliderBehavior: SliderBehavior.stretch,
+                          rolling: true,
+                          width: 300.0,
+                          height: 54,
+                          child: Text('Swipe to submit',
+                              style: Theme.of(context).textTheme.bodyMedium),
+                          backgroundColor: beg.withOpacity(0.25),
+                          toggleColor: orange,
+                          iconAlignment: Alignment.centerRight,
+                          loadingIcon: const SizedBox(
+                              width: 50,
+                              child: Center(
+                                  child: SizedBox(
+                                width: 24.0,
+                                height: 24.0,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.0,
+                                  color: beg,
+                                ),
+                              ))),
+                          successIcon: const SizedBox(
+                              width: 50,
+                              child: Center(child: Icon(Icons.check_rounded))),
+                          icon: const SizedBox(
                             width: 50,
-                            child: Center(
-                                child: SizedBox(
-                              width: 24.0,
-                              height: 24.0,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.0,
-                                color: beg,
-                              ),
-                            ))),
-                        successIcon: const SizedBox(
-                            width: 50,
-                            child: Center(child: Icon(Icons.check_rounded))),
-                        icon: const SizedBox(
-                          width: 50,
-                          child: Center(child: Icon(Icons.send)),
+                            child: Center(child: Icon(Icons.send)),
+                          ),
+                          onSlide: (controller) async {
+                            for (var member in task.members!) {
+                              if (member.memberId == context.userUid!) {
+                                member.submited = true;
+                                break;
+                              }
+                            }
+                            controller.loading(); //starts loading animation
+                            await Future.delayed(const Duration(seconds: 1));
+                            controller.success();
+                            await Future.delayed(const Duration(seconds: 2));
+                            await TasksDbService().updateTask(
+                                projectId: widget.projectId!,
+                                task: task); //starts success animation
+                            // await Future.delayed(const Duration(seconds: 2));
+                            if (task.allMembersSubmited()) {
+                              await TasksDbService().updateTaskState(
+                                  projectId: widget.projectId!,
+                                  taskId: widget.taskId!,
+                                  taskState: TaskState.completed);
+                            }
+
+                            //resets the slider
+                          },
                         ),
-                        onSlide: (controller) async {
-                          controller.loading(); //starts loading animation
-                          await Future.delayed(const Duration(seconds: 3));
-                          controller.success(); //starts success animation
-                          await Future.delayed(const Duration(seconds: 1));
-                          controller.reset();
-                          //resets the slider
-                        },
-                      ),
-                    )
+                      )
                   ],
                 ));
           }

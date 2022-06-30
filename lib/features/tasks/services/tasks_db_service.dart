@@ -48,7 +48,7 @@ class TasksDbService {
       required Task task,
       required BuildContext context}) async {
     try {
-      await _db
+      var taskId = await _db
           .collection('projects')
           .doc(project.projectId)
           .collection('tasks')
@@ -61,9 +61,9 @@ class TasksDbService {
             notification: NotificationModle(
               title: project.name,
               body: '${task.title} ,Assigned to you',
-              category: 'Task',
+              category: 'task',
               projectId: project.projectId,
-              taskId: task.id,
+              taskId: taskId.id,
               imageUrl: project.imageUrl,
               isReaded: false,
               pauload: '/notification',
@@ -99,6 +99,16 @@ class TasksDbService {
         .update(task.toJson());
   }
 
-  //assign task
-
+  //update task state
+  Future<void> updateTaskState(
+      {required String projectId,
+      required String taskId,
+      required TaskState taskState}) async {
+    await _db
+        .collection('projects')
+        .doc(projectId)
+        .collection('tasks')
+        .doc(taskId)
+        .update({'task_state': taskState.name});
+  }
 }

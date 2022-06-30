@@ -41,14 +41,33 @@ class NotificationDbService {
     });
   }
 
-  getNotification() {
-    String? collection = collectionName(user!.displayName);
+  // getNotification() {
+  //   String? collection = collectionName(user!.displayName);
 
+  //   return FirebaseFirestore.instance
+  //       .collection(collection)
+  //       .doc(user!.uid)
+  //       .collection('notifications')
+  //       .snapshots(includeMetadataChanges: true);
+  // }
+
+  //get notification real time
+
+  Stream<List<NotificationModle>> getNotifications() {
+    String? collection = collectionName(user!.displayName);
     return FirebaseFirestore.instance
         .collection(collection)
         .doc(user!.uid)
         .collection('notifications')
-        .snapshots(includeMetadataChanges: true);
+        .snapshots()
+        .map(_projectListFromSnapshot);
+  }
+
+  List<NotificationModle> _projectListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      //print(doc.data);
+      return NotificationModle.fromFirestore(doc);
+    }).toList();
   }
 
   addNotification(NotificationModle notificationModle) async {
