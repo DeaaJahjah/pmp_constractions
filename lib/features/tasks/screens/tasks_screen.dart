@@ -3,7 +3,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
-import 'package:pmpconstractions/features/tasks/models/task_member.dart';
 import 'package:pmpconstractions/features/tasks/screens/add_task_screen.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/task_card.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/task_state_card.dart';
@@ -21,166 +20,9 @@ class TasksScreen extends StatefulWidget {
 class _TasksScreenState extends State<TasksScreen> {
   List<String> statesName = ['NOT-STARTED', 'IN-PROGRESS', 'COMPLETED'];
   List<bool> states = [true, false, false];
+  TaskState selectedState = TaskState.notStarted;
   @override
   Widget build(BuildContext context) {
-    // print(Provider.of<SelectedProjectProvider>(context, listen: true)
-    //     .project!
-    //     .projectId);
-    List<Task> tasks = [
-      Task(
-          id: '1',
-          title: 'Water pipes extention',
-          description:
-              'some data some data some data some data some data some data some data some data some data some data some data some data',
-          taskState: TaskState.notStarted,
-          startPoint: DateTime(2022, DateTime.june, 5),
-          endPoint: DateTime(2022, DateTime.june, 10),
-          attchmentUrl: '',
-          checkByManager: true,
-          members: [
-            TaskMember(
-                memberId: '1',
-                memberName: 'Sawsan ah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '2',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '3',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '4',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: false)
-          ]),
-      Task(
-          id: '2',
-          title: 'Water pipes extention',
-          description: 'some data some data some data',
-          taskState: TaskState.notStarted,
-          startPoint: DateTime(2022, DateTime.june, 3),
-          endPoint: DateTime(2022, DateTime.june, 9),
-          attchmentUrl: '',
-          checkByManager: false,
-          members: [
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: false),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: false)
-          ]),
-      Task(
-          id: '3',
-          title: 'Water pipes extention',
-          description: 'some data some data some data',
-          attchmentUrl: '',
-          checkByManager: false,
-          taskState: TaskState.inProgress,
-          startPoint: DateTime(2022, DateTime.june, 5),
-          endPoint: DateTime(2022, DateTime.june, 10),
-          members: [
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: false)
-          ]),
-      Task(
-          id: '4',
-          title: 'Water pipes extention',
-          description: 'some data some data some data',
-          attchmentUrl: '',
-          checkByManager: false,
-          taskState: TaskState.notStarted,
-          startPoint: DateTime(2022, DateTime.june, 3),
-          endPoint: DateTime(2022, DateTime.june, 9),
-          members: [
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: true),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: false),
-            TaskMember(
-                memberId: '1',
-                memberName: 'Deaa jah',
-                role: Role.projectEngineer,
-                profilePicUrl: "assets/images/sawsan.png",
-                submited: false)
-          ]),
-    ];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tasks'),
@@ -189,9 +31,8 @@ class _TasksScreenState extends State<TasksScreen> {
         elevation: 0.0,
       ),
       body: StreamBuilder<List<Task>>(
-          stream: TasksDbService().getTasks(
-              projectId: widget.projectId ?? '',
-              taskState: TaskState.inProgress),
+          stream: TasksDbService()
+              .getTasks(projectId: widget.projectId!, taskState: selectedState),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Task> tasks = snapshot.data!;
@@ -225,6 +66,20 @@ class _TasksScreenState extends State<TasksScreen> {
                                     } else {
                                       states[i] = false;
                                     }
+                                  }
+                                  switch (index) {
+                                    case 0:
+                                      selectedState = TaskState.notStarted;
+
+                                      break;
+                                    case 1:
+                                      selectedState = TaskState.inProgress;
+
+                                      break;
+                                    case 2:
+                                      selectedState = TaskState.completed;
+
+                                      break;
                                   }
                                   setState(() {});
                                 },

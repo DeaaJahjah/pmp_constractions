@@ -6,7 +6,10 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
+import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/task_details_screen.dart';
+import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
+import 'package:provider/provider.dart';
 
 class TaskCard extends StatefulWidget {
   final Task task;
@@ -44,7 +47,14 @@ class _TaskCardState extends State<TaskCard> {
             child: SlidableAction(
               autoClose: true,
               borderRadius: BorderRadius.circular(8),
-              onPressed: (Context) {},
+              onPressed: (context) async {
+                String projectId =
+                    Provider.of<SelectedProjectProvider>(context, listen: false)
+                        .project!
+                        .projectId!;
+                await TasksDbService()
+                    .deleteTask(projectId: projectId, taskId: widget.task.id!);
+              },
               backgroundColor: orange.withOpacity(0.6),
               foregroundColor: Colors.white,
               icon: Icons.delete,
@@ -59,7 +69,7 @@ class _TaskCardState extends State<TaskCard> {
             child: SlidableAction(
               autoClose: true,
               borderRadius: BorderRadius.circular(8),
-              onPressed: (Context) {},
+              onPressed: (context) {},
               backgroundColor: beg.withOpacity(0.6),
               foregroundColor: Colors.white,
               icon: Icons.edit,
@@ -82,7 +92,7 @@ class _TaskCardState extends State<TaskCard> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => TaskDetailsScreen(
-                          task: widget.task,
+                          taskId: widget.task.id,
                         )));
               },
               child: Container(
@@ -138,7 +148,7 @@ class _TaskCardState extends State<TaskCard> {
                           color: (widget.index % 2 == 0) ? orange : beg,
                           fontSize: 10),
                       backgroundColor: (widget.index % 2 == 0) ? beg : orange,
-                      imageSource: ImageSource.Asset,
+                      imageSource: ImageSource.Network,
                     ),
                     sizedBoxSmall,
                   ],

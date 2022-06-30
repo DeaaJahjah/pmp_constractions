@@ -75,11 +75,13 @@ class MemberRole extends Equatable {
   @JsonKey(name: 'collection_name')
   String? collectionName;
   Role? role;
+  bool submited;
 
   MemberRole(
       {required this.memberId,
       required this.memberName,
       required this.profilePicUrl,
+      required this.submited,
       this.role,
       this.collectionName});
 
@@ -89,5 +91,5 @@ class MemberRole extends Equatable {
   Map<String, dynamic> toJson() => _$MemberRoleToJson(this);
   @override
   List<Object?> get props =>
-      [memberId, role, collectionName, memberName, profilePicUrl];
+      [memberId, role, collectionName, memberName, profilePicUrl, submited];
 }

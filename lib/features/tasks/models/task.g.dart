@@ -16,7 +16,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       attchmentUrl: json['attchmentUrl'] as String,
       checkByManager: json['checkByManager'] as bool,
       members: (json['members'] as List<dynamic>?)
-          ?.map((e) => TaskMember.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => MemberRole.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

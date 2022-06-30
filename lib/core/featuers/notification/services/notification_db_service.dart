@@ -8,10 +8,11 @@ class NotificationDbService {
   final NotificationService _notificationService = NotificationService();
   var user = FirebaseAuth.instance.currentUser;
   int unReaded = 0;
-  sendNotification(
+
+  Future<void> sendNotification(
       {required MemberRole member,
       required NotificationModle notification}) async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection(member.collectionName!)
         .doc(member.memberId)
         .collection('notifications')

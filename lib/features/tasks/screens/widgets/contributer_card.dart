@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/features/tasks/models/task_member.dart';
+import 'package:pmpconstractions/features/home_screen/models/project.dart';
 
 class ContributerCard extends StatelessWidget {
-  final TaskMember member;
+  final MemberRole member;
   const ContributerCard({Key? key, required this.member}) : super(key: key);
 
   @override
@@ -18,7 +18,8 @@ class ContributerCard extends StatelessWidget {
             radius: 30,
             backgroundColor: orange,
             child: CircleAvatar(
-                radius: 28, backgroundImage: AssetImage(member.profilePicUrl!)),
+                radius: 28,
+                backgroundImage: NetworkImage(member.profilePicUrl!)),
           ),
           const SizedBox(
             width: 10,

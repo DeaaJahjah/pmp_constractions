@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
-import 'package:pmpconstractions/features/tasks/models/task_member.dart';
+import 'package:pmpconstractions/features/home_screen/models/project.dart';
 
 part 'task.g.dart';
 
@@ -19,7 +19,7 @@ class Task extends Equatable {
   final DateTime endPoint;
   final String attchmentUrl;
   final bool checkByManager;
-  List<TaskMember>? members;
+  List<MemberRole>? members;
 
   Task(
       {this.id,

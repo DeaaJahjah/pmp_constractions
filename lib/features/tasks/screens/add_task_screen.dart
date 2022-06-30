@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
@@ -7,12 +7,16 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
+import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/member_card.dart';
+import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/date_picker.dart';
+import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -34,20 +38,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   DateTime endDate = DateTime.now();
   MemberRole? selectedItem;
   List<MemberRole> selectedMembers = [];
-  Uint8List? attchmentFile;
+  File? attchmentFile;
   String? attchmentName;
   bool checkByManager = false;
   ScrollController scrollController = ScrollController();
   _pickFile() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.any,
-      );
-
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.any);
+      print(result);
       if (result != null) {
-        attchmentFile = result.files.first.bytes;
+        attchmentFile = File(result.files.single.path!);
         attchmentName = result.files.first.name;
         setState(() {});
+        print(attchmentFile);
       } else {
         // User canceled the picker
         // attchmentFile = null;
@@ -60,9 +64,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var project = Provider.of<SelectedProjectProvider>(
-      context,
-    ).project;
+    var project = Provider.of<SelectedProjectProvider>(context).project;
+    List<MemberRole> members = [];
+
     return Scaffold(
         appBar: AppBar(
           title: Text(context.loc.add_task),
@@ -194,9 +198,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     onPressed: () async {
                       DateTime? newDate = await pickDate(context);
                       if (newDate != null) {
-                        setState(() {
-                          endDate = newDate;
-                        });
+                        if (newDate.isAfter(startDate)) {
+                          setState(() {
+                            endDate = newDate;
+                          });
+                        } else {
+                          showErrorSnackBar(
+                              context, 'End date must be after start date');
+                        }
                       }
                       const Text('pick date');
                     },
@@ -212,7 +221,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     flex: 3,
                     child: DropdownSearch<MemberRole>(
                       mode: Mode.BOTTOM_SHEET,
-                      items: project?.members,
+                      items: project!.members,
                       popupItemBuilder: buildItem,
                       popupBackgroundColor:
                           const Color.fromARGB(146, 11, 29, 55),
@@ -241,6 +250,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                     selectedMembers.contains(selectedItem!);
                                 if (!found) {
                                   selectedMembers.add(selectedItem!);
+                                  print(selectedItem!.collectionName);
                                 }
                               }
                             });
@@ -320,7 +330,39 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: ElevatedButton(
-                  child: Text(context.loc.add), onPressed: () {}),
+                  child: Text(context.loc.add),
+                  onPressed: () async {
+                    if (nameController.text.isEmpty) {
+                      showSuccessSnackBar(context, 'name is required');
+                      return;
+                    }
+                    String attchmentUrl = '';
+                    if (attchmentFile != null) {
+                      attchmentUrl = await FileService()
+                          .uploadeFile(attchmentName!, attchmentFile!, context);
+                    }
+                    if (attchmentUrl == 'error') {
+                      showErrorSnackBar(context, 'error uploading file');
+                      return;
+                    }
+                    var task = Task(
+                        title: nameController.text,
+                        description: descController.text,
+                        taskState: taskState,
+                        startPoint: startDate,
+                        endPoint: endDate,
+                        attchmentUrl: attchmentUrl,
+                        checkByManager: checkByManager,
+                        members: selectedMembers);
+                    bool state = await TasksDbService().addTask(
+                        project: project, task: task, context: context);
+                    if (state) {
+                      Navigator.pop(context);
+                      showSuccessSnackBar(context, 'task added successfully');
+                    } else {
+                      showErrorSnackBar(context, 'error adding task');
+                    }
+                  }),
             )
           ],
         ));

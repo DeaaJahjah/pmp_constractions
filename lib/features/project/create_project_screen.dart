@@ -66,14 +66,16 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           memberId: client.userId!,
           memberName: client.name,
           profilePicUrl: client.profilePicUrl!,
-          collectionName: 'clients'));
+          collectionName: 'clients',
+          submited: false));
     }
     for (var enginner in enginners) {
       members.add(MemberRole(
           memberId: enginner.userId!,
           memberName: enginner.name,
           profilePicUrl: enginner.profilePicUrl,
-          collectionName: 'engineers'));
+          collectionName: 'engineers',
+          submited: false));
     }
   }
 
@@ -379,8 +381,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
                   String modelUrl = '';
                   if (model3D != null) {
-                    imageUrl = await FileService()
-                        .uploadeFile(modelName!, model3D!, context);
+                    // imageUrl = await FileService()
+                    //     .uploadeFile(modelName!, model3D!, context);
                   }
                   if (imageUrl == 'error' || modelUrl == 'error') {
                     final snackBar = SnackBar(

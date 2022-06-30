@@ -45,6 +45,7 @@ MemberRole _$MemberRoleFromJson(Map<String, dynamic> json) => MemberRole(
       memberId: json['member_id'] as String,
       memberName: json['member_name'] as String,
       profilePicUrl: json['profile_pic_url'] as String?,
+      submited: json['submited'] as bool,
       role: $enumDecodeNullable(_$RoleEnumMap, json['role']),
       collectionName: json['collection_name'] as String?,
     );
@@ -56,6 +57,7 @@ Map<String, dynamic> _$MemberRoleToJson(MemberRole instance) =>
       'profile_pic_url': instance.profilePicUrl,
       'collection_name': instance.collectionName,
       'role': _$RoleEnumMap[instance.role],
+      'submited': instance.submited,
     };
 
 const _$RoleEnumMap = {
