@@ -45,9 +45,9 @@ dependencies:
   cloud_firestore: ^3.1.11
   firebase_auth: ^3.3.17
   #UI
-  liquid_swipe: ^2.1.1
+  liquid_swipe: ^3.0.0
   flutter_zoom_drawer: ^2.3.1+1
-  dropdown_search: ^3.0.1
+  dropdown_search: ^5.0.2
   percent_indicator: ^4.2.2
   action_slider: ^0.5.0
   image_stack: ^2.1.1
@@ -87,6 +87,7 @@ dependencies:
   file_picker: ^4.5.1
   http: ^0.13.4
   flutter_downloader: ^1.8.0+1
+  cached_network_image: ^3.2.1
   #json
   json_annotation: ^4.4.0 
   #map

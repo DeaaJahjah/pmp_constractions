@@ -220,16 +220,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   Expanded(
                     flex: 3,
                     child: DropdownSearch<MemberRole>(
-                      mode: Mode.BOTTOM_SHEET,
-                      items: project!.members,
-                      popupItemBuilder: buildItem,
-                      popupBackgroundColor:
-                          const Color.fromARGB(146, 11, 29, 55),
+                      items: project!.members!,
+                      dropdownBuilder: buildItemDropdown,
+
                       //showSelectedItems: true,
-                      searchFieldProps: const TextFieldProps(),
-                      showSearchBox: true,
+
                       itemAsString: (member) {
-                        return member!.memberName;
+                        return member.memberName;
                       },
                       selectedItem: selectedItem,
                       onChanged: (member) {
@@ -369,7 +366,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 }
 
-Widget buildItem(BuildContext context, MemberRole item, bool isSelected) {
+Widget buildItemDropdown(BuildContext context, MemberRole? item) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
@@ -378,7 +375,7 @@ Widget buildItem(BuildContext context, MemberRole item, bool isSelected) {
           radius: 20,
           backgroundColor: orange,
           child: CircleAvatar(
-              radius: 19, backgroundImage: NetworkImage(item.profilePicUrl!)),
+              radius: 19, backgroundImage: NetworkImage(item!.profilePicUrl!)),
         ),
         const SizedBox(
           width: 10,

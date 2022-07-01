@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
@@ -184,43 +185,55 @@ class EngCard extends StatelessWidget {
                 'assets/images/engborder.png',
                 fit: BoxFit.fill,
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    sizedBoxMedium,
-                    CircleAvatar(
-                      backgroundColor: beg,
-                      radius: 30,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  sizedBoxMedium,
+                  CircleAvatar(
+                    backgroundColor: beg,
+                    radius: 30,
+                    child: CircleAvatar(
+                      radius: 29,
+                      backgroundColor: darkBlue,
                       child: CircleAvatar(
-                        radius: 29,
+                        radius: 28,
                         backgroundColor: darkBlue,
-                        child: CircleAvatar(
-                          radius: 28,
-                          backgroundColor: darkBlue,
-                          backgroundImage: NetworkImage(imageUrl),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: imageUrl,
+                            width: 80,
+                            height: 80,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
                         ),
                       ),
                     ),
-                    sizedBoxSmall,
-                    Text(name,
-                        style: const TextStyle(
-                            color: orange,
-                            fontFamily: font,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold)),
-                    sizedBoxXSmall,
-                    Text(
-                      speclizition,
+                  ),
+                  sizedBoxSmall,
+                  Text(name,
                       style: const TextStyle(
-                          color: beg,
+                          color: orange,
                           fontFamily: font,
-                          fontSize: 8,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold)),
+                  sizedBoxXSmall,
+                  Text(
+                    speclizition,
+                    style: const TextStyle(
+                        color: beg,
+                        fontFamily: font,
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
               )
             ],
           )),
@@ -259,43 +272,55 @@ class CompCard extends StatelessWidget {
                 'assets/images/engborder.png',
                 fit: BoxFit.fill,
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    sizedBoxMedium,
-                    CircleAvatar(
-                      backgroundColor: beg,
-                      radius: 30,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  sizedBoxMedium,
+                  CircleAvatar(
+                    backgroundColor: beg,
+                    radius: 30,
+                    child: CircleAvatar(
+                      radius: 29,
+                      backgroundColor: darkBlue,
                       child: CircleAvatar(
-                        radius: 29,
+                        radius: 28,
                         backgroundColor: darkBlue,
-                        child: CircleAvatar(
-                          radius: 28,
-                          backgroundColor: darkBlue,
-                          backgroundImage: NetworkImage(imageUrl),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: CachedNetworkImage(
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                            imageUrl: imageUrl,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
                         ),
                       ),
                     ),
-                    sizedBoxSmall,
-                    Text(name,
-                        style: const TextStyle(
-                            color: orange,
-                            fontFamily: font,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold)),
-                    sizedBoxXSmall,
-                    const Text(
-                      'Homs-Syria',
-                      style: TextStyle(
-                          color: beg,
+                  ),
+                  sizedBoxSmall,
+                  Text(name,
+                      style: const TextStyle(
+                          color: orange,
                           fontFamily: font,
-                          fontSize: 8,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold)),
+                  sizedBoxXSmall,
+                  const Text(
+                    'Homs-Syria',
+                    style: TextStyle(
+                        color: beg,
+                        fontFamily: font,
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
               )
             ],
           )),

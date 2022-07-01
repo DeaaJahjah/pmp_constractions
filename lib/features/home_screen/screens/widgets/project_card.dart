@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/project/project_details_screen.dart';
@@ -28,46 +29,47 @@ class ProjectCard extends StatelessWidget {
           child: Container(
               height: (index % 2 == 0) ? 300 : 200,
               color: karmedi,
-              child: Expanded(
-                flex: 1,
-                child: Stack(children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Image.network(
-                          imageUrl!,
-                          fit: BoxFit.cover,
-                        ),
+              child: Stack(children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: imageUrl!,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Center(
+                        child: CircularProgressIndicator(
+                            value: downloadProgress.progress),
                       ),
-                    ],
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Container(
-                          padding: const EdgeInsets.all(3),
-                          height: 35,
-                          width: 192,
-                          decoration: const BoxDecoration(
-                            color: orange,
-                            //     borderRadius: BorderRadius.circular(5)
-                          ),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  name,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                )
-                              ]),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  ],
+                ),
+                Positioned(
+                    bottom: 0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Container(
+                        padding: const EdgeInsets.all(3),
+                        height: 35,
+                        width: 192,
+                        decoration: const BoxDecoration(
+                          color: orange,
+                          //     borderRadius: BorderRadius.circular(5)
                         ),
-                      ))
-                ]),
-              )),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                name,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              )
+                            ]),
+                      ),
+                    ))
+              ])),
         ));
   }
 }

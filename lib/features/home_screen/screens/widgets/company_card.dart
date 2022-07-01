@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
@@ -33,37 +34,49 @@ class CompanyCard extends StatelessWidget {
                 'assets/images/engborder.png',
                 fit: BoxFit.fill,
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    sizedBoxMedium,
-                    CircleAvatar(
-                      backgroundColor: beg,
-                      radius: 45,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  sizedBoxMedium,
+                  CircleAvatar(
+                    backgroundColor: beg,
+                    radius: 45,
+                    child: CircleAvatar(
+                      radius: 44,
+                      backgroundColor: darkBlue,
                       child: CircleAvatar(
-                        radius: 44,
+                        radius: 41,
                         backgroundColor: darkBlue,
-                        child: CircleAvatar(
-                          radius: 41,
-                          backgroundColor: darkBlue,
-                          backgroundImage: NetworkImage(imageUrl),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: imageUrl,
+                            width: 120,
+                            height: 120,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
                         ),
                       ),
                     ),
-                    sizedBoxSmall,
-                    Text(
-                      name,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    sizedBoxSmall,
-                    Text(
-                      'Homs-Syria',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+                  ),
+                  sizedBoxSmall,
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  sizedBoxSmall,
+                  Text(
+                    'Homs-Syria',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               )
             ],
           )),

@@ -294,15 +294,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           controller: scrollController,
           children: [
             DropdownSearch<MemberRole>(
-              mode: Mode.BOTTOM_SHEET,
+              dropdownDecoratorProps: const DropDownDecoratorProps(),
               items: members,
-              popupItemBuilder: buildItem,
-              popupBackgroundColor: const Color.fromARGB(146, 11, 29, 55),
-              //showSelectedItems: true,
-              searchFieldProps: const TextFieldProps(),
-              showSearchBox: true,
+              dropdownBuilder: buildItemDropdown,
+              dropdownButtonProps: const DropdownButtonProps(),
               itemAsString: (member) {
-                return member!.memberName;
+                return member.memberName;
               },
               selectedItem: selectedItem,
               onChanged: (member) {
@@ -555,7 +552,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               ));
   }
 
-  Widget buildItem(BuildContext context, MemberRole item, bool isSelected) {
+  Widget buildItemDropdown(BuildContext context, MemberRole? item) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -564,7 +561,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             radius: 20,
             backgroundColor: orange,
             child: CircleAvatar(
-                radius: 19, backgroundImage: NetworkImage(item.profilePicUrl!)),
+                radius: 19,
+                backgroundImage: NetworkImage(item!.profilePicUrl!)),
           ),
           const SizedBox(
             width: 10,
