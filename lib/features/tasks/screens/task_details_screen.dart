@@ -238,9 +238,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ],
                       ),
                       customText(text: 'Contributers'),
-                      SizedBox(
-                        height: 300,
+                      Container(
                         child: GridView.builder(
+                          shrinkWrap: true,
                           controller: scrollController,
                           itemCount: task.members!.length,
                           gridDelegate:
@@ -254,66 +254,71 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                 member: task.members![index]);
                           },
                         ),
-                      )
-                    ]),
-                    if (!task.submited(context.userUid!))
-                      Positioned(
-                        bottom: 15.0,
-                        left: 50,
-                        child: ActionSlider.standard(
-                          sliderBehavior: SliderBehavior.stretch,
-                          rolling: true,
-                          width: 300.0,
-                          height: 54,
-                          child: Text('Swipe to submit',
-                              style: Theme.of(context).textTheme.bodyMedium),
-                          backgroundColor: beg.withOpacity(0.25),
-                          toggleColor: orange,
-                          iconAlignment: Alignment.centerRight,
-                          loadingIcon: const SizedBox(
-                              width: 50,
-                              child: Center(
-                                  child: SizedBox(
-                                width: 24.0,
-                                height: 24.0,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2.0,
-                                  color: beg,
-                                ),
-                              ))),
-                          successIcon: const SizedBox(
-                              width: 50,
-                              child: Center(child: Icon(Icons.check_rounded))),
-                          icon: const SizedBox(
-                            width: 50,
-                            child: Center(child: Icon(Icons.send)),
-                          ),
-                          onSlide: (controller) async {
-                            for (var member in task.members!) {
-                              if (member.memberId == context.userUid!) {
-                                member.submited = true;
-                                break;
-                              }
-                            }
-                            controller.loading(); //starts loading animation
-                            await Future.delayed(const Duration(seconds: 1));
-                            controller.success();
-                            await Future.delayed(const Duration(seconds: 2));
-                            await TasksDbService().updateTask(
-                                projectId: widget.projectId!,
-                                task: task); //starts success animation
-                            // await Future.delayed(const Duration(seconds: 2));
-                            if (task.allMembersSubmited()) {
-                              await TasksDbService().updateTaskState(
-                                  projectId: widget.projectId!,
-                                  taskId: widget.taskId!,
-                                  taskState: TaskState.completed);
-                            }
+                      ),
+                      if (task.submited(context.userUid!))
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: ActionSlider.standard(
+                              sliderBehavior: SliderBehavior.stretch,
+                              rolling: true,
+                              width: 300.0,
+                              height: 54,
+                              child: Text('Swipe to submit',
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
+                              backgroundColor: beg.withOpacity(0.25),
+                              toggleColor: orange,
+                              iconAlignment: Alignment.centerRight,
+                              loadingIcon: const SizedBox(
+                                  width: 50,
+                                  child: Center(
+                                      child: SizedBox(
+                                    width: 24.0,
+                                    height: 24.0,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.0,
+                                      color: beg,
+                                    ),
+                                  ))),
+                              successIcon: const SizedBox(
+                                  width: 50,
+                                  child:
+                                      Center(child: Icon(Icons.check_rounded))),
+                              icon: const SizedBox(
+                                width: 50,
+                                child: Center(child: Icon(Icons.send)),
+                              ),
+                              onSlide: (controller) async {
+                                for (var member in task.members!) {
+                                  if (member.memberId == context.userUid!) {
+                                    member.submited = true;
+                                    break;
+                                  }
+                                }
+                                controller.loading(); //starts loading animation
+                                await Future.delayed(
+                                    const Duration(seconds: 1));
+                                controller.success();
+                                await Future.delayed(
+                                    const Duration(seconds: 2));
+                                await TasksDbService().updateTask(
+                                    projectId: widget.projectId!,
+                                    task: task); //starts success animation
+                                // await Future.delayed(const Duration(seconds: 2));
+                                if (task.allMembersSubmited()) {
+                                  await TasksDbService().updateTaskState(
+                                      projectId: widget.projectId!,
+                                      taskId: widget.taskId!,
+                                      taskState: TaskState.completed);
+                                }
 
-                            //resets the slider
-                          },
+                                //resets the slider
+                              },
+                            ),
+                          ),
                         ),
-                      )
+                    ]),
                   ],
                 ));
           }
