@@ -6,9 +6,8 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
-import 'package:pmpconstractions/core/featuers/notification/providers/notification_provider.dart';
+
 import 'package:pmpconstractions/core/featuers/notification/services/navigation_service.dart';
-import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
@@ -26,9 +25,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
-      initTheme: darkTheme,
-      builder: (context, currentTheme) => MultiProvider(
+    return MultiProvider(
         providers: [
           ChangeNotifierProvider<LanguageProvider>(
               create: (context) => LanguageProvider()),
@@ -55,35 +52,25 @@ class App extends StatelessWidget {
           ),
           Provider<FlutterFireAuthService>(
               create: (_) => FlutterFireAuthService(FirebaseAuth.instance)),
-          StreamProvider(
-            initialData: null,
-            create: (context) =>
-                context.read<FlutterFireAuthService>().authStateChanges,
-          ),
           ChangeNotifierProvider<AuthSataProvider>(
               create: (context) => AuthSataProvider()),
-          StreamProvider(
-              create: (context) => NotificationDbService().showNotification(),
-              lazy: true,
-              initialData: null),
           ChangeNotifierProvider<SelectedProjectProvider>(
               create: (context) => SelectedProjectProvider(null)),
-          ChangeNotifierProvider<NotificationProvider>(
-              create: (context) => NotificationProvider())
         ],
         child: Consumer<LanguageProvider>(
-          builder: (context, value, _) => MaterialApp(
-            navigatorKey: GlobalVariable.navState,
-            debugShowCheckedModeBanner: false,
-            theme: currentTheme,
-            supportedLocales: AppLocalizations.supportedLocales,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            onGenerateTitle: (context) => context.loc.localeName,
-            onGenerateRoute: onGenerateRoute,
-            locale: value.locale,
+          builder: (context, value, _) => ThemeProvider(
+            initTheme: darkTheme,
+            builder: (context, currentTheme) => MaterialApp(
+              navigatorKey: GlobalVariable.navState,
+              debugShowCheckedModeBanner: false,
+              theme: currentTheme,
+              supportedLocales: AppLocalizations.supportedLocales,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              onGenerateTitle: (context) => context.loc.localeName,
+              onGenerateRoute: onGenerateRoute,
+              locale: value.locale,
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

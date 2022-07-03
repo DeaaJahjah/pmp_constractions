@@ -65,7 +65,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     var project = Provider.of<SelectedProjectProvider>(context).project;
-    List<MemberRole> members = [];
+    selectedItem = project!.members!.first;
 
     return Scaffold(
         appBar: AppBar(
@@ -100,56 +100,53 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             sizedBoxMedium,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Expanded(
-                flex: 1,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Text(context.loc.state,
-                          style: Theme.of(context).textTheme.bodySmall),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: FormField<TaskState>(
-                        builder: (FormFieldState<TaskState> state) {
-                          return InputDecorator(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    gapPadding: 4,
-                                    borderRadius: BorderRadius.circular(5.0))),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<TaskState>(
-                                dropdownColor: beg,
-                                elevation: 10,
-                                iconEnabledColor: orange,
-                                style: const TextStyle(
-                                    color: orange,
-                                    fontFamily: font,
-                                    fontWeight: FontWeight.bold),
-                                alignment: AlignmentDirectional.center,
-                                focusColor: orange,
-                                value: taskState,
-                                isDense: true,
-                                onChanged: (TaskState? newValue) {
-                                  setState(() {
-                                    taskState = newValue!;
-                                  });
-                                },
-                                items: taskStates.map((TaskState state) {
-                                  return DropdownMenuItem<TaskState>(
-                                    value: state,
-                                    child: Text(state.name),
-                                  );
-                                }).toList(),
-                              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text(context.loc.state,
+                        style: Theme.of(context).textTheme.bodySmall),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: FormField<TaskState>(
+                      builder: (FormFieldState<TaskState> state) {
+                        return InputDecorator(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  gapPadding: 4,
+                                  borderRadius: BorderRadius.circular(5.0))),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<TaskState>(
+                              dropdownColor: beg,
+                              elevation: 10,
+                              iconEnabledColor: orange,
+                              style: const TextStyle(
+                                  color: orange,
+                                  fontFamily: font,
+                                  fontWeight: FontWeight.bold),
+                              alignment: AlignmentDirectional.center,
+                              focusColor: orange,
+                              value: taskState,
+                              isDense: true,
+                              onChanged: (TaskState? newValue) {
+                                setState(() {
+                                  taskState = newValue!;
+                                });
+                              },
+                              items: taskStates.map((TaskState state) {
+                                return DropdownMenuItem<TaskState>(
+                                  value: state,
+                                  child: Text(state.name),
+                                );
+                              }).toList(),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             sizedBoxMedium,
@@ -170,10 +167,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     onPressed: () async {
                       DateTime? newDate = await pickDate(context);
                       if (newDate != null) {
-                        setState(() {
-                          startDate = newDate;
-                        });
+                        if (newDate.isBefore(endDate)) {
+                          setState(() {
+                            startDate = newDate;
+                          });
+                        } else {
+                          showErrorSnackBar(
+                              context, 'Start date must be before end date');
+                        }
                       }
+
                       const Text('pick date');
                     },
                   ),
@@ -220,8 +223,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   Expanded(
                     flex: 3,
                     child: DropdownSearch<MemberRole>(
-                      items: project!.members!,
-                      dropdownBuilder: buildItemDropdown,
+                      items: project.members!,
+                      dropdownDecoratorProps: const DropDownDecoratorProps(
+                          dropdownSearchDecoration:
+                              InputDecoration(fillColor: darkBlue)),
+                      popupProps: PopupProps.menu(
+                        menuProps: MenuProps(
+                          backgroundColor: const Color.fromARGB(255, 8, 22, 42),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        showSelectedItems: true,
+                        itemBuilder: buildItemDropdown,
+                      ),
+
+                      compareFn: (me, ma) {
+                        return me.memberId == ma.memberId;
+                      },
 
                       //showSelectedItems: true,
 
@@ -366,16 +383,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 }
 
-Widget buildItemDropdown(BuildContext context, MemberRole? item) {
+Widget buildItemDropdown(BuildContext context, MemberRole item, bool s) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
     child: Row(
       children: [
         CircleAvatar(
           radius: 20,
           backgroundColor: orange,
           child: CircleAvatar(
-              radius: 19, backgroundImage: NetworkImage(item!.profilePicUrl!)),
+              radius: 19, backgroundImage: NetworkImage(item.profilePicUrl!)),
         ),
         const SizedBox(
           width: 10,

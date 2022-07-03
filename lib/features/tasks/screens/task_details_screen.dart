@@ -255,7 +255,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           },
                         ),
                       ),
-                      if (task.submited(context.userUid!))
+                      if (!task.submited(context.userUid!))
                         Center(
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 20),
@@ -306,7 +306,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                     projectId: widget.projectId!,
                                     task: task); //starts success animation
                                 // await Future.delayed(const Duration(seconds: 2));
-                                if (task.allMembersSubmited()) {
+
+                                if (task.allMembersSubmited() &&
+                                    !task.checkByManager) {
                                   await TasksDbService().updateTaskState(
                                       projectId: widget.projectId!,
                                       taskId: widget.taskId!,

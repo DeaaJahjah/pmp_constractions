@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
 
 class EngineerCard extends StatelessWidget {
@@ -47,24 +48,10 @@ class EngineerCard extends StatelessWidget {
                       radius: 44,
                       backgroundColor: darkBlue,
                       child: CircleAvatar(
-                        radius: 41,
-                        backgroundColor: darkBlue,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: imageUrl,
-                            width: 120,
-                            height: 120,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
-                        ),
-                      ),
+                          radius: 41,
+                          backgroundColor: darkBlue,
+                          child: CashedImage(
+                              imageUrl: imageUrl, size: 120, radius: 50)),
                     ),
                   ),
                   sizedBoxSmall,

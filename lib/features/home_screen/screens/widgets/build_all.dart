@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
@@ -7,6 +6,7 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/project_card.dart';
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
@@ -197,24 +197,10 @@ class EngCard extends StatelessWidget {
                       radius: 29,
                       backgroundColor: darkBlue,
                       child: CircleAvatar(
-                        radius: 28,
-                        backgroundColor: darkBlue,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: imageUrl,
-                            width: 80,
-                            height: 80,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
-                        ),
-                      ),
+                          radius: 28,
+                          backgroundColor: darkBlue,
+                          child: CashedImage(
+                              imageUrl: imageUrl, size: 80, radius: 30)),
                     ),
                   ),
                   sizedBoxSmall,
@@ -284,24 +270,10 @@ class CompCard extends StatelessWidget {
                       radius: 29,
                       backgroundColor: darkBlue,
                       child: CircleAvatar(
-                        radius: 28,
-                        backgroundColor: darkBlue,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: CachedNetworkImage(
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.cover,
-                            imageUrl: imageUrl,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
-                        ),
-                      ),
+                          radius: 28,
+                          backgroundColor: darkBlue,
+                          child: CashedImage(
+                              imageUrl: imageUrl, size: 80, radius: 30)),
                     ),
                   ),
                   sizedBoxSmall,

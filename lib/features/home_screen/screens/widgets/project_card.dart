@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/project/project_details_screen.dart';
 
 class ProjectCard extends StatelessWidget {
@@ -32,19 +33,7 @@ class ProjectCard extends StatelessWidget {
               child: Stack(children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: imageUrl!,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Center(
-                        child: CircularProgressIndicator(
-                            value: downloadProgress.progress),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                  ],
+                  children: [CashedImage(imageUrl: imageUrl!)],
                 ),
                 Positioned(
                     bottom: 0,

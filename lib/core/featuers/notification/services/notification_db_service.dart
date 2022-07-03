@@ -41,17 +41,17 @@ class NotificationDbService {
     });
   }
 
-  // getNotification() {
-  //   String? collection = collectionName(user!.displayName);
-
-  //   return FirebaseFirestore.instance
-  //       .collection(collection)
-  //       .doc(user!.uid)
-  //       .collection('notifications')
-  //       .snapshots(includeMetadataChanges: true);
-  // }
-
-  //get notification real time
+  //get unreaded notifications realtime
+  Stream<int> getUnreadedNotifications() {
+    var collection = collectionName(user?.displayName!);
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .doc(user!.uid)
+        .collection('notifications')
+        .where('is_readed', isEqualTo: false)
+        .snapshots()
+        .map((event) => event.docs.length);
+  }
 
   Stream<List<NotificationModle>> getNotifications() {
     String? collection = collectionName(user!.displayName);

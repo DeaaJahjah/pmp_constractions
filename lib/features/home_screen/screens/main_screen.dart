@@ -6,7 +6,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/notification/notification_screen.dart';
-import 'package:pmpconstractions/core/featuers/notification/providers/notification_provider.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
@@ -49,22 +49,26 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InkWell(onTap: () async {
-                Navigator.of(context).pushNamed(NotificationScreen.routeName);
-              }, child: Consumer<NotificationProvider>(
-                builder: (context, value, child) {
-                  return Stack(children: [
-                    const Icon(Icons.notifications, color: darkBlue),
-                    if (value.count != 0)
-                      Positioned(
-                          child: CircleAvatar(
-                        backgroundColor: beg,
-                        radius: 10,
-                        child: Text(value.count.toString()),
-                      )),
-                  ]);
-                },
-              )))
+              child: InkWell(
+                  onTap: () async {
+                    Navigator.of(context)
+                        .pushNamed(NotificationScreen.routeName);
+                  },
+                  child: StreamBuilder<int>(
+                      stream:
+                          NotificationDbService().getUnreadedNotifications(),
+                      builder: (context, snapshot) {
+                        return Stack(children: [
+                          const Icon(Icons.notifications, color: darkBlue),
+                          if (snapshot.data != 0)
+                            Positioned(
+                                child: CircleAvatar(
+                              backgroundColor: beg,
+                              radius: 10,
+                              child: Text(snapshot.data.toString()),
+                            )),
+                        ]);
+                      })))
         ],
         leading: InkWell(
             onTap: () {
