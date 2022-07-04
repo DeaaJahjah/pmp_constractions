@@ -203,11 +203,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         color: orange,
                       ),
                       inactiveIcon: const Icon(
-                        Icons.lock,
+                        Icons.lock_open,
                         color: darkBlue,
                       ),
                       activeIcon: const Icon(
-                        Icons.lock_open,
+                        Icons.lock,
                         color: darkBlue,
                       ),
                       onToggle: (bool value) {

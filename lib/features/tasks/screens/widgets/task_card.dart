@@ -39,11 +39,11 @@ class _TaskCardState extends State<TaskCard> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Text('${widget.task.getTaskDays()} Days',
-              style: Theme.of(context).textTheme.bodySmall),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 12),
+        //   child: Text('${widget.task.getTaskDays()} Days',
+        //       style: Theme.of(context).textTheme.bodySmall),
+        // ),
         InkWell(
             onTap: () {
               final projectId =

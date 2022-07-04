@@ -7,6 +7,7 @@ import 'package:pmpconstractions/features/tasks/screens/add_task_screen.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/task_card.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/task_state_card.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
+import 'package:status_change/status_change.dart';
 
 class TasksScreen extends StatefulWidget {
   static const String routeName = '/tasks';
@@ -21,6 +22,10 @@ class _TasksScreenState extends State<TasksScreen> {
   List<String> statesName = ['NOT-STARTED', 'IN-PROGRESS', 'COMPLETED'];
   List<bool> states = [true, false, false];
   TaskState selectedState = TaskState.notStarted;
+int index=0;
+  int _processIndex = 0;
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +41,7 @@ class _TasksScreenState extends State<TasksScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Task> tasks = snapshot.data!;
-
+index=0;
               return Column(children: [
                 Stack(children: [
                   Container(
@@ -87,13 +92,184 @@ class _TasksScreenState extends State<TasksScreen> {
                             )))),
                   ),
                 ]),
-                Flexible(
-                    child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return TaskCard(task: tasks[index], index: index);
-                  },
-                  itemCount: tasks.length,
-                ))
+Flexible(
+  child:   StatusChange.tileBuilder(
+  
+                  theme: StatusChangeThemeData(
+  
+                    direction: Axis.vertical,
+  
+                    connectorTheme:
+  
+                        ConnectorThemeData(space: 1.0, thickness: 1.0),
+  
+                  ),
+  
+                  builder: StatusChangeTileBuilder.connected(
+  
+                    itemWidth: (_) =>
+  
+                        MediaQuery.of(context).size.width / tasks.length,
+  
+                    contentWidgetBuilder: (context, index) {
+  
+                      return Padding(
+  
+                        padding: const EdgeInsets.all(15.0),
+  
+                        child: Text(
+  
+                          'add content here',
+  
+                          style: TextStyle(
+  
+                            color: Colors
+  
+                                .blue, // change color with dynamic color --> can find it with example section
+  
+                          ),
+  
+                        ),
+  
+                      );
+  
+                    },
+  
+                    nameWidgetBuilder: (context, index) {
+  
+                      return Padding(
+  
+                        padding: const EdgeInsets.all(20),
+  
+                        child: Text(
+  
+                          'your text ',
+  
+                          style: TextStyle(
+  
+                            fontWeight: FontWeight.bold,
+  
+                            color: orange,
+  
+                          ),
+  
+                        ),
+  
+                      );
+  
+                    },
+  
+                    indicatorWidgetBuilder: (_, index) {
+  
+                      if (index <= _processIndex) {
+  
+                        return DotIndicator(
+  
+                          size: 35.0,
+  
+                          border: Border.all(color: Colors.green, width: 1),
+  
+                          child: Padding(
+  
+                            padding: const EdgeInsets.all(6.0),
+  
+                            child: Container(
+  
+                              decoration: BoxDecoration(
+  
+                                shape: BoxShape.circle,
+  
+                                color: Colors.green,
+  
+                              ),
+  
+                            ),
+  
+                          ),
+  
+                        );
+  
+                      } else {
+  
+                        return OutlinedDotIndicator(
+  
+                          size: 30,
+  
+                          borderWidth: 1.0,
+  
+                          color: orange,
+  
+                        );
+  
+                      }
+  
+                    },
+  
+                    lineWidgetBuilder: (index) {
+  
+                      if (index > 0) {
+  
+                        if (index == _processIndex) {
+  
+                          final prevColor = orange;
+  
+                          final color = beg;
+  
+                          var gradientColors;
+  
+                          gradientColors = [
+  
+                            prevColor,
+  
+                            Color.lerp(prevColor, color, 0.5)
+  
+                          ];
+  
+                          return DecoratedLineConnector(
+  
+                            decoration: BoxDecoration(
+  
+                              gradient: LinearGradient(
+  
+                                colors: gradientColors,
+  
+                              ),
+  
+                            ),
+  
+                          );
+  
+                        } else {
+  
+                          return SolidLineConnector(
+  
+                            color:beg,
+  
+                          );
+  
+                        }
+  
+                      } else {
+  
+                        return null;
+  
+                      }
+  
+                    },
+  
+                    itemCount: tasks.length,
+  
+                  ),
+  
+                ),
+),
+                // Flexible(
+                //     child: ListView.builder(
+                //   itemBuilder: (context, index) {
+                //     return TaskCard(task: tasks[index], index: index);
+                //   },
+                //   itemCount: tasks.length,
+                // ))
               ]);
             }
 
