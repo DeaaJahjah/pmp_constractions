@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/download_state_provider.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 
@@ -55,5 +58,53 @@ class FileService {
       );
       print(_taskid);
     });
+  }
+
+  Dio dio = Dio();
+  double progress = 0;
+  Future download2(String url, String savePath, BuildContext context) async {
+    try {
+      var status = await Permission.storage.status;
+      if (!status.isGranted) {
+        await Permission.storage.request();
+      }
+
+      Response response = await dio.get(
+        url,
+        onReceiveProgress: (received, total) {
+          progress = (received / total * 100).roundToDouble();
+          Provider.of<DownloadStateProvider>(context, listen: false)
+              .updateState(progress);
+        },
+        //Received data with List<int>
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            validateStatus: (status) {
+              return status! < 500;
+            }),
+      );
+
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+      showSuccessSnackBar(context, 'Download is completed');
+      progress = 0;
+      Provider.of<DownloadStateProvider>(context, listen: false)
+          .updateState(progress);
+    } catch (e) {
+      showErrorSnackBar(context, 'Download is failed');
+      progress = 0;
+      Provider.of<DownloadStateProvider>(context, listen: false)
+          .updateState(progress);
+    }
+  }
+
+  void showDownloadProgress(received, total) {
+    if (total != -1) {
+      progress = (received / total * 100).toStringAsFixed(0) + "%";
+    }
   }
 }

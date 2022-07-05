@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +21,7 @@ import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/member_card.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
+import 'package:pmpconstractions/features/tasks/screens/widgets/search_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:path/path.dart' as path;
@@ -293,19 +293,14 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         child: ListView(
           controller: scrollController,
           children: [
-            DropdownSearch<MemberRole>(
-              dropdownDecoratorProps: const DropDownDecoratorProps(),
-              items: members,
-              dropdownBuilder: buildItemDropdown,
-              dropdownButtonProps: const DropdownButtonProps(),
-              itemAsString: (member) {
-                return member.memberName;
-              },
-              selectedItem: selectedItem,
-              onChanged: (member) {
-                selectedItem = member!;
-              },
-            ),
+            SearchDropDown(
+                members: members,
+                selectedItem: selectedItem,
+                onChanged: (member) {
+                  setState(() {
+                    selectedItem = member;
+                  });
+                }),
             sizedBoxMedium,
             FormField<String>(builder: (FormFieldState<String> state) {
               return InputDecorator(
@@ -550,29 +545,5 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           ],
                         ))),
               ));
-  }
-
-  Widget buildItemDropdown(BuildContext context, MemberRole? item) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: orange,
-            child: CircleAvatar(
-                radius: 19,
-                backgroundImage: NetworkImage(item!.profilePicUrl!)),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            item.memberName,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ],
-      ),
-    );
   }
 }

@@ -70,7 +70,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                     password: passwordController.text,
                                     context: context);
                           } else {
-                            final snakBar = const SnackBar(
+                            const snakBar = SnackBar(
                                 content:
                                     Text('Please enter email and password'));
                             ScaffoldMessenger.of(context).showSnackBar(snakBar);

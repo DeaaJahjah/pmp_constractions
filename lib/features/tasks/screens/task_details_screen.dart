@@ -1,14 +1,21 @@
 import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
+
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/firebase.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/download_state_provider.dart';
+import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
+import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
+import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
+import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/contributer_card.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
-import 'dart:isolate';
 import 'dart:ui';
+
+import 'package:provider/provider.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   static const String routeName = '/task_details';
@@ -24,7 +31,7 @@ class TaskDetailsScreen extends StatefulWidget {
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   final _controller = ActionSliderController();
   ScrollController scrollController = ScrollController();
-
+  String taskId = '';
   getState(TaskState taskState) {
     switch (taskState) {
       case TaskState.notStarted:
@@ -38,7 +45,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     }
   }
 
-  final ReceivePort _port = ReceivePort();
+  // final ReceivePort _port = ReceivePort();
   @override
   void initState() {
     // IsolateNameServer.registerPortWithName(
@@ -81,16 +88,15 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final projectId =
-    //     Provider.of<SelectedProjectProvider>(context, listen: false)
-    //         .project!
-    //         .projectId;
+    final project =
+        Provider.of<SelectedProjectProvider>(context, listen: false).project!;
     return StreamBuilder<Task>(
         stream: TasksDbService()
             .getTaskById(projectId: widget.projectId!, taskId: widget.taskId!),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final task = snapshot.data!;
+            taskId = task.id!;
             return Scaffold(
                 appBar: AppBar(
                     title: Text(task.title), elevation: 0.0, centerTitle: true),
@@ -213,19 +219,45 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         customText(text: 'Attchment'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // Text(
-                          //   'water diagram.dxf',
-                          //   style: TextStyle(
-                          //       fontFamily: font,
-                          //       color: white.withOpacity(0.3)),
-                          // ),
+                          Consumer<DownloadStateProvider>(
+                              builder: (context, value, child) {
+                            // print(value.state);
+                            if (value.state != 0) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CircularProgressIndicator(
+                                    value: value.state / 100,
+                                    color: orange,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(value.state.toStringAsFixed(0) + '%',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                ],
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          }),
                           if (task.attchmentUrl != '')
                             ElevatedButton(
                               onPressed: () async {
-                                //  download(task.attchmentUrl);
+                                //  DownloadStateProviderdownload(task.attchmentUrl);
                                 // FileService().requestDownload(
                                 //     , task.attchmentUrl);
+
+                                String fullPath =
+                                    '/storage/emulated/0/Download/' "file";
+
+                                FileService().download2(
+                                    task.attchmentUrl, fullPath, context);
+
+                                // await FileService()
+                                //     .downloadFile(task.attchmentUrl);
                               },
                               child: Text('DOWNLOAD',
                                   style: Theme.of(context)
@@ -313,6 +345,28 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                       projectId: widget.projectId!,
                                       taskId: widget.taskId!,
                                       taskState: TaskState.completed);
+                                  return;
+                                }
+                                if (task.allMembersSubmited() &&
+                                    task.checkByManager) {
+                                  for (var member in project.members!) {
+                                    if (member.role == Role.projectManager) {
+                                      await NotificationDbService()
+                                          .sendNotification(
+                                              member: member,
+                                              notification: NotificationModle(
+                                                title: project.name,
+                                                body:
+                                                    '${task.title} , is completed',
+                                                category: 'task',
+                                                projectId: project.projectId,
+                                                taskId: taskId,
+                                                imageUrl: project.imageUrl,
+                                                isReaded: false,
+                                                pauload: '/notification',
+                                              ));
+                                    }
+                                  }
                                 }
 
                                 //resets the slider

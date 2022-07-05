@@ -27,7 +27,7 @@ class FlutterFireAuthService {
         .changeAuthState(newState: AuthState.waiting);
 
     try {
-      _firebaseAuth.signInWithEmailAndPassword(
+      await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
 
       context
@@ -35,8 +35,6 @@ class FlutterFireAuthService {
           .changeAuthState(newState: AuthState.notSet);
 
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-
-     
     } on FirebaseAuthException catch (e) {
       context
           .read<AuthSataProvider>()
@@ -44,7 +42,6 @@ class FlutterFireAuthService {
       final snakBar = SnackBar(content: Text(e.message.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snakBar);
     }
-   
   }
 
   Future<String?> signUp(

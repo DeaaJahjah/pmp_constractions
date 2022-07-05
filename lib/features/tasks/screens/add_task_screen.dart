@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
@@ -16,6 +15,7 @@ import 'package:pmpconstractions/features/home_screen/screens/widgets/member_car
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/date_picker.dart';
+import 'package:pmpconstractions/features/tasks/screens/widgets/search_dropdown.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -221,36 +221,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 3,
-                    child: DropdownSearch<MemberRole>(
-                      items: project.members!,
-                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                          dropdownSearchDecoration:
-                              InputDecoration(fillColor: darkBlue)),
-                      popupProps: PopupProps.menu(
-                        menuProps: MenuProps(
-                          backgroundColor: const Color.fromARGB(255, 8, 22, 42),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        showSelectedItems: true,
-                        itemBuilder: buildItemDropdown,
-                      ),
-
-                      compareFn: (me, ma) {
-                        return me.memberId == ma.memberId;
-                      },
-
-                      //showSelectedItems: true,
-
-                      itemAsString: (member) {
-                        return member.memberName;
-                      },
-                      selectedItem: selectedItem,
-                      onChanged: (member) {
-                        selectedItem = member!;
-                      },
-                    ),
-                  ),
+                      flex: 3,
+                      child: SearchDropDown(
+                          members: project.members!,
+                          selectedItem: selectedItem,
+                          onChanged: (member) {
+                            setState(() {
+                              selectedItem = member;
+                            });
+                          })),
                   const SizedBox(width: 10),
                   Expanded(
                     child: CircleAvatar(
@@ -381,27 +360,4 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           ],
         ));
   }
-}
-
-Widget buildItemDropdown(BuildContext context, MemberRole item, bool s) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-    child: Row(
-      children: [
-        CircleAvatar(
-          radius: 20,
-          backgroundColor: orange,
-          child: CircleAvatar(
-              radius: 19, backgroundImage: NetworkImage(item.profilePicUrl!)),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          item.memberName,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-      ],
-    ),
-  );
 }
