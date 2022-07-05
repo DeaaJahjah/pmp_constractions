@@ -216,7 +216,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                       ),
                       if (task.attchmentUrl != '')
-                        customText(text: 'Attchment'),
+                        customText(text: 'Attachment'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -246,18 +246,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           if (task.attchmentUrl != '')
                             ElevatedButton(
                               onPressed: () async {
-                                //  DownloadStateProviderdownload(task.attchmentUrl);
-                                // FileService().requestDownload(
-                                //     , task.attchmentUrl);
-
-                                String fullPath =
-                                    '/storage/emulated/0/Download/' "file";
-
-                                FileService().download2(
-                                    task.attchmentUrl, fullPath, context);
-
-                                // await FileService()
-                                //     .downloadFile(task.attchmentUrl);
+                                await FileService()
+                                    .download2(task.attchmentUrl, context);
                               },
                               child: Text('DOWNLOAD',
                                   style: Theme.of(context)

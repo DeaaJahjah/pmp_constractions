@@ -62,8 +62,11 @@ class FileService {
 
   Dio dio = Dio();
   double progress = 0;
-  Future download2(String url, String savePath, BuildContext context) async {
+  Future download2(String url, BuildContext context) async {
     try {
+      String savePath = '/storage/emulated/0/Download/' "file";
+
+      /// get storge permission
       var status = await Permission.storage.status;
       if (!status.isGranted) {
         await Permission.storage.request();
@@ -72,6 +75,7 @@ class FileService {
       Response response = await dio.get(
         url,
         onReceiveProgress: (received, total) {
+          /// update the UI state
           progress = (received / total * 100).roundToDouble();
           Provider.of<DownloadStateProvider>(context, listen: false)
               .updateState(progress);
@@ -90,7 +94,11 @@ class FileService {
       // response.data is List<int> type
       raf.writeFromSync(response.data);
       await raf.close();
+
+      ///download is complated
       showSuccessSnackBar(context, 'Download is completed');
+
+      /// restet the ui
       progress = 0;
       Provider.of<DownloadStateProvider>(context, listen: false)
           .updateState(progress);

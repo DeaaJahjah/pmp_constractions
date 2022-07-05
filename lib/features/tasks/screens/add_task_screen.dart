@@ -150,72 +150,92 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ),
             ),
             sizedBoxMedium,
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: Row(
-                children: [
-                  Text(context.loc.start_point,
-                      style: Theme.of(context).textTheme.bodySmall),
-                  const SizedBox(width: 10),
-                  Text('${startDate.year}-${startDate.month}-${startDate.day}',
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.calendar_today,
-                      color: beg,
-                    ),
-                    onPressed: () async {
-                      DateTime? newDate = await pickDate(context);
-                      if (newDate != null) {
-                        if (newDate.isBefore(endDate)) {
-                          setState(() {
-                            startDate = newDate;
-                          });
-                        } else {
-                          showErrorSnackBar(
-                              context, 'Start date must be before end date');
-                        }
-                      }
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(context.loc.start_point,
+                          style: Theme.of(context).textTheme.bodySmall),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const SizedBox(width: 10),
+                          Text(
+                              '${startDate.year}-${startDate.month}-${startDate.day}',
+                              style: Theme.of(context).textTheme.headlineSmall),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.calendar_today,
+                              color: beg,
+                            ),
+                            onPressed: () async {
+                              DateTime? newDate = await pickDate(context);
+                              if (newDate != null) {
+                                if (newDate.isBefore(endDate)) {
+                                  setState(() {
+                                    startDate = newDate;
+                                  });
+                                } else {
+                                  showErrorSnackBar(context,
+                                      'Start date must be before end date');
+                                }
+                              }
 
-                      const Text('pick date');
-                    },
+                              const Text('pick date');
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(context.loc.end_point,
+                          style: Theme.of(context).textTheme.bodySmall),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const SizedBox(width: 10),
+                          Text(
+                              '${endDate.year}-${endDate.month}-${endDate.day}',
+                              style: Theme.of(context).textTheme.headlineSmall),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.calendar_today,
+                              color: beg,
+                            ),
+                            onPressed: () async {
+                              DateTime? newDate = await pickDate(context);
+                              if (newDate != null) {
+                                if (newDate.isAfter(startDate)) {
+                                  setState(() {
+                                    endDate = newDate;
+                                  });
+                                } else {
+                                  showErrorSnackBar(context,
+                                      'End date must be after start date');
+                                }
+                              }
+                              const Text('pick date');
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             sizedBoxMedium,
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: Row(
-                children: [
-                  Text(context.loc.end_point,
-                      style: Theme.of(context).textTheme.bodySmall),
-                  const SizedBox(width: 10),
-                  Text('${endDate.year}-${endDate.month}-${endDate.day}',
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.calendar_today,
-                      color: beg,
-                    ),
-                    onPressed: () async {
-                      DateTime? newDate = await pickDate(context);
-                      if (newDate != null) {
-                        if (newDate.isAfter(startDate)) {
-                          setState(() {
-                            endDate = newDate;
-                          });
-                        } else {
-                          showErrorSnackBar(
-                              context, 'End date must be after start date');
-                        }
-                      }
-                      const Text('pick date');
-                    },
-                  ),
-                ],
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Row(
