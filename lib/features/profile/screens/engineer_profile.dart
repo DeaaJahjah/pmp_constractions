@@ -7,6 +7,7 @@ import 'package:pmpconstractions/core/widgets/elevated_button_custom.dart';
 import 'package:pmpconstractions/features/home_screen/models/engineer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/services/engineer_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:pmpconstractions/features/profile/screens/update_engineer_profile_screen.dart';
@@ -92,8 +93,12 @@ class _EngineerProfileState extends State<EngineerProfile> {
                                         ? CircleAvatar(
                                             backgroundColor: darkBlue,
                                             radius: 68,
-                                            backgroundImage: NetworkImage(
-                                                engineer!.profilePicUrl ?? ''))
+                                            child: CashedImage(
+                                                radius: 68,
+                                                size: 150,
+                                                imageUrl:
+                                                    engineer!.profilePicUrl ??
+                                                        ''))
                                         : const CircleAvatar(
                                             backgroundColor: darkBlue,
                                             radius: 68,

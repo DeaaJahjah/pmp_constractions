@@ -1,10 +1,14 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
+import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:pmpconstractions/features/project/project_details_screen.dart';
+import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/task_details_screen.dart';
+import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatelessWidget {
   static const String routeName = '/notification';
@@ -31,8 +35,14 @@ class NotificationScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var notification = notifications[index];
                   return InkWell(
-                    onTap: () {
-                      if (notification.category == 'task') {
+                    onTap: () async {
+                      if (notification.type == NotificationType.task) {
+                        var project = await ProjectDbService()
+                            .getProjectById(notification.projectId!);
+                        Provider.of<SelectedProjectProvider>(context,
+                                listen: false)
+                            .updateProject(project);
+
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => TaskDetailsScreen(
                                   taskId: notification.taskId,
@@ -40,7 +50,7 @@ class NotificationScreen extends StatelessWidget {
                                 )));
                         return;
                       }
-                      if (notification.category == 'project') {
+                      if (notification.type == NotificationType.project) {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProjectDetailsScreen(
                                   projectId: notification.projectId,

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
@@ -28,37 +27,38 @@ class ProjectCard extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: Container(
-              height: (index % 2 == 0) ? 300 : 200,
-              color: karmedi,
-              child: Stack(children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [CashedImage(imageUrl: imageUrl!)],
+            height: (index % 2 == 0) ? 300 : 200,
+            color: karmedi,
+            child: Stack(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [CashedImage(imageUrl: imageUrl!)],
+              ),
+              Positioned(
+                bottom: 0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    padding: const EdgeInsets.all(3),
+                    height: 35,
+                    width: 192,
+                    decoration: const BoxDecoration(
+                      color: orange,
+                      //     borderRadius: BorderRadius.circular(5)
+                    ),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            name,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          )
+                        ]),
+                  ),
                 ),
-                Positioned(
-                    bottom: 0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        height: 35,
-                        width: 192,
-                        decoration: const BoxDecoration(
-                          color: orange,
-                          //     borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                name,
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                              )
-                            ]),
-                      ),
-                    ))
-              ])),
+              )
+            ]),
+          ),
         ));
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 
 class SearchDropDown extends StatelessWidget {
   final List<MemberRole> members;
@@ -40,6 +41,12 @@ class SearchDropDown extends StatelessWidget {
           ),
         ),
         itemBuilder: buildItemDropdown,
+        emptyBuilder: (context, w) {
+          return Center(child: Text(context.loc.no_resualt));
+        },
+        errorBuilder: (context, w, b) {
+          return Center(child: Text(context.loc.no_resualt));
+        },
       ),
       itemAsString: (member) {
         return member.memberName;
@@ -63,7 +70,12 @@ Widget buildItemDropdown(BuildContext context, MemberRole item, bo) {
           radius: 20,
           backgroundColor: orange,
           child: CircleAvatar(
-              radius: 19, backgroundImage: NetworkImage(item.profilePicUrl!)),
+              radius: 19,
+              child: CashedImage(
+                imageUrl: item.profilePicUrl!,
+                radius: 19,
+                size: 40,
+              )),
         ),
         const SizedBox(
           width: 10,

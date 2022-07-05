@@ -55,6 +55,7 @@
     "create_project_message":"Project created succuessfully",
     "tasks":"Tasks",
     "start_meeting":"Start meeting",
+    "no_resualt":"No result",
     "delete":"Delete",
     "start_point": "START DATE",
     "end_point":   "END DATE    ",

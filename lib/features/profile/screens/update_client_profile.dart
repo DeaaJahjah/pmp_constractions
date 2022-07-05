@@ -13,6 +13,7 @@ import 'package:pmpconstractions/core/widgets/number_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/client.dart';
 import 'package:path/path.dart' as path;
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/services/client_db_service.dart';
 import 'package:provider/provider.dart';
 
@@ -75,8 +76,10 @@ class _UpdateClientProfileScreenState extends State<UpdateClientProfileScreen> {
                         ? const CircleAvatar(child: Icon(Icons.person_add))
                         : CircleAvatar(
                             radius: 60,
-                            backgroundImage:
-                                NetworkImage(widget.client.profilePicUrl!))
+                            child: CashedImage(
+                                radius: 60,
+                                size: 150,
+                                imageUrl: widget.client.profilePicUrl!))
                     : CircleAvatar(
                         radius: 60, backgroundImage: FileImage(imageFile!)),
                 radius: 60),

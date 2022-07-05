@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pmpconstractions/core/config/enums/enums.dart';
 
 part 'notification_model.g.dart';
 
@@ -19,7 +20,7 @@ class NotificationModle {
   final String pauload;
   @JsonKey(name: 'image_url')
   final String imageUrl;
-  final String category;
+  final NotificationType type;
 
   NotificationModle(
       {this.notificationId,
@@ -30,7 +31,7 @@ class NotificationModle {
       required this.imageUrl,
       this.projectId,
       this.taskId,
-      required this.category});
+      required this.type});
 
   factory NotificationModle.fromJson(Map<String, dynamic> json) =>
       _$NotificationModleFromJson(json);

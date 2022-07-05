@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 
 class ContributerCard extends StatelessWidget {
   final MemberRole member;
@@ -19,7 +20,11 @@ class ContributerCard extends StatelessWidget {
             backgroundColor: orange,
             child: CircleAvatar(
                 radius: 28,
-                backgroundImage: NetworkImage(member.profilePicUrl!)),
+                child: CashedImage(
+                  imageUrl: member.profilePicUrl!,
+                  radius: 28,
+                  size: 50,
+                )),
           ),
           const SizedBox(
             width: 10,

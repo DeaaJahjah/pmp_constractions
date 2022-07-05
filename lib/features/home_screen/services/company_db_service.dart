@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
@@ -42,8 +43,8 @@ class CompanyDbService {
       NotificationDbService().addNotification(NotificationModle(
         title: 'Welcome',
         body: 'hi ${company.name} have a great time',
-        category: 'new',
-        imageUrl: company.profilePicUrl!,
+        type: NotificationType.none,
+        imageUrl: imageUrl,
         isReaded: false,
         pauload: '/notification',
       ));

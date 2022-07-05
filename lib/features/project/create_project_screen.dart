@@ -13,7 +13,6 @@ import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
-import 'package:pmpconstractions/core/featuers/auth/screens/watting_screen.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
@@ -21,6 +20,7 @@ import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/member_card.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
+import 'package:pmpconstractions/features/project/wating_create_project.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/search_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -53,12 +53,16 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   List<MemberRole> selectedMembers = [];
   Role selectedRole = Role.projectEngineer;
   MemberRole? selectedItem;
-
   ProjectPrivacy privacy = ProjectPrivacy.private;
   bool isOpen = true;
   bool isPrivate = true;
+
   Future<void> getMembers() async {
+    await Provider.of<DataProvider>(context, listen: false).fetchClients();
+
     var clients = Provider.of<DataProvider>(context, listen: false).clients;
+
+    await Provider.of<DataProvider>(context, listen: false).fetchEngineers();
     var enginners = Provider.of<DataProvider>(context, listen: false).engineers;
 
     for (var client in clients) {
@@ -113,7 +117,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   @override
   void initState() {
-    getMembers().then((value) => selectedItem = members.first);
+    getMembers().then((value) {
+      setState(() {
+        selectedItem = members.first;
+      });
+    });
 
     super.initState();
   }
@@ -293,6 +301,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         child: ListView(
           controller: scrollController,
           children: [
+            Text('Members', style: Theme.of(context).textTheme.headlineMedium),
             SearchDropDown(
                 members: members,
                 selectedItem: selectedItem,
@@ -353,6 +362,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   setState(() {
                     selectedItem!.role = selectedRole;
                     selectedMembers.add(selectedItem!);
+                    members.remove(selectedItem!);
                     selectedRole = Role.projectManager;
                     selectedItem = members.first;
                   });
@@ -414,6 +424,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       photoUrl: selectedMembers[i].profilePicUrl,
                       onTap: () {
                         setState(() {
+                          members.add(selectedMembers[i]);
                           selectedMembers.removeAt(i);
                         });
                       })),
@@ -425,7 +436,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     return Consumer<AuthSataProvider>(
         builder: (context, value, child) => (AuthState.waiting ==
                 Provider.of<AuthSataProvider>(context).authState)
-            ? const WattingScreen()
+            ? const WattingCreateScreen()
             : Scaffold(
                 bottomNavigationBar: Row(
                   children: [

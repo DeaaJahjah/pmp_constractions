@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
@@ -83,6 +85,9 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                         icon: const Icon(Icons.home)),
                   ),
                   appBar: AppBar(
+                    automaticallyImplyLeading:
+                        project!.memberIn(context.userUid!) ||
+                            project.companyId == context.userUid,
                     backgroundColor: orange,
                     elevation: 0,
                   ),
@@ -138,7 +143,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                   controller: scrollController,
                                   children: [
                                     Text(
-                                      project!.name,
+                                      project.name,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineLarge,
@@ -217,11 +222,12 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                                         backgroundColor: orange,
                                                         child: CircleAvatar(
                                                             radius: 39,
-                                                            backgroundImage:
-                                                                NetworkImage(
-                                                                    member
-                                                                        .profilePicUrl!,
-                                                                    scale: 1)),
+                                                            child: CashedImage(
+                                                              imageUrl: member
+                                                                  .profilePicUrl!,
+                                                              radius: 39,
+                                                              size: 100,
+                                                            )),
                                                       ),
                                                       Text(
                                                         member.memberName,
@@ -266,36 +272,3 @@ class TextIcon extends StatelessWidget {
     );
   }
 }
-
-
-// Scaffold(
-//       body: FutureBuilder<Project>(
-//         future: ProjectDbService().getProjectById(
-//             '21sFqVCd5qwcwtYWTO02'), //"widget.projectId.toString()"
-        // builder: (context, snapshot) {
-        //   var project = snapshot.data;
-
-//           if (snapshot.hasData) {
-//             return Column(children: [
-              // Container(
-              //   height: 300,
-              //   child: ModelViewer(
-              //     src: project!.modelUrl,
-              //     autoRotateDelay: 0,
-              //     autoPlay: true,
-              //     ar: true,
-              //     autoRotate: true,
-              //     cameraControls: true,
-              //     backgroundColor: orange,
-              //   ),
-              // ),
-              
-//             ]);
-//           }
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return const Center(child: CircularProgressIndicator());
-//           }
-//           return const Text('somthing wrong');
-//         },
-//       ),
-//     );

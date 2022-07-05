@@ -348,7 +348,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                                 title: project.name,
                                                 body:
                                                     '${task.title} , is completed',
-                                                category: 'task',
+                                                type: NotificationType.task,
                                                 projectId: project.projectId,
                                                 taskId: taskId,
                                                 imageUrl: project.imageUrl,

@@ -10,6 +10,7 @@ import 'package:pmpconstractions/core/featuers/settings/settings_screen.dart';
 import 'package:pmpconstractions/features/home_screen/providers/comoany_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/menu_row.dart';
 import 'package:pmpconstractions/features/profile/screens/client_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
@@ -109,7 +110,11 @@ class _MenuScreenState extends State<MenuScreen> {
                   ? CircleAvatar(
                       backgroundColor: orange,
                       radius: 40,
-                      backgroundImage: NetworkImage(imgUrl),
+                      child: CashedImage(
+                        imageUrl: imgUrl,
+                        radius: 40,
+                        size: 100,
+                      ),
                     )
                   : const CircleAvatar(
                       backgroundColor: orange,

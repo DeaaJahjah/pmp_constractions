@@ -60,6 +60,15 @@ class Project extends Equatable {
     return geoPoint;
   }
 
+  bool memberIn(String userId) {
+    for (var member in members!) {
+      if (member.memberId == userId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   List<Object?> get props => [projectId, name, members];
 }

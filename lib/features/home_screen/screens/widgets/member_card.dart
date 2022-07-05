@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 
 class MemberCard extends StatelessWidget {
   final String name;
@@ -27,7 +28,11 @@ class MemberCard extends StatelessWidget {
             backgroundColor: orange,
             child: CircleAvatar(
               radius: 24,
-              backgroundImage: NetworkImage(photoUrl!),
+              child: CashedImage(
+                imageUrl: photoUrl!,
+                radius: 25,
+                size: 50,
+              ),
             ),
           ),
           const SizedBox(

@@ -61,7 +61,7 @@ class TasksDbService {
             notification: NotificationModle(
               title: project.name,
               body: '${task.title} ,Assigned to you',
-              category: 'task',
+              type: NotificationType.task,
               projectId: project.projectId,
               taskId: taskId.id,
               imageUrl: project.imageUrl,

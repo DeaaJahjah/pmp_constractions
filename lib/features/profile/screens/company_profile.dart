@@ -8,6 +8,7 @@ import 'package:pmpconstractions/core/widgets/elevated_button_custom.dart';
 import 'package:pmpconstractions/features/home_screen/models/company.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/services/company_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:pmpconstractions/features/project/create_project_screen.dart';
@@ -128,8 +129,11 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                   ? CircleAvatar(
                                       backgroundColor: darkBlue,
                                       radius: 68,
-                                      backgroundImage: NetworkImage(
-                                          company!.profilePicUrl ?? ''),
+                                      child: CashedImage(
+                                          radius: 68,
+                                          size: 150,
+                                          imageUrl:
+                                              company!.profilePicUrl ?? ''),
                                     )
                                   : const CircleAvatar(
                                       backgroundColor: darkBlue,
@@ -244,6 +248,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                         children: company!.phoneNumbers!
                                             .map((e) => InkWell(
                                                   onTap: () async {
+                                                    // ignore: deprecated_member_use
                                                     await launch('tel:$e');
                                                   },
                                                   child: Text(e,

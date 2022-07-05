@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,24 +13,27 @@ import 'package:pmpconstractions/core/widgets/number_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/models/company.dart';
 import 'package:path/path.dart' as path;
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/services/company_db_service.dart';
 import 'package:provider/provider.dart';
 
 class UpdateCompanyProfileScreen extends StatefulWidget {
   Company company;
-  UpdateCompanyProfileScreen({Key? key,required this.company}) : super(key: key);
+  UpdateCompanyProfileScreen({Key? key, required this.company})
+      : super(key: key);
 
   @override
-  State<UpdateCompanyProfileScreen> createState() => _UpdateCompanyProfileScreenState();
-  
+  State<UpdateCompanyProfileScreen> createState() =>
+      _UpdateCompanyProfileScreenState();
 }
 
-class _UpdateCompanyProfileScreenState extends State<UpdateCompanyProfileScreen> {
-   TextEditingController? nameController;
+class _UpdateCompanyProfileScreenState
+    extends State<UpdateCompanyProfileScreen> {
+  TextEditingController? nameController;
   TextEditingController? phoneController;
   TextEditingController? descriptionController;
   List<String> phoneNum = [];
-   String fileName = '';
+  String fileName = '';
   File? imageFile;
   XFile? pickedimage;
 
@@ -41,22 +43,19 @@ class _UpdateCompanyProfileScreenState extends State<UpdateCompanyProfileScreen>
       pickedimage = await picker.pickImage(source: ImageSource.gallery);
       fileName = path.basename(pickedimage!.path);
       imageFile = File(pickedimage!.path);
-      setState(() {
-        
-      });
+      setState(() {});
     } catch (e) {
       print(e);
     }
   }
 
-  
   @override
   void initState() {
-    
     nameController = TextEditingController(text: widget.company.name);
     phoneController = TextEditingController();
     phoneNum = widget.company.phoneNumbers!;
-    descriptionController=TextEditingController(text: widget.company.description);
+    descriptionController =
+        TextEditingController(text: widget.company.description);
 
     super.initState();
   }
@@ -83,8 +82,10 @@ class _UpdateCompanyProfileScreenState extends State<UpdateCompanyProfileScreen>
                         ? const CircleAvatar(child: Icon(Icons.person_add))
                         : CircleAvatar(
                             radius: 60,
-                            backgroundImage:
-                                NetworkImage(widget.company.profilePicUrl!))
+                            child: CashedImage(
+                                radius: 60,
+                                size: 150,
+                                imageUrl: widget.company.profilePicUrl!))
                     : CircleAvatar(
                         radius: 60, backgroundImage: FileImage(imageFile!)),
                 radius: 60),
@@ -94,25 +95,22 @@ class _UpdateCompanyProfileScreenState extends State<UpdateCompanyProfileScreen>
             height: 40,
           ),
           TextFieldCustome(text: 'Name', controller: nameController!),
-          
           sizedBoxMedium,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: TextFormField(
-                  controller: descriptionController,
-                  maxLines: 4,
-                  decoration:  InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.all(14),
-                    label: Text(
-                      context.loc.descripton,
-                      style:Theme.of(context).textTheme.bodySmall
-                    ),
-                    alignLabelWithHint: true,
-                  ),
-                  textAlign: TextAlign.start,
-                  autofocus: false,
-                ),
+              controller: descriptionController,
+              maxLines: 4,
+              decoration: InputDecoration(
+                isDense: true,
+                contentPadding: const EdgeInsets.all(14),
+                label: Text(context.loc.descripton,
+                    style: Theme.of(context).textTheme.bodySmall),
+                alignLabelWithHint: true,
+              ),
+              textAlign: TextAlign.start,
+              autofocus: false,
+            ),
           ),
           sizedBoxMedium,
           Padding(
@@ -165,8 +163,7 @@ class _UpdateCompanyProfileScreenState extends State<UpdateCompanyProfileScreen>
                               description: descriptionController!.text,
                               phoneNumbers: phoneNum,
                               profilePicUrl: url,
-                              location: widget.company.location
-                             ),
+                              location: widget.company.location),
                           context);
                     } else {
                       const snackBar =

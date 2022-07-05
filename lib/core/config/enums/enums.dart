@@ -11,3 +11,5 @@ enum AuthState { waiting, notSet }
 enum ProjectPrivacy { private, public }
 
 enum ConnectivityStatus { wiFi, mobile, offline }
+
+enum NotificationType { task, project, meeting, none }

@@ -16,7 +16,7 @@ NotificationModle _$NotificationModleFromJson(Map<String, dynamic> json) =>
       imageUrl: json['image_url'] as String,
       projectId: json['project_id'] as String?,
       taskId: json['task_id'] as String?,
-      category: json['category'] as String,
+      type: $enumDecode(_$NotificationTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$NotificationModleToJson(NotificationModle instance) =>
@@ -29,5 +29,12 @@ Map<String, dynamic> _$NotificationModleToJson(NotificationModle instance) =>
       'task_id': instance.taskId,
       'pauload': instance.pauload,
       'image_url': instance.imageUrl,
-      'category': instance.category,
+      'type': _$NotificationTypeEnumMap[instance.type],
     };
+
+const _$NotificationTypeEnumMap = {
+  NotificationType.task: 'task',
+  NotificationType.project: 'project',
+  NotificationType.meeting: 'meeting',
+  NotificationType.none: 'none',
+};

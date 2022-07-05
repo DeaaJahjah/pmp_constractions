@@ -6,6 +6,7 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
+import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
@@ -62,11 +63,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
+  Project? project;
+  @override
+  void initState() {
+    project =
+        Provider.of<SelectedProjectProvider>(context, listen: false).project;
+    selectedItem = project!.members!.first;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var project = Provider.of<SelectedProjectProvider>(context).project;
-    selectedItem = project!.members!.first;
-
+    var members = project!.members;
+    selectedItem = (members!.isNotEmpty) ? members.first : null;
     return Scaffold(
         appBar: AppBar(
           title: Text(context.loc.add_task),
@@ -243,7 +252,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   Expanded(
                       flex: 3,
                       child: SearchDropDown(
-                          members: project.members!,
+                          members: project!.members!,
                           selectedItem: selectedItem,
                           onChanged: (member) {
                             setState(() {
@@ -259,13 +268,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           onPressed: () {
                             setState(() {
                               if (selectedItem != null) {
-                                bool found =
-                                    selectedMembers.contains(selectedItem!);
-                                if (!found) {
-                                  selectedMembers.add(selectedItem!);
-                                  print(selectedItem!.collectionName);
-                                }
+                                selectedMembers.add(selectedItem!);
+                                members.remove(selectedItem);
                               }
+                              //print(selectedItem!.collectionName);
                             });
                           },
                           icon: const Icon(
@@ -295,6 +301,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       photoUrl: selectedMembers[i].profilePicUrl,
                       onTap: () {
                         setState(() {
+                          members.add(selectedMembers[i]);
                           selectedMembers.removeAt(i);
                         });
                       })),
@@ -341,42 +348,65 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             ),
             sizedBoxMedium,
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: ElevatedButton(
-                  child: Text(context.loc.add),
-                  onPressed: () async {
-                    if (nameController.text.isEmpty) {
-                      showSuccessSnackBar(context, 'name is required');
-                      return;
-                    }
-                    String attchmentUrl = '';
-                    if (attchmentFile != null) {
-                      attchmentUrl = await FileService()
-                          .uploadeFile(attchmentName!, attchmentFile!, context);
-                    }
-                    if (attchmentUrl == 'error') {
-                      showErrorSnackBar(context, 'error uploading file');
-                      return;
-                    }
-                    var task = Task(
-                        title: nameController.text,
-                        description: descController.text,
-                        taskState: taskState,
-                        startPoint: startDate,
-                        endPoint: endDate,
-                        attchmentUrl: attchmentUrl,
-                        checkByManager: checkByManager,
-                        members: selectedMembers);
-                    bool state = await TasksDbService().addTask(
-                        project: project, task: task, context: context);
-                    if (state) {
-                      Navigator.pop(context);
-                      showSuccessSnackBar(context, 'task added successfully');
-                    } else {
-                      showErrorSnackBar(context, 'error adding task');
-                    }
-                  }),
-            )
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Consumer<AuthSataProvider>(
+                    builder: (context, value, child) => (AuthState.waiting !=
+                            Provider.of<AuthSataProvider>(context).authState)
+                        ? ElevatedButton(
+                            child: Text(context.loc.add),
+                            onPressed: () async {
+                              if (nameController.text.isEmpty) {
+                                showSuccessSnackBar(
+                                    context, 'name is required');
+                                return;
+                              }
+                              Provider.of<AuthSataProvider>(context,
+                                      listen: false)
+                                  .changeAuthState(newState: AuthState.waiting);
+                              String attchmentUrl = '';
+                              if (attchmentFile != null) {
+                                attchmentUrl = await FileService().uploadeFile(
+                                    attchmentName!, attchmentFile!, context);
+                              }
+                              if (attchmentUrl == 'error') {
+                                showErrorSnackBar(
+                                    context, 'error uploading file');
+                                return;
+                              }
+                              var task = Task(
+                                  title: nameController.text,
+                                  description: descController.text,
+                                  taskState: taskState,
+                                  startPoint: startDate,
+                                  endPoint: endDate,
+                                  attchmentUrl: attchmentUrl,
+                                  checkByManager: checkByManager,
+                                  members: selectedMembers);
+                              bool state = await TasksDbService().addTask(
+                                  project: project!,
+                                  task: task,
+                                  context: context);
+                              if (state) {
+                                Provider.of<AuthSataProvider>(context,
+                                        listen: false)
+                                    .changeAuthState(
+                                        newState: AuthState.notSet);
+                                Navigator.pop(context);
+                                showSuccessSnackBar(
+                                    context, 'task added successfully');
+                              } else {
+                                showErrorSnackBar(context, 'error adding task');
+                                Provider.of<AuthSataProvider>(context,
+                                        listen: false)
+                                    .changeAuthState(
+                                        newState: AuthState.notSet);
+                              }
+                            })
+                        : const Center(
+                            child: CircularProgressIndicator(
+                              color: orange,
+                            ),
+                          ))),
           ],
         ));
   }

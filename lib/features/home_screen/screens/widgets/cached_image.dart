@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pmpconstractions/core/config/theme/theme.dart';
 
 class CashedImage extends StatelessWidget {
   final String imageUrl;
@@ -18,7 +19,8 @@ class CashedImage extends StatelessWidget {
         width: size,
         height: size,
         progressIndicatorBuilder: (context, url, downloadProgress) =>
-            CircularProgressIndicator(value: downloadProgress.progress),
+            CircularProgressIndicator(
+                value: downloadProgress.progress, color: orange),
         errorWidget: (context, url, error) => const Icon(Icons.error),
       ),
     );

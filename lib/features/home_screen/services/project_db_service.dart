@@ -29,8 +29,9 @@ class ProjectDbService {
             notification: NotificationModle(
               title: project.name,
               body: '${project.companyName} added you as a $role',
-              category: 'project',
+              type: NotificationType.none,
               imageUrl: profilePicUrl,
+              projectId: projectDoc.id,
               isReaded: false,
               pauload: '/notification',
             ));

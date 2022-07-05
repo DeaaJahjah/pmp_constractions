@@ -4,6 +4,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/project/project_details_screen.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:provider/provider.dart';
@@ -84,7 +85,10 @@ class OpenProjects extends StatelessWidget {
                   child: Row(
                     children: [
                       CircleAvatar(
-                          backgroundImage: NetworkImage(project.imageUrl)),
+                          child: CashedImage(
+                              imageUrl: project.imageUrl,
+                              radius: 60,
+                              size: 100)),
                       const SizedBox(width: 10),
                       Text(project.name)
                     ],

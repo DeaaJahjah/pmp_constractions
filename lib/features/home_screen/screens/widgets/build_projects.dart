@@ -13,10 +13,11 @@ class BuildProjects extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MasonryGridView.builder(
+        shrinkWrap: true,
         controller: scrollController,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         // vertical gap between two items
-        mainAxisSpacing: 40,
+        mainAxisSpacing: 10,
         // horizontal gap between two items
         crossAxisSpacing: 10,
         itemCount: projects.length,
@@ -25,18 +26,20 @@ class BuildProjects extends StatelessWidget {
         itemBuilder: (context, i) {
           Project project = projects[i];
           return AnimationConfiguration.staggeredList(
-              position: i,
-              duration: const Duration(milliseconds: 375),
-              child: SlideAnimation(
-                  horizontalOffset: 50.0,
-                  child: FadeInAnimation(
-                    child: ProjectCard(
-                      name: project.name,
-                      projectId: project.projectId.toString(),
-                      imageUrl: project.imageUrl,
-                      index: i,
-                    ),
-                  )));
+            position: i,
+            duration: const Duration(milliseconds: 375),
+            child: SlideAnimation(
+              horizontalOffset: 50.0,
+              child: FadeInAnimation(
+                child: ProjectCard(
+                  name: project.name,
+                  projectId: project.projectId.toString(),
+                  imageUrl: project.imageUrl,
+                  index: i,
+                ),
+              ),
+            ),
+          );
         });
   }
 }
