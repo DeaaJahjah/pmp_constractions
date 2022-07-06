@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
-import 'package:pmpconstractions/features/project/project_details_screen.dart';
+import 'package:pmpconstractions/features/project/details.dart';
 
 class ProjectCard extends StatelessWidget {
   final String projectId;
@@ -21,8 +21,7 @@ class ProjectCard extends StatelessWidget {
     return InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  ProjectDetailsScreen(projectId: projectId)));
+              builder: (context) => Details(projectId: projectId)));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),

@@ -51,8 +51,10 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                   onTap: () async {
-                    Navigator.of(context)
+                    await Navigator.of(context)
                         .pushNamed(NotificationScreen.routeName);
+
+                    await NotificationDbService().makeNotificationAsReaded();
                   },
                   child: StreamBuilder<int>(
                       stream:

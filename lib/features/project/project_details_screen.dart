@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/firebase.dart';
@@ -8,15 +9,16 @@ import 'package:pmpconstractions/features/home_screen/services/project_db_servic
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
-import 'package:pmpconstractions/features/tasks/screens/tasks_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
   static const routeName = '/home/project_details';
+  ZoomDrawerController? zoomController;
   //static const routeName = '/';
   String? projectId;
-  ProjectDetailsScreen({Key? key, this.projectId}) : super(key: key);
+  ProjectDetailsScreen({Key? key, this.projectId, this.zoomController})
+      : super(key: key);
 
   @override
   State<ProjectDetailsScreen> createState() => _ProjectDetailsScreenState();
@@ -29,25 +31,6 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   void initState() {
     super.initState();
   }
-
-  // Map memberInRole = {};
-  // bool inProject = false;
-  // ss() {
-  //   if (project!.companyId == uid) {
-  //     inProject = true;
-  //     memberInRole[project!.companyId] = Role.company;
-  //     return;
-  //   }
-  //   for (var element in project!.members!) {
-  //     print(element.memberId);
-  //     if (element.memberId == uid && project!.isOpen) {
-  //       memberInRole[element.memberId] = element.role;
-  //       inProject = true;
-  //       print('found');
-  //       setState(() {});
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,23 +58,22 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               });
 
               return Scaffold(
-                  drawer: Drawer(
-                    child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  TasksScreen(projectId: widget.projectId)));
-                        },
-                        icon: const Icon(Icons.home)),
-                  ),
                   appBar: AppBar(
                     automaticallyImplyLeading:
                         project!.memberIn(context.userUid!) ||
                             project.companyId == context.userUid,
                     backgroundColor: orange,
                     elevation: 0,
+                    leading: InkWell(
+                        onTap: () {
+                          if (widget.zoomController != null) {
+                            widget.zoomController!.toggle!();
+                          }
+                        },
+                        child: const Icon(Icons.menu, color: darkBlue)),
                   ),
                   backgroundColor: orange,
+                  // drawer: const Drawer(),
                   body: SlidingUpPanel(
                       controller: panelController,
                       minHeight: 350,

@@ -4,6 +4,7 @@ import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:pmpconstractions/features/project/project_details_screen.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
@@ -20,7 +21,6 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    updateNotification();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notification'),
@@ -62,10 +62,16 @@ class NotificationScreen extends StatelessWidget {
                       margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: orange),
+                          border: Border.all(color: orange, width: 2),
+                          color: (notification.isReaded) ? darkBlue : orange),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(notification.imageUrl),
+                          backgroundColor: white,
+                          child: CashedImage(
+                            imageUrl: notification.imageUrl,
+                            radius: 30,
+                            size: 100,
+                          ),
                         ),
                         title: Text(notification.title,
                             style: Theme.of(context).textTheme.headlineMedium),

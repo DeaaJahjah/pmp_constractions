@@ -255,9 +255,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           members: project!.members!,
                           selectedItem: selectedItem,
                           onChanged: (member) {
-                            setState(() {
-                              selectedItem = member;
-                            });
+                            selectedItem = member;
                           })),
                   const SizedBox(width: 10),
                   Expanded(

@@ -151,6 +151,11 @@ class ProjectDbService {
     return projects;
   }
 
+  //delete project
+  Future<void> deleteProject(String id) async {
+    await _db.collection('projects').doc(id).delete();
+  }
+
   // for any one vist the company profile
   Future<List<Project>> geCompanyPublicProjects(String companyId) async {
     List<Project> projects = [];

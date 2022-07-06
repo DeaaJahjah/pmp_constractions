@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pmpconstractions/core/config/constants/constant.dart';
-
+import 'package:pmpconstractions/core/config/theme/theme.dart';
 
 class CustomeRow extends StatelessWidget {
   IconData icon;
@@ -12,9 +11,10 @@ class CustomeRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        sizedBoxMedium,
-        Icon(icon),
-        sizedBoxLarge,
+        Icon(icon, color: orange),
+        const SizedBox(
+          width: 10,
+        ),
         Text(
           text,
           style: Theme.of(context).textTheme.headlineSmall,

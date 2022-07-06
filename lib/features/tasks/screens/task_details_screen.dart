@@ -172,9 +172,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         child: CircularPercentIndicator(
                           radius: 45,
                           footer: const Text('Completed'),
-                          percent: task.getProgressValue(),
+                          percent: (task.members!.isNotEmpty)
+                              ? task.getProgressValue()
+                              : 0,
                           center: Text(
-                            "${task.getProgressValue() * 100} %",
+                            (task.members!.isNotEmpty)
+                                ? "${task.getProgressValue() * 100} %"
+                                : '0%',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           lineWidth: 8,

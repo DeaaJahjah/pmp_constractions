@@ -45,79 +45,84 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(
                 height: 30,
               ),
-              Row(children: [
-                CustomeRow(
-                  icon: Icons.color_lens,
-                  text: context.loc.theme,
-                ),
-                const SizedBox(width: 160),
-                ThemeSwitcher(
-                    clipper: const ThemeSwitcherCircleClipper(),
-                    builder: (context) {
-                      return FlutterSwitch(
-                          value: isSwitched,
-                          height: 30,
-                          width: 50,
-                          toggleSize: 20,
-                          borderRadius: 50,
-                          activeColor: darkBlue,
-                          inactiveColor: white,
-                          toggleColor: orange,
-                          switchBorder: Border.all(
-                            color: orange,
-                          ),
-                          inactiveIcon: const Icon(
-                            Icons.light_mode,
-                            color: white,
-                          ),
-                          activeIcon: const Icon(
-                            Icons.dark_mode,
-                            color: darkBlue,
-                          ),
-                          onToggle: (value) {
-                            isSwitched = !isSwitched;
-                            ThemeSwitcher.of(context).changeTheme(
-                              theme: ThemeModelInheritedNotifier.of(context)
-                                          .theme
-                                          .brightness ==
-                                      Brightness.light
-                                  ? darkTheme
-                                  : lightTheme,
-                            );
-                          });
-                    }),
-              ]),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomeRow(
+                        icon: Icons.color_lens,
+                        text: context.loc.theme,
+                      ),
+                      ThemeSwitcher(
+                          clipper: const ThemeSwitcherCircleClipper(),
+                          builder: (context) {
+                            return FlutterSwitch(
+                                value: isSwitched,
+                                height: 30,
+                                width: 50,
+                                toggleSize: 20,
+                                borderRadius: 50,
+                                activeColor: darkBlue,
+                                inactiveColor: white,
+                                toggleColor: orange,
+                                switchBorder: Border.all(
+                                  color: orange,
+                                ),
+                                inactiveIcon: const Icon(
+                                  Icons.light_mode,
+                                  color: white,
+                                ),
+                                activeIcon: const Icon(
+                                  Icons.dark_mode,
+                                  color: darkBlue,
+                                ),
+                                onToggle: (value) {
+                                  isSwitched = !isSwitched;
+                                  ThemeSwitcher.of(context).changeTheme(
+                                    theme:
+                                        ThemeModelInheritedNotifier.of(context)
+                                                    .theme
+                                                    .brightness ==
+                                                Brightness.light
+                                            ? darkTheme
+                                            : lightTheme,
+                                  );
+                                });
+                          }),
+                    ]),
+              ),
               const SizedBox(height: 50),
-              Row(
-                children: [
-                  Expanded(
-                      flex: 4,
-                      child: CustomeRow(
-                          icon: Icons.language, text: context.loc.language)),
-                  const SizedBox(width: 120),
-                  Expanded(
-                    flex: 1,
-                    child: DropdownButtonFormField<String>(
-                        style: const TextStyle(color: orange),
-                        iconEnabledColor: orange,
-                        focusColor: orange,
-                        decoration: const InputDecoration(
-                            enabledBorder: InputBorder.none),
-                        dropdownColor: beg,
-                        items: items,
-                        value: currentLanguage,
-                        onChanged: (selectedLanguage) {
-                          setState(() {
-                            currentLanguage = selectedLanguage;
-                            Provider.of<LanguageProvider>(context,
-                                    listen: false)
-                                .changeLanguge(Locale(
-                                    selectedLanguage == 'en' ? 'en' : 'ar'));
-                          });
-                        }),
-                  ),
-                  const SizedBox(width: 20),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomeRow(
+                        icon: Icons.language, text: context.loc.language),
+                    SizedBox(
+                      width: 50,
+                      child: DropdownButtonFormField<String>(
+                          style: const TextStyle(color: orange),
+                          iconEnabledColor: orange,
+                          focusColor: orange,
+                          decoration: const InputDecoration(
+                              enabledBorder: InputBorder.none),
+                          dropdownColor: beg,
+                          items: items,
+                          value: currentLanguage,
+                          onChanged: (selectedLanguage) {
+                            setState(() {
+                              currentLanguage = selectedLanguage;
+                              Provider.of<LanguageProvider>(context,
+                                      listen: false)
+                                  .changeLanguge(Locale(
+                                      selectedLanguage == 'en' ? 'en' : 'ar'));
+                            });
+                          }),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 flex: 1,

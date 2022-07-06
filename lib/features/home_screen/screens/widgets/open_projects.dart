@@ -5,7 +5,7 @@ import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/engineer_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
-import 'package:pmpconstractions/features/project/project_details_screen.dart';
+import 'package:pmpconstractions/features/project/details.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -79,8 +79,8 @@ class OpenProjects extends StatelessWidget {
                     panelController.close();
                     drawerConroller.close!();
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ProjectDetailsScreen(
-                            projectId: project.projectId)));
+                        builder: (context) =>
+                            Details(projectId: project.projectId)));
                   },
                   child: Row(
                     children: [

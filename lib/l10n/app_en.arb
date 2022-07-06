@@ -74,5 +74,6 @@
     "in_progress":"IN PROGRESS",
     "edit":"Edit",
     "no_tasks":"There is no tasks yet",
-    "upload_attachment":"UPLOAD ATTACHMENT"
+    "upload_attachment":"UPLOAD ATTACHMENT",
+    "timeline":"Timeline"
 }

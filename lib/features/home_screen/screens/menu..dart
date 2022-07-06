@@ -127,33 +127,31 @@ class _MenuScreenState extends State<MenuScreen> {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           sizedBoxLarge,
-          InkWell(
+          MenuRow(
             onTap: () {
               widget.panelController!.open();
             },
-            child: MenuRow(
-              icon: Icons.home,
-              text: context.loc.projects,
-            ),
+            icon: Icons.home,
+            text: context.loc.projects,
           ),
           sizedBoxMedium,
-          InkWell(
+          MenuRow(
+            icon: Icons.settings,
+            text: context.loc.settings,
             onTap: (() =>
                 Navigator.of(context).pushNamed(SettingsScreen.routeName)),
-            child: MenuRow(
-              icon: Icons.settings,
-              text: context.loc.settings,
-            ),
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.47,
           ),
-          InkWell(
-              onTap: () {
-                Provider.of<FlutterFireAuthService>(context, listen: false)
-                    .signOut(context);
-              },
-              child: MenuRow(icon: Icons.logout, text: context.loc.log_out))
+          MenuRow(
+            icon: Icons.logout,
+            text: context.loc.log_out,
+            onTap: () {
+              Provider.of<FlutterFireAuthService>(context, listen: false)
+                  .signOut(context);
+            },
+          )
         ],
       ),
     );

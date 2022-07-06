@@ -69,6 +69,53 @@ class Project extends Equatable {
     return false;
   }
 
+  bool hasPermissionToShowTask(String id) {
+    for (var member in members!) {
+      if (member.memberId == id && member.role != Role.client) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool hasPermissionToShowHistory(String id) {
+    for (var member in members!) {
+      if (member.memberId == id && member.role != Role.client) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool hasPermissionToStartMeeting(String id) {
+    for (var member in members!) {
+      if (member.memberId == id && member.role == Role.projectManager) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool hasPermessionToManageTask(String id) {
+    for (var member in members!) {
+      if (member.memberId == id &&
+          (member.role == Role.projectManager ||
+              member.role == Role.projectEngineer)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool hasPermessionToJoinMeeting(String id) {
+    for (var member in members!) {
+      if (member.memberId == id && member.role != Role.client) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   List<Object?> get props => [projectId, name, members];
 }
@@ -98,6 +145,7 @@ class MemberRole extends Equatable {
       _$MemberRoleFromJson(json);
 
   Map<String, dynamic> toJson() => _$MemberRoleToJson(this);
+
   @override
   List<Object?> get props =>
       [memberId, role, collectionName, memberName, profilePicUrl, submited];

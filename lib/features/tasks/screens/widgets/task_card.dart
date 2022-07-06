@@ -5,6 +5,8 @@ import 'package:image_stack/image_stack.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/extensions/firebase.dart';
+import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/task_details_screen.dart';
@@ -36,6 +38,8 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
+    Project project =
+        Provider.of<SelectedProjectProvider>(context, listen: false).project!;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -59,6 +63,7 @@ class _TaskCardState extends State<TaskCard> {
             child: Slidable(
               key: ValueKey(widget.task.id),
               dragStartBehavior: DragStartBehavior.down,
+              enabled: project.hasPermessionToManageTask(context.userUid!),
               startActionPane:
                   ActionPane(motion: const DrawerMotion(), children: [
                 SlidableAction(
@@ -67,11 +72,7 @@ class _TaskCardState extends State<TaskCard> {
                   flex: 2,
                   borderRadius: BorderRadius.circular(8),
                   onPressed: (context) async {
-                    String projectId = Provider.of<SelectedProjectProvider>(
-                            context,
-                            listen: false)
-                        .project!
-                        .projectId!;
+                    String projectId = project.projectId!;
                     await TasksDbService().deleteTask(
                         projectId: projectId, taskId: widget.task.id!);
                   },
@@ -107,9 +108,13 @@ class _TaskCardState extends State<TaskCard> {
                     sizedBoxSmall,
                     LinearPercentIndicator(
                       lineHeight: 14.0,
-                      percent: widget.task.getProgressValue(),
+                      percent: (widget.task.members!.isNotEmpty)
+                          ? widget.task.getProgressValue()
+                          : 0,
                       center: Text(
-                        "${widget.task.getProgressValue() * 100} %",
+                        (widget.task.members!.isNotEmpty)
+                            ? "${widget.task.getProgressValue() * 100} %"
+                            : '0%',
                         style: TextStyle(
                             fontSize: 10.0,
                             color: (widget.index % 2 == 0) ? beg : orange),
@@ -126,7 +131,9 @@ class _TaskCardState extends State<TaskCard> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        '${widget.task.getProgressValue() * 100}% completed',
+                        (widget.task.members!.isNotEmpty)
+                            ? "${widget.task.getProgressValue() * 100} %"
+                            : '0%',
                         style: (widget.index % 2 == 0)
                             ? Theme.of(context).textTheme.bodySmall
                             : Theme.of(context).textTheme.headlineSmall,

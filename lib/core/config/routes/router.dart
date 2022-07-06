@@ -7,6 +7,7 @@ import 'package:pmpconstractions/core/featuers/auth/screens/setup_client_profile
 import 'package:pmpconstractions/core/featuers/auth/screens/signup_screen.dart';
 import 'package:pmpconstractions/core/featuers/notification/notification_screen.dart';
 import 'package:pmpconstractions/core/featuers/settings/settings_screen.dart';
+import 'package:pmpconstractions/features/project/details.dart';
 
 import 'package:pmpconstractions/features/project/project_details_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
@@ -60,9 +61,11 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case TasksScreen.routeName:
       return MaterialPageRoute(builder: (_) => const TasksScreen());
     case TaskDetailsScreen.routeName:
-      return MaterialPageRoute(builder: (_) => TaskDetailsScreen());
+      return MaterialPageRoute(builder: (_) => const TaskDetailsScreen());
     case AddTaskScreen.routeName:
       return MaterialPageRoute(builder: (_) => const AddTaskScreen());
+    case Details.routeName:
+      return MaterialPageRoute(builder: (_) => Details());
   }
 
   return null;
