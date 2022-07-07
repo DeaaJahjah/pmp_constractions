@@ -46,7 +46,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         }
         return false;
       },
-      child: StreamBuilder<Project>(
+      child: StreamBuilder<Project?>(
           stream:
               ProjectDbService().getProjectUpdates(widget.projectId.toString()),
           builder: (context, snapshot) {

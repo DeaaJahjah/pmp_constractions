@@ -3,7 +3,6 @@ import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
-import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/menu_row.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
@@ -73,9 +72,9 @@ class _ProjectMenuState extends State<ProjectMenu> {
           if (project.companyId == context.userUid)
             MenuRow(
               onTap: () async {
-                await ProjectDbService().deleteProject(project.projectId!);
-                showSuccessSnackBar(context, 'Project deleted');
-                Provider.of<DataProvider>(context).fetchProjects();
+                await ProjectDbService()
+                    .deleteProject(project.projectId!, project.members!);
+                showSuccessSnackBar(context, 'Project deleted successfully');
                 Navigator.of(context).pop();
               },
               icon: Icons.delete,

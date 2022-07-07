@@ -6,7 +6,8 @@ import 'package:pmpconstractions/core/featuers/notification/services/notificatio
 
 import 'package:pmpconstractions/features/home_screen/screens/main_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/menu..dart';
-import 'package:pmpconstractions/features/home_screen/screens/widgets/open_projects.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/company_open_projects.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/users_open_projects.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -51,11 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30), topRight: Radius.circular(30)),
             color: beg,
-            panelBuilder: (scrollController) => OpenProjects(
-                  drawerConroller: drawerConroller,
-                  scrollController: scrollController,
-                  panelController: panelController,
-                ),
+            panelBuilder: (scrollController) => (user!.displayName != 'company')
+                ? UsersOpenProjects(
+                    drawerConroller: drawerConroller,
+                    scrollController: scrollController,
+                    panelController: panelController,
+                  )
+                : CompanyOpenProject(
+                    drawerConroller: drawerConroller,
+                    scrollController: scrollController,
+                    panelController: panelController,
+                  ),
             body: ZoomDrawer(
               controller: drawerConroller,
               shadowLayer2Color: white.withOpacity(0.9),

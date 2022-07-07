@@ -4,6 +4,7 @@ import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
+import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,7 @@ class ProjectDbService {
     } on FirebaseException catch (e) {
       print(e);
 
-      //TODO -- impliment error snackbar
+      showErrorSnackBar(context, e.message!);
     }
   }
 
@@ -69,23 +70,34 @@ class ProjectDbService {
     return projects;
   }
 
-  Future<List<Project>> getOpenProjects(List<String> projectsIDs) async {
-    List<DocumentSnapshot<Map<String, dynamic>>> queryData = [];
+  Stream<List<String>> userProjectsIDS(String userId, String collectionName) {
+    return _db
+        .collection(collectionName)
+        .doc(userId)
+        .snapshots()
+        .map((doc) => doc.data()!['projects_ids']);
+  }
 
-    for (var docID in projectsIDs) {
-      queryData.add(await _db.collection('projects').doc(docID).get());
-    }
-
+  Future<List<Project>> getOpenProjects(List<String>? projectIDS) async {
     List<Project> projects = [];
 
-    for (var doc in queryData) {
-      Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
-      if (cc['is_open'] == true) {
-        projects.add(Project.fromFirestore(doc));
+    if (projectIDS != null || projectIDS!.isNotEmpty) {
+      for (var projectId in projectIDS) {
+        _db.collection('projects').doc(projectId).snapshots().map((event) {
+          projects.add(Project.fromFirestore(event));
+        });
       }
     }
     return projects;
+
+    //  return _db
+    //   .collection('projects')
+
+    //   .snapshots()
+    //   .map(_projectListFromSnapshot);
   }
+
+  // get opne projects for user real time
 
   Future<List<Project>> getPublicProjects(List<String> projectsIDs) async {
     List<DocumentSnapshot<Map<String, dynamic>>> queryData = [];
@@ -113,26 +125,23 @@ class ProjectDbService {
   }
 
   //get project realtime updates
-  Stream<Project> getProjectUpdates(String id) {
+  Stream<Project?> getProjectUpdates(String id) {
     return _db.collection('projects').doc(id).snapshots().map((doc) {
-      return Project.fromFirestore(doc);
+      if (doc.exists) {
+        return Project.fromFirestore(doc);
+      }
+      return null;
     });
   }
 
-  Future<List<Project>> geCompanyOpenProjects(String uid) async {
-    List<Project> projects = [];
-
-    var query = await _db
+  Stream<List<Project>> geCompanyOpenProjects(String uid) {
+    return _db
         .collection('projects')
         .where('company_id', isEqualTo: uid)
         .where('is_open', isEqualTo: true)
-        .get();
-
-    for (var doc in query.docs) {
-      projects.add(Project.fromFirestore(doc));
-    }
-
-    return projects;
+        .snapshots()
+        .map((event) =>
+            event.docs.map((doc) => Project.fromFirestore(doc)).toList());
   }
 
   // show the copmpany projects
@@ -151,11 +160,6 @@ class ProjectDbService {
     return projects;
   }
 
-  //delete project
-  Future<void> deleteProject(String id) async {
-    await _db.collection('projects').doc(id).delete();
-  }
-
   // for any one vist the company profile
   Future<List<Project>> geCompanyPublicProjects(String companyId) async {
     List<Project> projects = [];
@@ -170,5 +174,30 @@ class ProjectDbService {
       projects.add(Project.fromFirestore(doc));
     }
     return projects;
+  }
+
+  //delete project
+  Future<void> deleteProject(String projectId, List<MemberRole> members) async {
+    for (MemberRole member in members) {
+      // remove project id from all members
+
+      await _deleteProjectFromMemberList(
+          collectionName: member.collectionName!,
+          projectId: projectId,
+          memberId: member.memberId);
+    }
+    await _db.collection('projects').doc(projectId).delete();
+  }
+
+  //dlelete project from member list
+  Future<void> _deleteProjectFromMemberList(
+      {required String collectionName,
+      required String projectId,
+      required String memberId}) async {
+    await _db.collection(collectionName).doc(memberId).update(
+      {
+        'projects_ids': FieldValue.arrayRemove([projectId])
+      },
+    );
   }
 }

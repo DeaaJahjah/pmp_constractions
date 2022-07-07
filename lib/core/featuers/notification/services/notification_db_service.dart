@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pmpconstractions/core/extensions/collection_name.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_service.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
@@ -20,7 +21,7 @@ class NotificationDbService {
   }
 
   showNotification() {
-    var collection = collectionName(user?.displayName!);
+    var collection = getcCollectionName(user?.displayName!);
     FirebaseFirestore.instance
         .collection(collection)
         .doc(user!.uid)
@@ -43,7 +44,7 @@ class NotificationDbService {
 
   //get unreaded notifications realtime
   Stream<int> getUnreadedNotifications() {
-    var collection = collectionName(user?.displayName!);
+    var collection = getcCollectionName(user?.displayName!);
     return FirebaseFirestore.instance
         .collection(collection)
         .doc(user!.uid)
@@ -54,7 +55,7 @@ class NotificationDbService {
   }
 
   Stream<List<NotificationModle>> getNotifications() {
-    String? collection = collectionName(user!.displayName);
+    String? collection = getcCollectionName(user!.displayName);
     return FirebaseFirestore.instance
         .collection(collection)
         .doc(user!.uid)
@@ -71,7 +72,7 @@ class NotificationDbService {
   }
 
   addNotification(NotificationModle notificationModle) async {
-    String? collection = collectionName(user!.displayName);
+    String? collection = getcCollectionName(user!.displayName);
     await FirebaseFirestore.instance
         .collection(collection)
         .doc(user!.uid)
@@ -80,7 +81,7 @@ class NotificationDbService {
   }
 
   makeNotificationAsReaded() async {
-    String? collection = collectionName(user!.displayName);
+    String? collection = getcCollectionName(user!.displayName);
     var query = await FirebaseFirestore.instance
         .collection(collection)
         .doc(user!.uid)
@@ -102,17 +103,4 @@ class NotificationDbService {
           .update(noti.toJson());
     }
   }
-}
-
-String collectionName(String? type) {
-  switch (type) {
-    case 'engineer':
-      return 'engineers';
-
-    case 'client':
-      return 'clients';
-    case 'company':
-      return 'companies';
-  }
-  return '';
 }

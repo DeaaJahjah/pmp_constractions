@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 
 class CustomeRow extends StatelessWidget {
-  IconData icon;
-  String text;
-  CustomeRow({Key? key, required this.icon, required this.text})
+  final IconData icon;
+  final String text;
+  const CustomeRow({Key? key, required this.icon, required this.text})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
