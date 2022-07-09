@@ -18,7 +18,7 @@ Future<DateTime?> pickDate(BuildContext context) async {
                   )
               .copyWith(
             secondary: darkBlue,
-            surface: const Color.fromARGB(255, 8, 22, 42),
+            surface: darkBackground,
             onSurface: beg,
             onPrimary: darkBlue,
           ),

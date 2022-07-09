@@ -9,14 +9,16 @@ import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
-import 'package:pmpconstractions/features/tasks/screens/task_details_screen.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
 import 'package:provider/provider.dart';
 
 class TaskCard extends StatefulWidget {
   final Task task;
   final int index;
-  const TaskCard({Key? key, required this.task, required this.index})
+
+  final void Function()? onTap;
+  const TaskCard(
+      {Key? key, required this.task, required this.index, required this.onTap})
       : super(key: key);
 
   @override
@@ -49,17 +51,7 @@ class _TaskCardState extends State<TaskCard> {
               style: Theme.of(context).textTheme.bodySmall),
         ),
         InkWell(
-            onTap: () {
-              final projectId =
-                  Provider.of<SelectedProjectProvider>(context, listen: false)
-                      .project!
-                      .projectId;
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => TaskDetailsScreen(
-                        taskId: widget.task.id,
-                        projectId: projectId,
-                      )));
-            },
+            onTap: widget.onTap,
             child: Slidable(
               key: ValueKey(widget.task.id),
               dragStartBehavior: DragStartBehavior.down,

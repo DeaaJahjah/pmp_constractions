@@ -250,35 +250,23 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               child: Row(
                 children: [
                   Expanded(
-                      flex: 3,
+                      child: Text('Assigned to',
+                          style: Theme.of(context).textTheme.bodySmall)),
+                  Expanded(
+                      flex: 2,
                       child: SearchDropDown(
                           members: project!.members!,
                           selectedItem: selectedItem,
                           onChanged: (member) {
                             selectedItem = member;
-                          })),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: orange,
-                      child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (selectedItem != null) {
+                            if (selectedItem != null) {
+                              setState(() {
                                 selectedMembers.add(selectedItem!);
                                 members.remove(selectedItem);
-                              }
-                              //print(selectedItem!.collectionName);
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.add,
-                            size: 20,
-                            color: beg,
-                          )),
-                    ),
-                  ),
+                              });
+                            }
+                          })),
+                  const SizedBox(width: 10),
                 ],
               ),
             ),
@@ -353,6 +341,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         ? ElevatedButton(
                             child: Text(context.loc.add),
                             onPressed: () async {
+                              print(selectedMembers.length);
                               if (nameController.text.isEmpty) {
                                 showSuccessSnackBar(
                                     context, 'name is required');

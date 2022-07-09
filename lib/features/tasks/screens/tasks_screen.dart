@@ -6,6 +6,7 @@ import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/add_task_screen.dart';
+import 'package:pmpconstractions/features/tasks/screens/task_details_screen.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/task_card.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/task_state_card.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
@@ -25,7 +26,7 @@ class _TasksScreenState extends State<TasksScreen> {
   List<bool> states = [true, false, false];
   TaskState selectedState = TaskState.notStarted;
   int index = 0;
-
+  Key? key = Key(DateTime.now().millisecondsSinceEpoch.toString());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +37,15 @@ class _TasksScreenState extends State<TasksScreen> {
           elevation: 0.0,
         ),
         body: StreamBuilder<List<Task>>(
+            key: key,
             stream: TasksDbService().getTasks(
-                projectId: widget.projectId!, taskState: selectedState),
+                projectId: widget.projectId!, taskState: selectedState)
+            //     .asBroadcastStream(onListen: (c) {
+            //   WidgetsBinding.instance.addPostFrameCallback((_) {
+            //     setState(() {});
+            //   });
+            // }),
+            ,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Task> tasks = snapshot.data!;
@@ -92,14 +100,36 @@ class _TasksScreenState extends State<TasksScreen> {
                               )))),
                     ),
                   ]),
-
-                  // lineWidgetBuilder: (index) {
-                  //   return const SolidLineConnector(color: beg);
-
                   Flexible(
                       child: ListView.builder(
                     itemBuilder: (context, index) {
-                      return TaskCard(task: tasks[index], index: index);
+                      return TaskCard(
+                        task: tasks[index],
+                        index: index,
+                        onTap: () {
+                          final projectId =
+                              Provider.of<SelectedProjectProvider>(context,
+                                      listen: false)
+                                  .project!
+                                  .projectId;
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => TaskDetailsScreen(
+                                        taskId: tasks[index].id,
+                                        projectId: projectId,
+                                      )))
+                              .then((value) {
+                            //    ScaffoldMessenger.of(widget.cox).setState(() {});
+                            if (value) {
+                              key = Key(DateTime.now()
+                                  .millisecondsSinceEpoch
+                                  .toString());
+
+                              setState(() {});
+                            }
+                          });
+                        },
+                      );
                     },
                     itemCount: tasks.length,
                   ))
@@ -111,17 +141,28 @@ class _TasksScreenState extends State<TasksScreen> {
               }
               return const Center(child: Text('No tasks'));
             }),
-        floatingActionButton: (Provider.of<SelectedProjectProvider>(context)
+        floatingActionButton: (!Provider.of<SelectedProjectProvider>(context)
                 .project!
                 .hasPermessionToManageTask(context.userUid!))
             ? FloatingActionButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(AddTaskScreen.routeName);
+                  Navigator.of(context)
+                      .pushNamed(AddTaskScreen.routeName)
+                      .then((value) {});
                 },
                 child: const Icon(Icons.add, color: beg, size: 30),
                 elevation: 10,
                 backgroundColor: orange,
               )
             : const SizedBox.shrink());
+  }
+
+  void rebuildAllChildren(BuildContext context) {
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+
+    (context as Element).visitChildren(rebuild);
   }
 }

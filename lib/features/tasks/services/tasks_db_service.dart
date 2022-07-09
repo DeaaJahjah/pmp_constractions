@@ -19,14 +19,12 @@ class TasksDbService {
 
   Stream<List<Task>> getTasks(
       {required String projectId, required TaskState taskState}) {
-    print(projectId);
-    print(taskState.name);
     return _db
         .collection('projects')
         .doc(projectId)
         .collection('tasks')
         .where('task_state', isEqualTo: taskState.name)
-        .snapshots()
+        .snapshots(includeMetadataChanges: true)
         .map(_projectListFromSnapshot);
   }
 
@@ -110,5 +108,30 @@ class TasksDbService {
         .collection('tasks')
         .doc(taskId)
         .update({'task_state': taskState.name});
+  }
+
+  //assigned task to member
+  Future<void> assignedTaskToMember(
+      {required Project project,
+      required Task task,
+      required List<MemberRole> newMember}) async {
+    task.members!.addAll(newMember);
+
+    await updateTask(projectId: project.projectId!, task: task);
+
+    for (MemberRole member in newMember) {
+      await NotificationDbService().sendNotification(
+          member: member,
+          notification: NotificationModle(
+            title: project.name,
+            body: '${task.title} ,Assigned to you',
+            type: NotificationType.task,
+            projectId: project.projectId,
+            taskId: task.id,
+            imageUrl: project.imageUrl,
+            isReaded: false,
+            pauload: '/notification',
+          ));
+    }
   }
 }

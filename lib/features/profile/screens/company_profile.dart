@@ -121,7 +121,7 @@ class _CompanyProfileState extends State<CompanyProfile> {
                         ),
                         Positioned(
                           top: 78,
-                          left: 107,
+                          left: (MediaQuery.of(context).size.width / 2) - 75,
                           child: CircleAvatar(
                               backgroundColor: orange,
                               radius: 70,

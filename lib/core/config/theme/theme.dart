@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const Color darkBlue = Color(0xff0b1d37);
+const Color darkBackground = Color.fromARGB(255, 10, 26, 48);
 const Color orange = Color(0xffF68D32);
 const Color karmedi = Color(0xffD6744E);
 const Color beg = Color(0xffF6D992);
