@@ -17,7 +17,7 @@ class Engineer extends Equatable {
   final String specialization;
   final Map<String, List<String>>? experience;
   @JsonKey(name: 'projects_ids')
-  final List<String>? projectsIDs;
+  final List<String> projectsIDs;
 
   Engineer(
       {this.userId,
@@ -26,7 +26,7 @@ class Engineer extends Equatable {
       this.profilePicUrl,
       required this.specialization,
       required this.experience,
-      this.projectsIDs});
+      required this.projectsIDs});
 
   factory Engineer.fromJson(Map<String, dynamic> json) =>
       _$EngineerFromJson(json);

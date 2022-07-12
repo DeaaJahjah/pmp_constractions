@@ -107,18 +107,6 @@ class _CompanyProfileState extends State<CompanyProfile> {
                                   bottomLeft: Radius.circular(10),
                                   bottomRight: Radius.circular(10))),
                         ),
-                        const Positioned(
-                          top: 20,
-                          left: 135,
-                          child: Text(
-                            'My profile',
-                            style: TextStyle(
-                                color: darkBlue,
-                                fontFamily: font,
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
                         Positioned(
                           top: 78,
                           left: (MediaQuery.of(context).size.width / 2) - 75,

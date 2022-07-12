@@ -5,6 +5,7 @@ import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/menu_row.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
+import 'package:pmpconstractions/features/project/timeline_screen.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/tasks_screen.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,9 @@ class _ProjectMenuState extends State<ProjectMenu> {
             ),
           sizedBoxMedium,
           MenuRow(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(TimelineScreen.routeName);
+            },
             icon: Icons.timeline,
             text: context.loc.timeline,
           ),

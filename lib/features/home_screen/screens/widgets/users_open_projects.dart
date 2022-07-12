@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:pmpconstractions/core/extensions/collection_name.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/project/details.dart';
@@ -23,8 +22,10 @@ class UsersOpenProjects extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<String>>(
-        stream: ProjectDbService()
-            .userProjectsIDS(user!.uid, getcCollectionName(user!.displayName)),
+        stream: null,
+
+        // ProjectDbService()
+        //     .userProjectsIDS(user!.uid, getcCollectionName(user!.displayName)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var ids = snapshot.data;

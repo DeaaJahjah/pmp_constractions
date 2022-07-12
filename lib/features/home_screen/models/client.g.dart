@@ -13,8 +13,8 @@ Client _$ClientFromJson(Map<String, dynamic> json) => Client(
           ?.map((e) => e as String)
           .toList(),
       profilePicUrl: json['profile_pic_url'] as String?,
-      projectsIDs: (json['projects_ids'] as List<dynamic>?)
-          ?.map((e) => e as String)
+      projectsIDs: (json['projects_ids'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
     );
 

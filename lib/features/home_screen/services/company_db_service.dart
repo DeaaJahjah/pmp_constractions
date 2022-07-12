@@ -59,6 +59,14 @@ class CompanyDbService {
     }
   }
 
+  Stream<String> getCompanyPhotoUrl(String id) {
+    return _db
+        .collection('companies')
+        .doc(id)
+        .snapshots()
+        .map((doc) => doc.data()!['profile_pic_url']);
+  }
+
   updateCompany(Company company, context) async {
     try {
       Provider.of<AuthSataProvider>(context, listen: false)

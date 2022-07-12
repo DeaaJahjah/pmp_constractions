@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/firebase.dart';
@@ -84,27 +85,27 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                               topLeft: Radius.circular(30),
                               topRight: Radius.circular(30)),
                           color: darkBlue,
-                          // body: Container(
-                          //   height: 50,
-                          //   margin: const EdgeInsets.only(bottom: 350),
-                          //   width: MediaQuery.of(context).size.width,
-                          //   color: Colors.white10,
-                          //   child: ModelViewer(
-                          //     //  poster: 'Loading...',
-                          //     //   posterColor: Colors.amber,
-                          //     animationCrossfadeDuration: 1,
-                          //     loading: Loading.lazy,
+                          body: Container(
+                            height: 50,
+                            margin: const EdgeInsets.only(bottom: 350),
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.white10,
+                            child: ModelViewer(
+                              //  poster: 'Loading...',
+                              //   posterColor: Colors.amber,
+                              animationCrossfadeDuration: 1,
+                              loading: Loading.lazy,
 
-                          //     src: 'assets/WoodHouse.glb',
-                          //     // 'https://firebasestorage.googleapis.com/v0/b/justatest-63adb.appspot.com/o/data%2Fuser%2F0%2Fjh.deaa.testapp%2Fcache%2Ffile_picker%2FWoodHouse.glb?alt=media&token=a3bdc3da-df37-464f-868b-6ee4506997d4',
-                          //     //https://doc-0s-34-docs.googleusercontent.com/docs/securesc/3rked6od461r1tff4per9rh2n3i7i7so/5ehgdto77jndj0j2lu31kuf2sqmgboj0/1652479275000/14580657950992246128/14580657950992246128/1Gh3Am_LFvrD3yMmdiBtqD-AHeyvGwMyj?e=view&ax=ACxEAsaJF_IKkBTYBbz9b_DtJ1LrZ40pJgNeyugjrZ0MUmvHybHDp_LdVnxHglptlWQYTRghC85X875hDBuVCjqHyE-LBYkR0SdKtRVhldysyPYWt8w0z8A22OOZQAuEMiKuO163KOlp1fNJBiUNvwKYTC4C5r0fJHpoeywbePWTtgpfHFGyXdGC46rR9RPYysO7L6opzSp-gInWFalkAaJY4xH2iRTxNM69rsJJxAg3nrXW2PL3nbJAtk5grw_i1nM-mMIJti7sjysbZbpDCUeKncFJHqzCkDmV6wZRT3pSbpMSxGAoAp6X0iHbpkguPG3vKH4DEM6lMLaHpzAlunGtB-rhi092iq4nLTkJ-X3jb6jUKy-FGku-bfmTjv-cmAZmYOBOPa3i_Tplq8mKpLt96u67CefcbTSQX4WWyYSpHGjfqAX4nO-lKB8v-uBGo8vcA-uds0zfeGovcVONm_5mJQLCPdX-XPnq8gSvAplCQEUPL8bM9irBmak0IaSusQWLfzygWQ0NA4fykEYXIYn9CUXzUeS_7ZAlGQ6fUuuxURQYCbaeukyv8cfXF30tn6B_lPY0_lV4gBMv_QmmIvINBVlGnuzR6oKVVPiES0HIHHdrZRa548El9uotETMY_1l1gNNUi4P5nPuW1ylYxURi4OZJdp8ZPU0Cm0hwHyNro91MgQf73y-IdHyFqlNH2qMSHc592H4klqB3MfvsUELeF94Uhywct-zpgs5oqJV2NF5AVkw-pkpvxzJWmtAoXyCAZPgBk5McvQ4DXDFVvIIyeg&authuser=0&nonce=f2stii9qhvlie&user=14580657950992246128&hash=s1i0v5lhi37tkk2i2c3ekk7hi64ck2la',
-                          //     autoRotateDelay: 5,
-                          //     ar: true,
-                          //     autoRotate: true,
-                          //     cameraControls: true,
-                          //     backgroundColor: orange,
-                          //   ),
-                          // ),
+                              src: 'assets/WoodHouse.glb',
+                              // 'https://firebasestorage.googleapis.com/v0/b/justatest-63adb.appspot.com/o/data%2Fuser%2F0%2Fjh.deaa.testapp%2Fcache%2Ffile_picker%2FWoodHouse.glb?alt=media&token=a3bdc3da-df37-464f-868b-6ee4506997d4',
+                              //https://doc-0s-34-docs.googleusercontent.com/docs/securesc/3rked6od461r1tff4per9rh2n3i7i7so/5ehgdto77jndj0j2lu31kuf2sqmgboj0/1652479275000/14580657950992246128/14580657950992246128/1Gh3Am_LFvrD3yMmdiBtqD-AHeyvGwMyj?e=view&ax=ACxEAsaJF_IKkBTYBbz9b_DtJ1LrZ40pJgNeyugjrZ0MUmvHybHDp_LdVnxHglptlWQYTRghC85X875hDBuVCjqHyE-LBYkR0SdKtRVhldysyPYWt8w0z8A22OOZQAuEMiKuO163KOlp1fNJBiUNvwKYTC4C5r0fJHpoeywbePWTtgpfHFGyXdGC46rR9RPYysO7L6opzSp-gInWFalkAaJY4xH2iRTxNM69rsJJxAg3nrXW2PL3nbJAtk5grw_i1nM-mMIJti7sjysbZbpDCUeKncFJHqzCkDmV6wZRT3pSbpMSxGAoAp6X0iHbpkguPG3vKH4DEM6lMLaHpzAlunGtB-rhi092iq4nLTkJ-X3jb6jUKy-FGku-bfmTjv-cmAZmYOBOPa3i_Tplq8mKpLt96u67CefcbTSQX4WWyYSpHGjfqAX4nO-lKB8v-uBGo8vcA-uds0zfeGovcVONm_5mJQLCPdX-XPnq8gSvAplCQEUPL8bM9irBmak0IaSusQWLfzygWQ0NA4fykEYXIYn9CUXzUeS_7ZAlGQ6fUuuxURQYCbaeukyv8cfXF30tn6B_lPY0_lV4gBMv_QmmIvINBVlGnuzR6oKVVPiES0HIHHdrZRa548El9uotETMY_1l1gNNUi4P5nPuW1ylYxURi4OZJdp8ZPU0Cm0hwHyNro91MgQf73y-IdHyFqlNH2qMSHc592H4klqB3MfvsUELeF94Uhywct-zpgs5oqJV2NF5AVkw-pkpvxzJWmtAoXyCAZPgBk5McvQ4DXDFVvIIyeg&authuser=0&nonce=f2stii9qhvlie&user=14580657950992246128&hash=s1i0v5lhi37tkk2i2c3ekk7hi64ck2la',
+                              autoRotateDelay: 5,
+                              ar: true,
+                              autoRotate: true,
+                              cameraControls: true,
+                              backgroundColor: orange,
+                            ),
+                          ),
                           collapsed: Stack(
                               alignment: AlignmentDirectional.topCenter,
                               children: const [

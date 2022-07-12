@@ -67,18 +67,6 @@ class _EngineerProfileState extends State<EngineerProfile> {
                                     bottomRight: Radius.circular(10))),
                           ),
                           Positioned(
-                            top: 20,
-                            left: (MediaQuery.of(context).size.width / 2) - 55,
-                            child: Text(
-                              context.loc.my_profile,
-                              style: const TextStyle(
-                                  color: darkBlue,
-                                  fontFamily: font,
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Positioned(
                             top: 78,
                             left: (MediaQuery.of(context).size.width / 2) - 72,
                             child: Column(
@@ -265,7 +253,7 @@ class _EngineerProfileState extends State<EngineerProfile> {
                 ? SliverFillRemaining(
                     child: FutureBuilder<List<Project>>(
                       future: ProjectDbService()
-                          .getPublicProjects(engineer!.projectsIDs!),
+                          .getPublicProjects(engineer!.projectsIDs),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           List<Project> projects = snapshot.data!;

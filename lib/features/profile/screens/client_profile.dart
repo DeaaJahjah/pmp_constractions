@@ -71,18 +71,6 @@ class _ClientProfileState extends State<ClientProfile> {
                                   bottomRight: Radius.circular(10))),
                         ),
                         Positioned(
-                          top: 20,
-                          left: 135,
-                          child: Text(
-                            context.loc.my_profile,
-                            style: const TextStyle(
-                                color: darkBlue,
-                                fontFamily: font,
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Positioned(
                           top: 78,
                           left: (MediaQuery.of(context).size.width / 2) - 72,
                           child: Column(

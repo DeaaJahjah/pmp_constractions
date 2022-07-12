@@ -33,7 +33,11 @@ class EngineerDbService {
       Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
       return Engineer.fromJson(cc);
     } on FirebaseException {
-      return Engineer(name: 'name', specialization: '', experience: const {});
+      return Engineer(
+          name: 'name',
+          specialization: '',
+          experience: const {},
+          projectsIDs: const []);
     }
   }
 
@@ -90,5 +94,13 @@ class EngineerDbService {
           backgroundColor: Colors.red[500], content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  Stream<String> getEngineerPhotoUrl(String id) {
+    return _db
+        .collection('engineers')
+        .doc(id)
+        .snapshots()
+        .map((doc) => doc.data()!['profile_pic_url']);
   }
 }

@@ -15,6 +15,7 @@ import 'package:pmpconstractions/features/profile/screens/client_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
 import 'package:pmpconstractions/features/project/create_project_screen.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
+import 'package:pmpconstractions/features/project/timeline_screen.dart';
 
 import 'package:pmpconstractions/features/splash_screen/splash_screen.dart';
 import 'package:pmpconstractions/features/tasks/screens/add_task_screen.dart';
@@ -66,6 +67,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const AddTaskScreen());
     case Details.routeName:
       return MaterialPageRoute(builder: (_) => Details());
+    case TimelineScreen.routeName:
+      return MaterialPageRoute(builder: (_) => const TimelineScreen());
   }
 
   return null;

@@ -18,8 +18,8 @@ Engineer _$EngineerFromJson(Map<String, dynamic> json) => Engineer(
         (k, e) =>
             MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
-      projectsIDs: (json['projects_ids'] as List<dynamic>?)
-          ?.map((e) => e as String)
+      projectsIDs: (json['projects_ids'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
     );
 

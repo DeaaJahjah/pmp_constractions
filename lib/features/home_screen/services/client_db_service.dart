@@ -32,6 +32,15 @@ class ClientDbService {
     return Client.fromFirestore(doc);
   }
 
+  //get client photo url stream
+  Stream<String> getClientPhotoUrl(String id) {
+    return _db
+        .collection('clients')
+        .doc(id)
+        .snapshots()
+        .map((doc) => doc.data()!['profile_pic_url']);
+  }
+
   addClient(Client client, context) async {
     try {
       _db.collection('clients').doc(user!.uid).set(client.toJson());

@@ -15,10 +15,14 @@ class Client extends Equatable {
   @JsonKey(name: 'profile_pic_url')
   final String? profilePicUrl;
   @JsonKey(name: 'projects_ids')
-  final List<String>? projectsIDs;
+  final List<String> projectsIDs;
 
   Client(
-      {this.userId, required this.name, this.phoneNumbers, this.profilePicUrl,this.projectsIDs});
+      {this.userId,
+      required this.name,
+      this.phoneNumbers,
+      this.profilePicUrl,
+      required this.projectsIDs});
 
   factory Client.fromJson(Map<String, dynamic> json) => _$ClientFromJson(json);
 

@@ -36,7 +36,7 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
   String name = '';
   List<String> phoneNum = [];
   String fileName = '';
-  File? imageFile ;
+  File? imageFile;
   _pickImage() async {
     final picker = ImagePicker();
     try {
@@ -157,8 +157,7 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                               name: nameController.text,
                               phoneNumbers: phoneNum,
                               profilePicUrl: url,
-                              projectsIDs: []
-                              ),
+                              projectsIDs: const []),
                           context);
                     }
                   },
