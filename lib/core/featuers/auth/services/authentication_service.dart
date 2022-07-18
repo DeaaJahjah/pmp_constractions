@@ -4,12 +4,12 @@ import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/choosing_screen.dart';
 import 'package:pmpconstractions/core/featuers/auth/screens/login_screen.dart';
+import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:provider/provider.dart';
 
 class FlutterFireAuthService {
-  final FirebaseAuth _firebaseAuth;
-  FlutterFireAuthService(this._firebaseAuth);
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Stream<User?> get authStateChanges => _firebaseAuth.idTokenChanges();
 
@@ -35,12 +35,14 @@ class FlutterFireAuthService {
           .changeAuthState(newState: AuthState.notSet);
 
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
+      showErrorSnackBar(context, 'Invalid email or password');
     } on FirebaseAuthException catch (e) {
       context
           .read<AuthSataProvider>()
           .changeAuthState(newState: AuthState.notSet);
-      final snakBar = SnackBar(content: Text(e.message.toString()));
-      ScaffoldMessenger.of(context).showSnackBar(snakBar);
+      showErrorSnackBar(context, e.message!);
+      rethrow;
     }
   }
 

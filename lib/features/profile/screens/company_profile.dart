@@ -263,8 +263,8 @@ class _CompanyProfileState extends State<CompanyProfile> {
                 ),
           (!loading)
               ? SliverFillRemaining(
-                  child: FutureBuilder<List<Project>>(
-                    future: (uid == company!.userId)
+                  child: StreamBuilder<List<Project>>(
+                    stream: (uid == company!.userId)
                         ? ProjectDbService().geCompanyProjects(uid)
                         : ProjectDbService().geCompanyPublicProjects(uid),
                     builder: (context, snapshot) {

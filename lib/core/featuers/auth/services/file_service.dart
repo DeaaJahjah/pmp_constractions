@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -30,6 +31,20 @@ class FileService {
   }
 
   Future<String> uploadeFile(
+      String name, Uint8List file, BuildContext context) async {
+    try {
+      await storage.ref(name).putData(file);
+      return storage.ref(name).getDownloadURL();
+    } on FirebaseException catch (e) {
+      print(e.toString());
+      Provider.of<AuthSataProvider>(context, listen: false)
+          .changeAuthState(newState: AuthState.notSet);
+      showErrorSnackBar(context, e.message!);
+      return 'error';
+    }
+  }
+
+  Future<String> uploadeAttchment(
       String name, File file, BuildContext context) async {
     try {
       await storage.ref(name).putData(await file.readAsBytes());

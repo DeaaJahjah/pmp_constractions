@@ -40,7 +40,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
   Map<String, List<String>>? experiens;
   String specialization = 'Select';
   String fileName = '';
-  File? imageFile ;
+  File? imageFile;
   _pickImage() async {
     final picker = ImagePicker();
     try {
@@ -243,6 +243,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                       .uploadeimage(fileName, imageFile!, context);
                 }
                 if (url != 'error') {
+                  final List<String> projectsIDs = [];
                   EngineerDbService().addEngineer(
                       Engineer(
                           name: nameController.text,
@@ -250,7 +251,7 @@ class _SetUpEngineerProfileState extends State<SetUpEngineerProfile> {
                           experience: experiens,
                           phoneNumbers: phoneNum,
                           profilePicUrl: url,
-                          projectsIDs: const []),
+                          projectsIDs: projectsIDs),
                       context);
                 }
               },

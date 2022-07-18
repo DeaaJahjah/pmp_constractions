@@ -152,12 +152,13 @@ class _SetUpClientProfileState extends State<SetUpClientProfile> {
                           .uploadeimage(fileName, imageFile!, context);
                     }
                     if (url != 'error') {
+                      final List<String> projectsIDs = [];
                       ClientDbService().addClient(
                           Client(
                               name: nameController.text,
                               phoneNumbers: phoneNum,
                               profilePicUrl: url,
-                              projectsIDs: const []),
+                              projectsIDs: projectsIDs),
                           context);
                     }
                   },

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
@@ -55,6 +56,26 @@ class ProjectDbService {
     }
   }
 
+  updateProject(Project project, context) async {
+    try {
+      await _db
+          .collection('projects')
+          .doc(project.projectId)
+          .update(project.toJson());
+      const snackBar = SnackBar(
+        content: Text('Project updated successfully'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // refresh the data
+      Provider.of<DataProvider>(context, listen: false).fetchProjects();
+      Navigator.of(context).pop();
+    } on FirebaseException catch (e) {
+      print(e);
+
+      showErrorSnackBar(context, e.message!);
+    }
+  }
+
   Future<List<Project>> getProjects() async {
     var queryData = await _db
         .collection('projects')
@@ -71,30 +92,46 @@ class ProjectDbService {
   }
 
   Stream<List<String>> userProjectsIDS(String userId, String collectionName) {
-    return _db
-        .collection(collectionName)
-        .doc(userId)
-        .snapshots()
-        .map((doc) => doc.data()!['projects_ids']);
+    // return _db.collection(collectionName).doc(userId).get().then((doc) {
+    //   var data = doc.data()!['projects_ids'] ?? [];
+    //   List<String> projectsIds = [];
+    //   for (var id in data) {
+    //     projectsIds.add(id);
+    //   }
+
+    //   //  print(projectsIds);
+    //   return projectsIds;
+    // });
+
+    return _db.collection(collectionName).doc(userId).snapshots().map((doc) {
+      var data = doc.data()!['projects_ids'] ?? [];
+      List<String> projectsIds = [];
+      for (var id in data) {
+        projectsIds.add(id);
+      }
+
+      print(projectsIds);
+      return projectsIds;
+    });
   }
 
-  Future<List<Project>> getOpenProjects(List<String>? projectIDS) async {
-    List<Project> projects = [];
+  Future<List<Project>> getOpenProjects(List<String> projectIDS) async {
+    // List<String> projectIDS =
+    //     await userProjectsIDS(user.uid, getcCollectionName(user.displayName));
+    var uid = FirebaseAuth.instance.currentUser!.uid;
 
-    if (projectIDS != null || projectIDS!.isNotEmpty) {
+    List<Project> projects = [];
+    if (projectIDS.isNotEmpty) {
       for (var projectId in projectIDS) {
-        _db.collection('projects').doc(projectId).snapshots().map((event) {
-          projects.add(Project.fromFirestore(event));
-        });
+        var doc = await _db.collection('projects').doc(projectId).get();
+        var project = Project.fromFirestore(doc);
+        if (project.isOpen && project.memberIn(uid)) {
+          projects.add(project);
+        }
       }
     }
+    print(projects.length);
     return projects;
-
-    //  return _db
-    //   .collection('projects')
-
-    //   .snapshots()
-    //   .map(_projectListFromSnapshot);
   }
 
   // get opne projects for user real time
@@ -145,35 +182,30 @@ class ProjectDbService {
   }
 
   // show the copmpany projects
-  Future<List<Project>> geCompanyProjects(String companyId) async {
+  Stream<List<Project>> geCompanyProjects(String companyId) {
     List<Project> projects = [];
 
-    var query = await _db
+    //get projects realtime updates
+    return _db
         .collection('projects')
         .where('company_id', isEqualTo: companyId)
-        .get();
-
-    for (var doc in query.docs) {
-      projects.add(Project.fromFirestore(doc));
-    }
-    print(projects.length);
-    return projects;
+        .snapshots()
+        .map((event) =>
+            event.docs.map((doc) => Project.fromFirestore(doc)).toList());
   }
 
   // for any one vist the company profile
-  Future<List<Project>> geCompanyPublicProjects(String companyId) async {
+  Stream<List<Project>> geCompanyPublicProjects(String companyId) {
     List<Project> projects = [];
 
-    var query = await _db
+    //get projects realtime updates
+    return _db
         .collection('projects')
         .where('company_id', isEqualTo: companyId)
-        .where('privacy', isEqualTo: 'public')
-        .get();
-
-    for (var doc in query.docs) {
-      projects.add(Project.fromFirestore(doc));
-    }
-    return projects;
+        .where('privacy', isEqualTo: ProjectPrivacy.public.name)
+        .snapshots()
+        .map((event) =>
+            event.docs.map((doc) => Project.fromFirestore(doc)).toList());
   }
 
   //delete project

@@ -6,6 +6,7 @@ import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/menu_row.dart';
 import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
 import 'package:pmpconstractions/features/project/timeline_screen.dart';
+import 'package:pmpconstractions/features/project/update_project_screen.dart';
 import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/tasks_screen.dart';
 import 'package:provider/provider.dart';
@@ -67,7 +68,11 @@ class _ProjectMenuState extends State<ProjectMenu> {
           sizedBoxMedium,
           if (project.companyId == context.userUid)
             MenuRow(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        UpdateProjectScreen(project: project)));
+              },
               icon: Icons.edit,
               text: context.loc.edit,
             ),

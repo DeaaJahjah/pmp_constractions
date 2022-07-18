@@ -1,19 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
-import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
 import 'package:pmpconstractions/core/featuers/settings/settings_screen.dart';
 
-import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/menu_row.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/profile_image_menu.dart';
-import 'package:pmpconstractions/features/profile/screens/client_profile.dart';
-import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
-import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
-import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -107,9 +101,8 @@ class _MenuScreenState extends State<MenuScreen> {
           MenuRow(
             icon: Icons.logout,
             text: context.loc.log_out,
-            onTap: () {
-              Provider.of<FlutterFireAuthService>(context, listen: false)
-                  .signOut(context);
+            onTap: () async {
+              await FlutterFireAuthService().signOut(context);
             },
           )
         ],

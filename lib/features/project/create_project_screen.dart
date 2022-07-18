@@ -383,8 +383,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
                   String modelUrl = '';
                   if (model3D != null) {
-                    // imageUrl = await FileService()
-                    //     .uploadeFile(modelName!, model3D!, context);
+                    imageUrl = await FileService()
+                        .uploadeFile(modelName!, model3D!, context);
                   }
                   if (imageUrl == 'error' || modelUrl == 'error') {
                     final snackBar = SnackBar(
@@ -509,13 +509,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                   .showSnackBar(snackBar);
                               return;
                             }
-                            if (activePage == 1 && modelName == null) {
-                              const snackBar = SnackBar(
-                                  content: Text('please select 3D model'));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                              return;
-                            }
+                            // if (activePage == 1 && modelName == null) {
+                            //   const snackBar = SnackBar(
+                            //       content: Text('please select 3D model'));
+                            //   ScaffoldMessenger.of(context)
+                            //       .showSnackBar(snackBar);
+                            //   return;
+                            // }
 
                             if (activePage + 1 < pages.length) {
                               liquidController.animateToPage(

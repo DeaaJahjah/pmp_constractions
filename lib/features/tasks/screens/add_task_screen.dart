@@ -352,8 +352,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   .changeAuthState(newState: AuthState.waiting);
                               String attchmentUrl = '';
                               if (attchmentFile != null) {
-                                attchmentUrl = await FileService().uploadeFile(
-                                    attchmentName!, attchmentFile!, context);
+                                attchmentUrl = await FileService()
+                                    .uploadeAttchment(attchmentName!,
+                                        attchmentFile!, context);
                               }
                               if (attchmentUrl == 'error') {
                                 showErrorSnackBar(

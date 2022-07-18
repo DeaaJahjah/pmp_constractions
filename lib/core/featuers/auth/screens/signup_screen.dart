@@ -50,13 +50,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   builder: (context, state, child) => (state.authState ==
                           AuthState.notSet)
                       ? ElevatedButton(
-                          onPressed: () {
-                            Provider.of<FlutterFireAuthService>(context,
-                                    listen: false)
-                                .signUp(
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    context: context);
+                          onPressed: () async {
+                            await FlutterFireAuthService().signUp(
+                                email: emailController.text,
+                                password: passwordController.text,
+                                context: context);
                           },
                           child: Text(
                             'SIGNUP',

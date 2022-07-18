@@ -7,6 +7,7 @@ import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provide
 import 'package:pmpconstractions/core/featuers/auth/screens/signup_screen.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/authentication_service.dart';
+import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -57,30 +58,26 @@ class _LogInScreenState extends State<LogInScreen> {
             ),
             sizedBoxMedium,
             Consumer<AuthSataProvider>(
-                builder: (context, state, child) => (state.authState ==
-                        AuthState.notSet)
-                    ? ElevatedButton(
-                        onPressed: () {
-                          if (emailController.text.isNotEmpty &&
-                              passwordController.text.isNotEmpty) {
-                            Provider.of<FlutterFireAuthService>(context,
-                                    listen: false)
-                                .signIn(
+                builder: (context, state, child) =>
+                    (state.authState == AuthState.notSet)
+                        ? ElevatedButton(
+                            onPressed: () async {
+                              if (emailController.text.isNotEmpty &&
+                                  passwordController.text.isNotEmpty) {
+                                await FlutterFireAuthService().signIn(
                                     email: emailController.text,
                                     password: passwordController.text,
                                     context: context);
-                          } else {
-                            const snakBar = SnackBar(
-                                content:
-                                    Text('Please enter email and password'));
-                            ScaffoldMessenger.of(context).showSnackBar(snakBar);
-                          }
-                        },
-                        child: Text(
-                          context.loc.login_btn,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ))
-                    : const CircularProgressIndicator()),
+                              } else {
+                                showErrorSnackBar(
+                                    context, 'Please enter email and password');
+                              }
+                            },
+                            child: Text(
+                              context.loc.login_btn,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ))
+                        : const CircularProgressIndicator()),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
