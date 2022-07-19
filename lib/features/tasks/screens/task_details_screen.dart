@@ -86,9 +86,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
         Provider.of<SelectedProjectProvider>(context, listen: false).project!;
 
     return Consumer<SelectedProjectProvider>(builder: (context, value, child) {
-      return (value.project!.isOpen &&
-              (value.project!.memberIn(context.userUid!) ||
-                  value.project!.companyId == context.userUid))
+      return ((value.project!.isOpen &&
+                  value.project!.memberIn(context.userUid!)) ||
+              value.project!.companyId == context.userUid!)
           ? StreamBuilder<Task>(
               stream: TasksDbService().getTaskById(
                   projectId: widget.projectId!, taskId: widget.taskId!),

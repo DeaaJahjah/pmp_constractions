@@ -32,9 +32,9 @@ class _TasksScreenState extends State<TasksScreen> {
   Widget build(BuildContext context) {
     //Provider.of<SelectedProjectProvider>(context).checkProjectState(context);
     return Consumer<SelectedProjectProvider>(builder: (context, value, child) {
-      return (value.project!.isOpen &&
-              (value.project!.memberIn(context.userUid!) ||
-                  value.project!.companyId == context.userUid))
+      return ((value.project!.isOpen &&
+                  value.project!.memberIn(context.userUid!)) ||
+              value.project!.companyId == context.userUid!)
           ? Scaffold(
               appBar: AppBar(
                 title: const Text('Tasks'),

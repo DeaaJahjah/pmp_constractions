@@ -10,9 +10,9 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<SelectedProjectProvider>(builder: (context, value, child) {
-      return (value.project!.isOpen &&
-              (value.project!.memberIn(context.userUid!) ||
-                  value.project!.companyId == context.userUid))
+      return ((value.project!.isOpen &&
+                  value.project!.memberIn(context.userUid!)) ||
+              value.project!.companyId == context.userUid!)
           ? Container()
           : const BackToHomeScreen();
     });

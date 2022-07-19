@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
-import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/features/home_screen/models/project.dart';
@@ -47,12 +46,9 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   .updateProject(project!);
             });
 
-            return (!project!.isOpen &&
-                    project.privacy == ProjectPrivacy.private &&
-                    (project.memberIn(context.userUid!) ||
-                        project.companyId == context.userUid))
-                ? const BackToHomeScreen()
-                : Scaffold(
+            return ((project!.isOpen && project.memberIn(context.userUid!)) ||
+                    project.companyId == context.userUid!)
+                ? Scaffold(
                     backgroundColor: orange,
                     // drawer: const Drawer(),
                     body: WillPopScope(
@@ -262,7 +258,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                           ]))),
                         ],
                       ),
-                    ));
+                    ))
+                : const BackToHomeScreen();
           }
           return const Center(
             child: CircularProgressIndicator(),

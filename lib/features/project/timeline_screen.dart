@@ -18,9 +18,9 @@ class TimelineScreen extends StatelessWidget {
       ChartData('Completed', 34, const Color.fromARGB(255, 85, 175, 88)),
     ];
     return Consumer<SelectedProjectProvider>(builder: (context, value, child) {
-      return (value.project!.isOpen &&
-              (value.project!.memberIn(context.userUid!) ||
-                  value.project!.companyId == context.userUid))
+      return ((value.project!.isOpen &&
+                  value.project!.memberIn(context.userUid!)) ||
+              value.project!.companyId == context.userUid!)
           ? Scaffold(
               appBar: AppBar(
                 elevation: 0.0,
