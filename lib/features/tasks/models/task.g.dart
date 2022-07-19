@@ -15,6 +15,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       endPoint: DateTime.parse(json['end_oint'] as String),
       attchmentUrl: json['attchmentUrl'] as String,
       checkByManager: json['checkByManager'] as bool,
+      createdAt: DateTime.parse(json['created_at'] as String),
       members: (json['members'] as List<dynamic>?)
           ?.map((e) => MemberRole.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -30,6 +31,7 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'attchmentUrl': instance.attchmentUrl,
       'checkByManager': instance.checkByManager,
       'members': instance.members?.map((e) => e.toJson()).toList(),
+      'created_at': instance.createdAt.toIso8601String(),
     };
 
 const _$TaskStateEnumMap = {

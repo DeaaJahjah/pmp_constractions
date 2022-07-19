@@ -57,6 +57,7 @@ class ClientDbService {
         imageUrl: imageUrl,
         isReaded: false,
         pauload: '/notification',
+        createdAt: DateTime.now(),
       ));
 
       Navigator.push(

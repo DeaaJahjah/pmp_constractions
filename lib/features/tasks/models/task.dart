@@ -20,6 +20,8 @@ class Task extends Equatable {
   final String attchmentUrl;
   final bool checkByManager;
   List<MemberRole>? members;
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
 
   Task(
       {this.id,
@@ -30,6 +32,7 @@ class Task extends Equatable {
       required this.endPoint,
       required this.attchmentUrl,
       required this.checkByManager,
+      required this.createdAt,
       this.members});
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);

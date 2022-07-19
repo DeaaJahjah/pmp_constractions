@@ -36,6 +36,7 @@ class ProjectDbService {
               projectId: projectDoc.id,
               isReaded: false,
               pauload: '/notification',
+              createdAt: DateTime.now(),
             ));
       }
 

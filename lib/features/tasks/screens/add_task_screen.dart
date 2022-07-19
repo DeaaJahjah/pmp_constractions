@@ -369,6 +369,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   endPoint: endDate,
                                   attchmentUrl: attchmentUrl,
                                   checkByManager: checkByManager,
+                                  createdAt: DateTime.now(),
                                   members: selectedMembers);
                               bool state = await TasksDbService().addTask(
                                   project: project!,

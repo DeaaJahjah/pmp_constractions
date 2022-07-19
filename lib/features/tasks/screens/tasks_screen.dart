@@ -155,7 +155,7 @@ class _TasksScreenState extends State<TasksScreen> {
                     return const Center(child: Text('No tasks'));
                   }),
               floatingActionButton:
-                  (Provider.of<SelectedProjectProvider>(context)
+                  (!Provider.of<SelectedProjectProvider>(context)
                           .project!
                           .hasPermessionToManageTask(context.userUid!))
                       ? FloatingActionButton(

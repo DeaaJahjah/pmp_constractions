@@ -21,6 +21,8 @@ class NotificationModle {
   @JsonKey(name: 'image_url')
   final String imageUrl;
   final NotificationType type;
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
 
   NotificationModle(
       {this.notificationId,
@@ -31,7 +33,8 @@ class NotificationModle {
       required this.imageUrl,
       this.projectId,
       this.taskId,
-      required this.type});
+      required this.type,
+      required this.createdAt});
 
   factory NotificationModle.fromJson(Map<String, dynamic> json) =>
       _$NotificationModleFromJson(json);

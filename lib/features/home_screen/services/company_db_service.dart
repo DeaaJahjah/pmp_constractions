@@ -47,6 +47,7 @@ class CompanyDbService {
         imageUrl: imageUrl,
         isReaded: false,
         pauload: '/notification',
+        createdAt: DateTime.now(),
       ));
 
       Navigator.of(context)

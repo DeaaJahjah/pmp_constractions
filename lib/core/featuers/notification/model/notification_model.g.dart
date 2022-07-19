@@ -17,6 +17,7 @@ NotificationModle _$NotificationModleFromJson(Map<String, dynamic> json) =>
       projectId: json['project_id'] as String?,
       taskId: json['task_id'] as String?,
       type: $enumDecode(_$NotificationTypeEnumMap, json['type']),
+      createdAt: DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$NotificationModleToJson(NotificationModle instance) =>
@@ -30,6 +31,7 @@ Map<String, dynamic> _$NotificationModleToJson(NotificationModle instance) =>
       'pauload': instance.pauload,
       'image_url': instance.imageUrl,
       'type': _$NotificationTypeEnumMap[instance.type],
+      'created_at': instance.createdAt.toIso8601String(),
     };
 
 const _$NotificationTypeEnumMap = {

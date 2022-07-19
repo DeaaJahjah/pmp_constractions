@@ -60,6 +60,7 @@ class NotificationDbService {
         .collection(collection)
         .doc(user!.uid)
         .collection('notifications')
+        .orderBy('created_at', descending: true)
         .snapshots()
         .map(_projectListFromSnapshot);
   }

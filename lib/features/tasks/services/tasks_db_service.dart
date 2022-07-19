@@ -24,6 +24,7 @@ class TasksDbService {
         .doc(projectId)
         .collection('tasks')
         .where('task_state', isEqualTo: taskState.name)
+        .orderBy('created_at', descending: true)
         .snapshots(includeMetadataChanges: true)
         .map(_projectListFromSnapshot);
   }
@@ -65,6 +66,7 @@ class TasksDbService {
               imageUrl: project.imageUrl,
               isReaded: false,
               pauload: '/notification',
+              createdAt: DateTime.now(),
             ));
       }
     } on FirebaseException catch (e) {
@@ -131,6 +133,7 @@ class TasksDbService {
             imageUrl: project.imageUrl,
             isReaded: false,
             pauload: '/notification',
+            createdAt: DateTime.now(),
           ));
     }
   }

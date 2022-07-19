@@ -486,6 +486,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                                         isReaded: false,
                                                         pauload:
                                                             '/notification',
+                                                        createdAt:
+                                                            DateTime.now(),
                                                       ));
                                             }
                                           }
