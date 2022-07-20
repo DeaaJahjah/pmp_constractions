@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/extensions/firebase.dart';
-import 'package:pmpconstractions/features/project/back_to_home_screen.dart';
-import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
+import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
+import 'package:pmpconstractions/features/project/screens/back_to_home_screen.dart';
 import 'package:provider/provider.dart';
 
 class HistoryScreen extends StatelessWidget {

@@ -5,9 +5,9 @@ import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
-import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
-import 'package:pmpconstractions/features/project/project_details_screen.dart';
-import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
+import 'package:pmpconstractions/features/project/screens/project_details_screen.dart';
+import 'package:pmpconstractions/features/project/services/project_db_service.dart';
+import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/task_details_screen.dart';
 import 'package:provider/provider.dart';
 

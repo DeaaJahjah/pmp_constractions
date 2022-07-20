@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
-import 'package:pmpconstractions/features/project/details.dart';
-import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
+import 'package:pmpconstractions/features/project/screens/details.dart';
+import 'package:pmpconstractions/features/project/services/project_db_service.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CompanyOpenProject extends StatelessWidget {

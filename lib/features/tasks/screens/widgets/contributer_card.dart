@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
 
 class ContributerCard extends StatelessWidget {
   final MemberRole member;

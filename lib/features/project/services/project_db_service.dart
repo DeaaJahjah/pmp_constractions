@@ -6,8 +6,8 @@ import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provide
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
 import 'package:provider/provider.dart';
 
 class ProjectDbService {

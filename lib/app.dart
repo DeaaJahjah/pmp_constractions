@@ -13,7 +13,7 @@ import 'package:pmpconstractions/features/home_screen/providers/engineer_provide
 import 'package:pmpconstractions/features/home_screen/providers/project_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_category_provider.dart';
 import 'package:pmpconstractions/features/home_screen/providers/search_provider.dart';
-import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
+import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/language_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

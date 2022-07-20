@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,28 +15,27 @@ import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provide
 import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
+import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/member_card.dart';
-import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
-import 'package:pmpconstractions/features/project/wating_create_project.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
+import 'package:pmpconstractions/features/project/screens/wating_create_project.dart';
+import 'package:pmpconstractions/features/project/services/project_db_service.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/search_dropdown.dart';
 import 'package:provider/provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:path/path.dart' as path;
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class CreateProjectScreen extends StatefulWidget {
-  static const routeName = '/create_project';
-  String? companyName;
-  String? profilePicUrl;
-  CreateProjectScreen({Key? key, this.companyName, this.profilePicUrl})
-      : super(key: key);
+class UpdateProjectScreen extends StatefulWidget {
+  static const routeName = '/update-project';
+  Project project;
+  UpdateProjectScreen({Key? key, required this.project}) : super(key: key);
 
   @override
-  State<CreateProjectScreen> createState() => _CreateProjectScreenState();
+  State<UpdateProjectScreen> createState() => _UpdateProjectScreenState();
 }
 
-class _CreateProjectScreenState extends State<CreateProjectScreen> {
+class _UpdateProjectScreenState extends State<UpdateProjectScreen> {
   final liquidController = LiquidController();
   ScrollController scrollController = ScrollController();
   final nameController = TextEditingController();
@@ -54,8 +52,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   Role selectedRole = Role.projectEngineer;
   MemberRole? selectedItem;
   ProjectPrivacy privacy = ProjectPrivacy.private;
-  bool isOpen = true;
-  bool isPrivate = true;
+  bool isOpen = false;
+  bool isPrivate = false;
 
   Future<void> getMembers() async {
     await Provider.of<DataProvider>(context, listen: false).fetchClients();
@@ -66,20 +64,24 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     var enginners = Provider.of<DataProvider>(context, listen: false).engineers;
 
     for (var client in clients) {
-      members.add(MemberRole(
-          memberId: client.userId!,
-          memberName: client.name,
-          profilePicUrl: client.profilePicUrl!,
-          collectionName: 'clients',
-          submited: false));
+      if (!widget.project.memberIn(client.userId!)) {
+        members.add(MemberRole(
+            memberId: client.userId!,
+            memberName: client.name,
+            profilePicUrl: client.profilePicUrl!,
+            collectionName: 'clients',
+            submited: false));
+      }
     }
     for (var enginner in enginners) {
-      members.add(MemberRole(
-          memberId: enginner.userId!,
-          memberName: enginner.name,
-          profilePicUrl: enginner.profilePicUrl,
-          collectionName: 'engineers',
-          submited: false));
+      if (!widget.project.memberIn(enginner.userId!)) {
+        members.add(MemberRole(
+            memberId: enginner.userId!,
+            memberName: enginner.name,
+            profilePicUrl: enginner.profilePicUrl,
+            collectionName: 'engineers',
+            submited: false));
+      }
     }
   }
 
@@ -99,19 +101,16 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.any,
-        // allowedExtensions: ['gltf', 'glb'],
-        withData: true,
       );
 
-      print(result);
       if (result != null) {
         model3D = result.files.first.bytes;
         modelName = result.files.first.name;
         setState(() {});
       } else {
-        //User canceled the picker
-        model3D = null;
-        modelName = null;
+        // User canceled the picker
+        // model3D = null;
+        // modelName = null;
       }
     } catch (e) {
       print(e);
@@ -120,17 +119,19 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   @override
   void initState() {
-    getMembers().then((value) {
-      setState(() {
-        selectedItem = members.first;
-      });
-    });
+    nameController.text = widget.project.name;
+    descController.text = widget.project.description;
+    privacy = widget.project.privacy;
+    isOpen = widget.project.isOpen;
+    isPrivate =
+        (widget.project.privacy == ProjectPrivacy.private) ? true : false;
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.project.modelUrl);
     var pages = [
       Container(
         color: darkBlue,
@@ -251,7 +252,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             child: CircleAvatar(
               backgroundColor: karmedi,
               radius: 60,
-              child: (pickedimage == null)
+              child: (pickedimage == null && widget.project.imageUrl.isEmpty)
                   ? const Icon(
                       Icons.person_add,
                       size: 50,
@@ -259,7 +260,16 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     )
                   : CircleAvatar(
                       radius: 60,
-                      backgroundImage: FileImage(imageFile!),
+                      child: (widget.project.imageUrl.isNotEmpty &&
+                              imageFile == null)
+                          ? CashedImage(
+                              imageUrl: widget.project.imageUrl,
+                              radius: 60,
+                              size: 150,
+                            )
+                          : CircleAvatar(
+                              radius: 60,
+                              backgroundImage: FileImage(imageFile!)),
                     ),
             ),
           ),
@@ -386,8 +396,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
                   String modelUrl = '';
                   if (model3D != null) {
-                    modelUrl = await FileService()
-                        .uploadeFile(modelName!, model3D!, context);
+                    // imageUrl = await FileService()
+                    //     .uploadeFile(modelName!, model3D!, context);
                   }
                   if (imageUrl == 'error' || modelUrl == 'error') {
                     final snackBar = SnackBar(
@@ -398,20 +408,21 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     return;
                   }
 
-                  await ProjectDbService().createProject(
-                      Project(
-                          name: nameController.text,
-                          companyName: widget.companyName!,
-                          companyId: companyId,
-                          description: descController.text,
-                          imageUrl: imageUrl,
-                          modelUrl: modelUrl,
-                          privacy: privacy,
-                          isOpen: isOpen,
-                          members: selectedMembers,
-                          location: const GeoPoint(30, 32)),
-                      context,
-                      widget.profilePicUrl!);
+                  await ProjectDbService().updateProject(
+                    Project(
+                        projectId: widget.project.projectId,
+                        name: nameController.text,
+                        companyName: widget.project.companyName,
+                        companyId: companyId,
+                        description: descController.text,
+                        imageUrl: imageUrl,
+                        modelUrl: modelUrl,
+                        privacy: privacy,
+                        isOpen: isOpen,
+                        members: selectedMembers,
+                        location: widget.project.location),
+                    context,
+                  );
                 },
                 child: const Text('Create')),
             SizedBox(
@@ -505,20 +516,25 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                   .showSnackBar(snackBar);
                               return;
                             }
-                            if (activePage == 1 && imageFile == null) {
+                            if (activePage == 1 &&
+                                (imageFile == null &&
+                                    widget.project.imageUrl.isEmpty)) {
                               const snackBar = SnackBar(
                                   content: Text('please select image'));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                               return;
                             }
-                            // if (activePage == 1 && modelName == null) {
-                            //   const snackBar = SnackBar(
-                            //       content: Text('please select 3D model'));
-                            //   ScaffoldMessenger.of(context)
-                            //       .showSnackBar(snackBar);
-                            //   return;
-                            // }
+                            if (activePage == 1 &&
+                                modelName == null &&
+                                widget.project.modelUrl.isEmpty) {
+                              const snackBar = SnackBar(
+                                  content: Text('please select 3D model'));
+                              print(widget.project.modelUrl);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              return;
+                            }
 
                             if (activePage + 1 < pages.length) {
                               liquidController.animateToPage(
@@ -540,7 +556,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 appBar: AppBar(
                   elevation: 0.0,
                   title: const Text(
-                    'Create Project',
+                    'Edit Project',
                   ),
                   centerTitle: true,
                 ),

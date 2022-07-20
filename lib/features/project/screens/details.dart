@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
-import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
-import 'package:pmpconstractions/features/project/project_details_screen.dart';
-import 'package:pmpconstractions/features/project/project_menu.dart';
-import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
+import 'package:pmpconstractions/features/project/screens/project_details_screen.dart';
+import 'package:pmpconstractions/features/project/screens/project_menu.dart';
+import 'package:pmpconstractions/features/project/services/project_db_service.dart';
+import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:provider/provider.dart';
 
 class Details extends StatefulWidget {

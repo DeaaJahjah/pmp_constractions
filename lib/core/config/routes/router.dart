@@ -7,15 +7,15 @@ import 'package:pmpconstractions/core/featuers/auth/screens/setup_client_profile
 import 'package:pmpconstractions/core/featuers/auth/screens/signup_screen.dart';
 import 'package:pmpconstractions/core/featuers/notification/notification_screen.dart';
 import 'package:pmpconstractions/core/featuers/settings/settings_screen.dart';
-import 'package:pmpconstractions/features/project/details.dart';
 
-import 'package:pmpconstractions/features/project/project_details_screen.dart';
 import 'package:pmpconstractions/features/home_screen/screens/home.dart';
 import 'package:pmpconstractions/features/profile/screens/client_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
-import 'package:pmpconstractions/features/project/create_project_screen.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
-import 'package:pmpconstractions/features/project/timeline_screen.dart';
+import 'package:pmpconstractions/features/project/screens/create_project_screen.dart';
+import 'package:pmpconstractions/features/project/screens/details.dart';
+import 'package:pmpconstractions/features/project/screens/project_details_screen.dart';
+import 'package:pmpconstractions/features/project/screens/timeline_screen.dart';
 
 import 'package:pmpconstractions/features/splash_screen/splash_screen.dart';
 import 'package:pmpconstractions/features/tasks/screens/add_task_screen.dart';

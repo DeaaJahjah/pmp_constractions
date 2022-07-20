@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pmpconstractions/core/extensions/collection_name.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_service.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
 
 class NotificationDbService {
   final NotificationService _notificationService = NotificationService();

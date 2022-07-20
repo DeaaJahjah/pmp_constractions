@@ -4,10 +4,10 @@ import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/menu_row.dart';
-import 'package:pmpconstractions/features/home_screen/services/project_db_service.dart';
-import 'package:pmpconstractions/features/project/timeline_screen.dart';
-import 'package:pmpconstractions/features/project/update_project_screen.dart';
-import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
+import 'package:pmpconstractions/features/project/screens/timeline_screen.dart';
+import 'package:pmpconstractions/features/project/screens/update_project_screen.dart';
+import 'package:pmpconstractions/features/project/services/project_db_service.dart';
+import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/tasks_screen.dart';
 import 'package:provider/provider.dart';
 

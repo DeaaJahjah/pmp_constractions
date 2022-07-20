@@ -6,9 +6,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/firebase.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
-import 'package:pmpconstractions/features/tasks/providers/selected_project_provider.dart';
+import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
 import 'package:provider/provider.dart';
 

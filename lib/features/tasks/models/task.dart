@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
 
 part 'task.g.dart';
 

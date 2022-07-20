@@ -7,14 +7,14 @@ import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/widgets/custome_row.dart';
 import 'package:pmpconstractions/core/widgets/elevated_button_custom.dart';
 import 'package:pmpconstractions/features/home_screen/models/client.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/build_projects.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/cached_image.dart';
 import 'package:pmpconstractions/features/home_screen/services/client_db_service.dart';
 import 'package:pmpconstractions/features/profile/screens/update_client_profile.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../features/home_screen/services/project_db_service.dart';
+import '../../project/services/project_db_service.dart';
 
 class ClientProfile extends StatefulWidget {
   static const routeName = '/client_profile';

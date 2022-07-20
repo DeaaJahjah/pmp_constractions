@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
 
 class ProjectProvider extends ChangeNotifier {
   final DataProvider? dataProvider;

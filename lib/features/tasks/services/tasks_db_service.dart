@@ -4,7 +4,7 @@ import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
-import 'package:pmpconstractions/features/home_screen/models/project.dart';
+import 'package:pmpconstractions/features/project/models/project.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 
 class TasksDbService {
