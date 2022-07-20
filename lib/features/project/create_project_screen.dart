@@ -99,16 +99,19 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.any,
+        // allowedExtensions: ['gltf', 'glb'],
+        withData: true,
       );
 
+      print(result);
       if (result != null) {
         model3D = result.files.first.bytes;
         modelName = result.files.first.name;
         setState(() {});
       } else {
-        // User canceled the picker
-        // model3D = null;
-        // modelName = null;
+        //User canceled the picker
+        model3D = null;
+        modelName = null;
       }
     } catch (e) {
       print(e);
@@ -383,7 +386,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
                   String modelUrl = '';
                   if (model3D != null) {
-                    imageUrl = await FileService()
+                    modelUrl = await FileService()
                         .uploadeFile(modelName!, model3D!, context);
                   }
                   if (imageUrl == 'error' || modelUrl == 'error') {

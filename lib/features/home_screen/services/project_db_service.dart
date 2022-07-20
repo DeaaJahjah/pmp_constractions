@@ -147,9 +147,11 @@ class ProjectDbService {
     List<Project> projects = [];
 
     for (var doc in queryData) {
-      Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
-      if (cc['privacy'] == 'public') {
-        projects.add(Project.fromFirestore(doc));
+      if (doc.exists) {
+        Map<String, dynamic>? cc = doc.data() as Map<String, dynamic>;
+        if (cc['privacy'] == 'public') {
+          projects.add(Project.fromFirestore(doc));
+        }
       }
     }
     return projects;
