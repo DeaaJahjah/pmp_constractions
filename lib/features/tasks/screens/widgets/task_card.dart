@@ -6,7 +6,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
 import 'package:pmpconstractions/core/extensions/firebase.dart';
+import 'package:pmpconstractions/features/project/models/history.dart';
 import 'package:pmpconstractions/features/project/models/project.dart';
+import 'package:pmpconstractions/features/project/services/history_db_service.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
@@ -67,6 +69,16 @@ class _TaskCardState extends State<TaskCard> {
                     String projectId = project.projectId!;
                     await TasksDbService().deleteTask(
                         projectId: projectId, taskId: widget.task.id!);
+                    var name = project.getMemberName(context.userUid!);
+                    var imageUrl = project.getMemberImage(context.userUid!);
+
+                    await HistoryDbServices().addHistory(
+                        project.projectId!,
+                        History(
+                            contant:
+                                '$name, deleted the task, ${widget.task.title},',
+                            date: DateTime.now(),
+                            imageUrl: imageUrl));
                   },
                   backgroundColor: orange.withOpacity(0.6),
                   foregroundColor: Colors.white,

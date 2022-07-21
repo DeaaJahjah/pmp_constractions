@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pmpconstractions/core/config/constants/constant.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
 import 'package:pmpconstractions/core/config/theme/theme.dart';
+import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/featuers/auth/providers/auth_state_provider.dart';
 import 'package:pmpconstractions/core/featuers/auth/services/file_service.dart';
@@ -12,7 +13,9 @@ import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/core/widgets/custom_text_field.dart';
 import 'package:pmpconstractions/core/widgets/phone_card.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/member_card.dart';
+import 'package:pmpconstractions/features/project/models/history.dart';
 import 'package:pmpconstractions/features/project/models/project.dart';
+import 'package:pmpconstractions/features/project/services/history_db_service.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/date_picker.dart';
@@ -341,10 +344,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         ? ElevatedButton(
                             child: Text(context.loc.add),
                             onPressed: () async {
-                              print(selectedMembers.length);
                               if (nameController.text.isEmpty) {
                                 showSuccessSnackBar(
                                     context, 'name is required');
+                                return;
+                              }
+                              if (selectedMembers.isEmpty &&
+                                  taskState != TaskState.notStarted) {
+                                showErrorSnackBar(context,
+                                    'can\'t add members to a task that is not started');
                                 return;
                               }
                               Provider.of<AuthSataProvider>(context,
@@ -376,6 +384,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   task: task,
                                   context: context);
                               if (state) {
+                                var name =
+                                    project!.getMemberName(context.userUid!);
+                                var imageUrl =
+                                    project!.getMemberImage(context.userUid!);
+
+                                await HistoryDbServices().addHistory(
+                                    project!.projectId!,
+                                    History(
+                                        contant:
+                                            '$name, added the task ${nameController.text},',
+                                        date: DateTime.now(),
+                                        imageUrl: imageUrl));
+
                                 Provider.of<AuthSataProvider>(context,
                                         listen: false)
                                     .changeAuthState(

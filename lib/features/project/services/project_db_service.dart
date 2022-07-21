@@ -7,7 +7,9 @@ import 'package:pmpconstractions/core/featuers/notification/model/notification_m
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/features/home_screen/providers/data_provider.dart';
+import 'package:pmpconstractions/features/project/models/history.dart';
 import 'package:pmpconstractions/features/project/models/project.dart';
+import 'package:pmpconstractions/features/project/services/history_db_service.dart';
 import 'package:provider/provider.dart';
 
 class ProjectDbService {
@@ -16,6 +18,15 @@ class ProjectDbService {
   createProject(Project project, context, String profilePicUrl) async {
     try {
       final projectDoc = await _db.collection('projects').add(project.toJson());
+
+      // add to the[history] collection
+      await HistoryDbServices().addHistory(
+          projectDoc.id,
+          History(
+              contant:
+                  '${project.companyName} created the project ${project.name}',
+              date: DateTime.now(),
+              imageUrl: project.imageUrl));
 
       for (MemberRole member in project.members ?? []) {
         // add project id to all members
@@ -38,6 +49,12 @@ class ProjectDbService {
               pauload: '/notification',
               createdAt: DateTime.now(),
             ));
+        await HistoryDbServices().addHistory(
+            projectDoc.id,
+            History(
+                contant: 'Added ${member.memberName} as a $role',
+                date: DateTime.now(),
+                imageUrl: project.imageUrl));
       }
 
       Provider.of<AuthSataProvider>(context, listen: false)

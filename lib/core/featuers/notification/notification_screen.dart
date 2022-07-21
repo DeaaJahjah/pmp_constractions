@@ -36,6 +36,7 @@ class NotificationScreen extends StatelessWidget {
                   var notification = notifications[index];
                   return InkWell(
                     onTap: () async {
+                      ///? check task Type
                       if (notification.type == NotificationType.task) {
                         var project = await ProjectDbService()
                             .getProjectById(notification.projectId!);
@@ -50,6 +51,7 @@ class NotificationScreen extends StatelessWidget {
                                 )));
                         return;
                       }
+
                       if (notification.type == NotificationType.project) {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProjectDetailsScreen(
@@ -57,6 +59,8 @@ class NotificationScreen extends StatelessWidget {
                                 )));
                         return;
                       }
+
+                      //TODO : check Meeting Notification Type
                     },
                     child: Container(
                       margin: const EdgeInsets.all(10),

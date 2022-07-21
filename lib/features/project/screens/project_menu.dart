@@ -4,6 +4,7 @@ import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/core/extensions/loc.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/menu_row.dart';
+import 'package:pmpconstractions/features/project/screens/history_screen.dart';
 import 'package:pmpconstractions/features/project/screens/timeline_screen.dart';
 import 'package:pmpconstractions/features/project/screens/update_project_screen.dart';
 import 'package:pmpconstractions/features/project/services/project_db_service.dart';
@@ -53,7 +54,9 @@ class _ProjectMenuState extends State<ProjectMenu> {
           if (project.hasPermissionToShowHistory(context.userUid!) ||
               project.companyId == context.userUid)
             MenuRow(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(HistoryScreen.routeName);
+              },
               icon: Icons.history,
               text: context.loc.history,
             ),

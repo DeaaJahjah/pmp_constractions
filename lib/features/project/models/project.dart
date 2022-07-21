@@ -69,6 +69,27 @@ class Project extends Equatable {
     return false;
   }
 
+  String getMemberName(String userId) {
+    String name = '';
+    for (var member in members!) {
+      if (member.memberId == userId) {
+        name = member.memberName;
+      }
+    }
+    return name;
+  }
+
+  String getMemberImage(String userId) {
+    String image = '';
+    for (var member in members!) {
+      if (member.memberId == userId) {
+        image = member.memberName;
+      }
+    }
+
+    return image;
+  }
+
   bool hasPermissionToShowTask(String id) {
     for (var member in members!) {
       if (member.memberId == id && member.role != Role.client) {

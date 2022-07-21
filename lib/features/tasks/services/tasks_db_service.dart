@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
+import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/core/featuers/notification/model/notification_model.dart';
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
+import 'package:pmpconstractions/features/project/models/history.dart';
 import 'package:pmpconstractions/features/project/models/project.dart';
+import 'package:pmpconstractions/features/project/services/history_db_service.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 
 class TasksDbService {
@@ -116,7 +119,8 @@ class TasksDbService {
   Future<void> assignedTaskToMember(
       {required Project project,
       required Task task,
-      required List<MemberRole> newMember}) async {
+      required List<MemberRole> newMember,
+      required BuildContext context}) async {
     task.members!.addAll(newMember);
 
     await updateTask(projectId: project.projectId!, task: task);
@@ -126,7 +130,7 @@ class TasksDbService {
           member: member,
           notification: NotificationModle(
             title: project.name,
-            body: '${task.title} ,Assigned to you',
+            body: '${task.title} , Assigned to you',
             type: NotificationType.task,
             projectId: project.projectId,
             taskId: task.id,
@@ -135,6 +139,17 @@ class TasksDbService {
             pauload: '/notification',
             createdAt: DateTime.now(),
           ));
+
+      var name = project.getMemberName(context.userUid!);
+      var imageUrl = project.getMemberImage(context.userUid!);
+
+      await HistoryDbServices().addHistory(
+          project.projectId!,
+          History(
+              contant:
+                  '$name assigned the task ${task.title} to ${member.memberName},',
+              date: DateTime.now(),
+              imageUrl: imageUrl));
     }
   }
 }

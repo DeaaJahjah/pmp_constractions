@@ -11,8 +11,10 @@ import 'package:pmpconstractions/core/featuers/notification/model/notification_m
 import 'package:pmpconstractions/core/featuers/notification/services/notification_db_service.dart';
 import 'package:pmpconstractions/core/widgets/custom_snackbar.dart';
 import 'package:pmpconstractions/features/home_screen/screens/widgets/member_card.dart';
+import 'package:pmpconstractions/features/project/models/history.dart';
 import 'package:pmpconstractions/features/project/models/project.dart';
 import 'package:pmpconstractions/features/project/screens/back_to_home_screen.dart';
+import 'package:pmpconstractions/features/project/services/history_db_service.dart';
 import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/contributer_card.dart';
@@ -350,7 +352,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                                             project: project,
                                                             task: task,
                                                             newMember:
-                                                                selectedMembers);
+                                                                selectedMembers,
+                                                            context: context);
 
                                                     showSuccessSnackBar(context,
                                                         'Task Assigned Successfully');
@@ -457,10 +460,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                             !task.checkByManager) {
                                           await TasksDbService()
                                               .updateTaskState(
-                                                  projectId: widget.projectId!,
-                                                  taskId: widget.taskId!,
-                                                  taskState:
-                                                      TaskState.completed);
+                                            projectId: widget.projectId!,
+                                            taskId: widget.taskId!,
+                                            taskState: TaskState.completed,
+                                          );
                                           return;
                                         }
                                         if (task.allMembersSubmited() &&
@@ -492,6 +495,19 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                             }
                                           }
                                         }
+
+                                        //add to history
+                                        var name = project
+                                            .getMemberName(context.userUid!);
+                                        var imageUrl = project
+                                            .getMemberImage(context.userUid!);
+                                        HistoryDbServices().addHistory(
+                                            project.projectId!,
+                                            History(
+                                                contant:
+                                                    '$name, submited the task ${task.title},',
+                                                date: DateTime.now(),
+                                                imageUrl: imageUrl));
 
                                         //resets the slider
                                       },

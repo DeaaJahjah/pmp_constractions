@@ -14,6 +14,7 @@ import 'package:pmpconstractions/features/profile/screens/company_profile.dart';
 import 'package:pmpconstractions/features/profile/screens/engineer_profile.dart';
 import 'package:pmpconstractions/features/project/screens/create_project_screen.dart';
 import 'package:pmpconstractions/features/project/screens/details.dart';
+import 'package:pmpconstractions/features/project/screens/history_screen.dart';
 import 'package:pmpconstractions/features/project/screens/project_details_screen.dart';
 import 'package:pmpconstractions/features/project/screens/timeline_screen.dart';
 
@@ -69,6 +70,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => Details());
     case TimelineScreen.routeName:
       return MaterialPageRoute(builder: (_) => const TimelineScreen());
+    case HistoryScreen.routeName:
+      return MaterialPageRoute(builder: (_) => const HistoryScreen());
   }
 
   return null;
