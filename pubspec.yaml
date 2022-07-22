@@ -69,8 +69,9 @@ dependencies:
   animated_theme_switcher: ^2.0.6
   #charts
   syncfusion_flutter_charts: ^20.1.61
-  time_planner: ^0.1.0
+  
   syncfusion_flutter_datepicker: ^20.1.61
+  time_planner: ^0.1.0
   #unity
   #flutter_unity_widget: ^2020.3.25
   #state management
