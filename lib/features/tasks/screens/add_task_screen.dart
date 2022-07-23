@@ -66,18 +66,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
+  var members;
   Project? project;
   @override
   void initState() {
     project =
         Provider.of<SelectedProjectProvider>(context, listen: false).project;
-    selectedItem = project!.members!.first;
+    members = project!.filterMembers(context.userUid!);
+    selectedItem = members!.first;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var members = project!.members;
     selectedItem = (members!.isNotEmpty) ? members.first : null;
     return Scaffold(
         appBar: AppBar(

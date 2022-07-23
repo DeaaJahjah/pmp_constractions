@@ -395,9 +395,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       content: const Text('error while uploading files'),
                       backgroundColor: Colors.red[500],
                     );
+                    print(modelUrl);
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return;
                   }
+                  print(modelUrl);
 
                   await ProjectDbService().createProject(
                       Project(

@@ -3,6 +3,7 @@ import 'package:pmpconstractions/core/extensions/firebase.dart';
 import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/project/screens/back_to_home_screen.dart';
 import 'package:pmpconstractions/features/project/screens/widgets/chart_widget.dart';
+import 'package:pmpconstractions/features/project/screens/widgets/timetable.dart';
 import 'package:provider/provider.dart';
 
 class TimelineScreen extends StatelessWidget {
@@ -21,12 +22,7 @@ class TimelineScreen extends StatelessWidget {
                 title: const Text('Timeline'),
                 centerTitle: true,
               ),
-              body: Column(
-                children: [
-                  ChartWidget(projectId: value.project!.projectId!),
-                  // const Timetable(title: 'timetable'),
-                ],
-              )
+              body: const Timetable(title: 'timetable')
               // const Timetable(title: 'timetable'),
 
               )

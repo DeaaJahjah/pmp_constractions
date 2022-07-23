@@ -71,7 +71,7 @@ dependencies:
   syncfusion_flutter_charts: ^20.1.61
   
   syncfusion_flutter_datepicker: ^20.1.61
-  time_planner: ^0.1.0
+  time_planner: ^0.1.1
   #unity
   #flutter_unity_widget: ^2020.3.25
   #state management

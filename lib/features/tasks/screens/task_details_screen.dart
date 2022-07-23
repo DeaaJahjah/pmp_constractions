@@ -1,4 +1,3 @@
-import 'package:action_slider/action_slider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:percent_indicator/percent_indicator.dart';
@@ -19,6 +18,7 @@ import 'package:pmpconstractions/features/tasks/models/task.dart';
 import 'package:pmpconstractions/features/project/providers/selected_project_provider.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/contributer_card.dart';
 import 'package:pmpconstractions/features/tasks/screens/widgets/search_dropdown.dart';
+import 'package:pmpconstractions/features/tasks/screens/widgets/swipe_widget.dart';
 import 'package:pmpconstractions/features/tasks/services/tasks_db_service.dart';
 import 'dart:ui';
 
@@ -75,6 +75,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           members.add(member);
         }
       }
+      members.removeWhere((member) => member.role == Role.projectManager);
       assigned = false;
       firstload = false;
       selectedItem = (members.isNotEmpty) ? members[0] : null;
@@ -303,75 +304,80 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                           member: task.members![index]);
                                     },
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
+                                  if (project.hasPermessionToManageTask(
+                                          context.userUid!) &&
+                                      task.taskState != TaskState.completed)
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 2,
+                                              child: Text('Assigned to',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineMedium)),
+                                          Expanded(
                                             flex: 2,
-                                            child: Text('Assigned to',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineMedium)),
-                                        Expanded(
-                                          flex: 2,
-                                          child: SearchDropDown(
-                                              members: members,
-                                              selectedItem: selectedItem,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  selectedItem = value;
-                                                  if (selectedItem != null) {
-                                                    selectedMembers
-                                                        .add(selectedItem!);
-                                                    members
-                                                        .remove(selectedItem);
-                                                    if (members.isEmpty) {
-                                                      selectedItem = null;
+                                            child: SearchDropDown(
+                                                members: members,
+                                                selectedItem: selectedItem,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    selectedItem = value;
+                                                    if (selectedItem != null) {
+                                                      selectedMembers
+                                                          .add(selectedItem!);
+                                                      members
+                                                          .remove(selectedItem);
+                                                      if (members.isEmpty) {
+                                                        selectedItem = null;
+                                                      }
                                                     }
-                                                  }
-                                                });
-                                              }),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                            flex: 1,
-                                            child: CircleAvatar(
-                                              backgroundColor: orange,
-                                              child: IconButton(
-                                                  onPressed: () async {
-                                                    if (selectedMembers
-                                                        .isEmpty) {
-                                                      showErrorSnackBar(context,
-                                                          'Please select atleast one member');
-                                                      return;
-                                                    }
-                                                    await TasksDbService()
-                                                        .assignedTaskToMember(
-                                                            project: project,
-                                                            task: task,
-                                                            newMember:
-                                                                selectedMembers,
-                                                            context: context);
+                                                  });
+                                                }),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                              flex: 1,
+                                              child: CircleAvatar(
+                                                backgroundColor: orange,
+                                                child: IconButton(
+                                                    onPressed: () async {
+                                                      if (selectedMembers
+                                                          .isEmpty) {
+                                                        showErrorSnackBar(
+                                                            context,
+                                                            'Please select atleast one member');
+                                                        return;
+                                                      }
+                                                      await TasksDbService()
+                                                          .assignedTaskToMember(
+                                                              project: project,
+                                                              task: task,
+                                                              newMember:
+                                                                  selectedMembers,
+                                                              context: context);
 
-                                                    showSuccessSnackBar(context,
-                                                        'Task Assigned Successfully');
-                                                    setState(() {
-                                                      assigned = true;
-                                                      selectedMembers = [];
-                                                      needToReferash = true;
-                                                    });
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.add,
-                                                    color: beg,
-                                                    size: 25,
-                                                  )),
-                                            )),
-                                      ],
+                                                      showSuccessSnackBar(
+                                                          context,
+                                                          'Task Assigned Successfully');
+                                                      setState(() {
+                                                        assigned = true;
+                                                        selectedMembers = [];
+                                                        needToReferash = true;
+                                                      });
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.add,
+                                                      color: beg,
+                                                      size: 25,
+                                                    )),
+                                              )),
+                                        ],
+                                      ),
                                     ),
-                                  ),
                                 ],
                               ),
                               Container(
@@ -400,120 +406,113 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                         })),
                               ),
                               if (!task.submited(context.userUid!))
-                                Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 20),
-                                    child: ActionSlider.standard(
-                                      sliderBehavior: SliderBehavior.stretch,
-                                      rolling: true,
-                                      width: 300.0,
-                                      height: 54,
-                                      child: Text('Swipe to submit',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium),
-                                      backgroundColor: beg.withOpacity(0.25),
-                                      toggleColor: orange,
-                                      iconAlignment: Alignment.centerRight,
-                                      loadingIcon: const SizedBox(
-                                          width: 50,
-                                          child: Center(
-                                              child: SizedBox(
-                                            width: 24.0,
-                                            height: 24.0,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2.0,
-                                              color: beg,
-                                            ),
-                                          ))),
-                                      successIcon: const SizedBox(
-                                          width: 50,
-                                          child: Center(
-                                              child:
-                                                  Icon(Icons.check_rounded))),
-                                      icon: const SizedBox(
-                                        width: 50,
-                                        child: Center(child: Icon(Icons.send)),
-                                      ),
-                                      onSlide: (controller) async {
-                                        for (var member in task.members!) {
-                                          if (member.memberId ==
-                                              context.userUid!) {
-                                            member.submited = true;
-                                            break;
-                                          }
-                                        }
-                                        controller
-                                            .loading(); //starts loading animation
-                                        await Future.delayed(
-                                            const Duration(seconds: 1));
-                                        controller.success();
-                                        await Future.delayed(
-                                            const Duration(seconds: 2));
-                                        await TasksDbService().updateTask(
-                                            projectId: widget.projectId!,
-                                            task:
-                                                task); //starts success animation
-                                        // await Future.delayed(const Duration(seconds: 2));
-
-                                        if (task.allMembersSubmited() &&
-                                            !task.checkByManager) {
+                                (project.hasPermisionToCompleteTask(
+                                        context.userUid!, task))
+                                    ? SwipeWidget(
+                                        onSlide: (controller) async {
+                                          controller
+                                              .loading(); //starts loading animation
+                                          await Future.delayed(
+                                              const Duration(seconds: 1));
+                                          controller.success();
+                                          await Future.delayed(
+                                              const Duration(seconds: 2));
                                           await TasksDbService()
                                               .updateTaskState(
                                             projectId: widget.projectId!,
                                             taskId: widget.taskId!,
                                             taskState: TaskState.completed,
                                           );
-                                          return;
-                                        }
-                                        if (task.allMembersSubmited() &&
-                                            task.checkByManager) {
-                                          for (var member in project.members!) {
-                                            if (member.role ==
-                                                Role.projectManager) {
-                                              await NotificationDbService()
-                                                  .sendNotification(
-                                                      member: member,
-                                                      notification:
-                                                          NotificationModle(
-                                                        title: project.name,
-                                                        body:
-                                                            '${task.title} , is completed',
-                                                        type: NotificationType
-                                                            .task,
-                                                        projectId:
-                                                            project.projectId,
-                                                        taskId: taskId,
-                                                        imageUrl:
-                                                            project.imageUrl,
-                                                        isReaded: false,
-                                                        pauload:
-                                                            '/notification',
-                                                        createdAt:
-                                                            DateTime.now(),
-                                                      ));
-                                            }
-                                          }
-                                        }
+                                        },
+                                        text: 'Swipe to complete')
+                                    : (task.taskState != TaskState.completed)
+                                        ? SwipeWidget(
+                                            onSlide: (controller) async {
+                                              for (var member
+                                                  in task.members!) {
+                                                if (member.memberId ==
+                                                    context.userUid!) {
+                                                  member.submited = true;
+                                                  break;
+                                                }
+                                              }
+                                              controller
+                                                  .loading(); //starts loading animation
+                                              await Future.delayed(
+                                                  const Duration(seconds: 1));
+                                              controller.success();
+                                              await Future.delayed(
+                                                  const Duration(seconds: 2));
 
-                                        //add to history
-                                        var name = project
-                                            .getMemberName(context.userUid!);
-                                        var imageUrl = project
-                                            .getMemberImage(context.userUid!);
-                                        HistoryDbServices().addHistory(
-                                            project.projectId!,
-                                            History(
-                                                contant:
-                                                    '$name, submited the task ${task.title},',
-                                                date: DateTime.now(),
-                                                imageUrl: imageUrl));
+                                              await TasksDbService().updateTask(
+                                                  projectId: widget.projectId!,
+                                                  task:
+                                                      task); //starts success animation
+                                              // await Future.delayed(const Duration(seconds: 2));
 
-                                        //resets the slider
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                              if (task.allMembersSubmited() &&
+                                                  !task.checkByManager) {
+                                                await TasksDbService()
+                                                    .updateTaskState(
+                                                  projectId: widget.projectId!,
+                                                  taskId: widget.taskId!,
+                                                  taskState:
+                                                      TaskState.completed,
+                                                );
+                                                return;
+                                              }
+                                              if (task.allMembersSubmited() &&
+                                                  task.checkByManager) {
+                                                for (var member
+                                                    in project.members!) {
+                                                  if (member.role ==
+                                                      Role.projectManager) {
+                                                    await NotificationDbService()
+                                                        .sendNotification(
+                                                            member: member,
+                                                            notification:
+                                                                NotificationModle(
+                                                              title:
+                                                                  project.name,
+                                                              body:
+                                                                  '${task.title} , is completed',
+                                                              type:
+                                                                  NotificationType
+                                                                      .task,
+                                                              projectId: project
+                                                                  .projectId,
+                                                              taskId: taskId,
+                                                              imageUrl: project
+                                                                  .imageUrl,
+                                                              isReaded: false,
+                                                              pauload:
+                                                                  '/notification',
+                                                              createdAt:
+                                                                  DateTime
+                                                                      .now(),
+                                                            ));
+                                                  }
+                                                }
+                                              }
+
+                                              //add to history
+                                              var name = project.getMemberName(
+                                                  context.userUid!);
+                                              var imageUrl =
+                                                  project.getMemberImage(
+                                                      context.userUid!);
+                                              HistoryDbServices().addHistory(
+                                                  project.projectId!,
+                                                  History(
+                                                      contant:
+                                                          '$name, submited the task ${task.title},',
+                                                      date: DateTime.now(),
+                                                      imageUrl: imageUrl));
+
+                                              //resets the slider
+                                            },
+                                            text: 'Swipe to submit')
+                                        : const SizedBox.shrink(),
                             ]),
                           ],
                         ),

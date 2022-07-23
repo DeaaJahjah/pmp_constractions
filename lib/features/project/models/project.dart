@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pmpconstractions/core/config/enums/enums.dart';
+import 'package:pmpconstractions/features/tasks/models/task.dart';
 
 part 'project.g.dart';
 
@@ -122,6 +123,29 @@ class Project extends Equatable {
       if (member.memberId == id &&
           (member.role == Role.projectManager ||
               member.role == Role.projectEngineer)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  List<MemberRole>? filterMembers(String id) {
+    var member = members!.firstWhere((element) => element.memberId == id);
+    var filterMembers = members;
+    if (member.role == Role.projectEngineer) {
+      filterMembers!
+          .removeWhere((element) => element.role == Role.projectManager);
+    }
+    return filterMembers;
+  }
+
+  bool hasPermisionToCompleteTask(String id, Task task) {
+    for (var member in members!) {
+      if (member.memberId == id &&
+          member.role == Role.projectManager &&
+          task.checkByManager &&
+          task.allMembersSubmited() &&
+          task.taskState != TaskState.completed) {
         return true;
       }
     }
