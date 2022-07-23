@@ -34,6 +34,7 @@ class HistoryScreen extends StatelessWidget {
                         itemCount: histories.length,
                         itemBuilder: (context, i) {
                           var history = histories[i];
+                          // print("${history.imageUrl} $i");
                           return Container(
                             padding: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
@@ -53,6 +54,7 @@ class HistoryScreen extends StatelessWidget {
                               leading: CashedImage(
                                 imageUrl: history.imageUrl,
                                 size: 40,
+                                radius: 40,
                               ),
                               trailing: Column(
                                 children: [

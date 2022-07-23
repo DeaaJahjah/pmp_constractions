@@ -84,7 +84,7 @@ class Project extends Equatable {
     String image = '';
     for (var member in members!) {
       if (member.memberId == userId) {
-        image = member.memberName;
+        image = member.profilePicUrl!;
       }
     }
 

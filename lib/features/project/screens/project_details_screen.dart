@@ -64,22 +64,6 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                       },
                       child: Stack(
                         children: [
-                          ((project.memberIn(context.userUid!) &&
-                                      project.isOpen) ||
-                                  project.companyId == context.userUid)
-                              ? Positioned(
-                                  left: 10,
-                                  top: 40,
-                                  child: InkWell(
-                                      onTap: () {
-                                        if (widget.zoomController != null) {
-                                          widget.zoomController!.toggle!();
-                                        }
-                                      },
-                                      child: const Icon(Icons.menu,
-                                          color: darkBlue)),
-                                )
-                              : const SizedBox.shrink(),
                           SlidingUpPanel(
                               controller: panelController,
                               minHeight: 350,
@@ -256,6 +240,22 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                                                   }),
                                             )
                                           ]))),
+                          ((project.memberIn(context.userUid!) &&
+                                      project.isOpen) ||
+                                  project.companyId == context.userUid)
+                              ? Positioned(
+                                  left: 10,
+                                  top: 40,
+                                  child: InkWell(
+                                      onTap: () {
+                                        if (widget.zoomController != null) {
+                                          widget.zoomController!.toggle!();
+                                        }
+                                      },
+                                      child: const Icon(Icons.menu,
+                                          color: darkBlue)),
+                                )
+                              : const SizedBox.shrink(),
                         ],
                       ),
                     ))

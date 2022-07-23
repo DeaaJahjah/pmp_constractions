@@ -423,6 +423,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                             taskId: widget.taskId!,
                                             taskState: TaskState.completed,
                                           );
+                                          controller.reset();
                                         },
                                         text: 'Swipe to complete')
                                     : (task.taskState != TaskState.completed)
@@ -467,30 +468,25 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                                     in project.members!) {
                                                   if (member.role ==
                                                       Role.projectManager) {
-                                                    await NotificationDbService()
-                                                        .sendNotification(
-                                                            member: member,
-                                                            notification:
-                                                                NotificationModle(
-                                                              title:
-                                                                  project.name,
-                                                              body:
-                                                                  '${task.title} , is completed',
-                                                              type:
-                                                                  NotificationType
-                                                                      .task,
-                                                              projectId: project
-                                                                  .projectId,
-                                                              taskId: taskId,
-                                                              imageUrl: project
-                                                                  .imageUrl,
-                                                              isReaded: false,
-                                                              pauload:
-                                                                  '/notification',
-                                                              createdAt:
-                                                                  DateTime
-                                                                      .now(),
-                                                            ));
+                                                    await NotificationDbService().sendNotification(
+                                                        member: member,
+                                                        notification: NotificationModle(
+                                                            title: project.name,
+                                                            body:
+                                                                '${task.title} , is completed',
+                                                            type:
+                                                                NotificationType
+                                                                    .task,
+                                                            projectId: project
+                                                                .projectId,
+                                                            taskId: taskId,
+                                                            imageUrl: project
+                                                                .imageUrl,
+                                                            isReaded: false,
+                                                            pauload:
+                                                                '/notification',
+                                                            createdAt: DateTime
+                                                                .now()));
                                                   }
                                                 }
                                               }
